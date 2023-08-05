@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Main menu</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Welcome to the Game</h1>
+
+  <!-- Button to update code -->
+  <button onclick="redirectToUpdateCode()">Update Code</button>
+
+  <!-- Button to view replays -->
+  <button onclick="redirectToReplays()">Replays</button>
+
+  <!-- Button to view highscores -->
+  <button onclick="redirectToHighscores()">Highscores</button>
+
+  <script>
+    // Function to redirect to the "Update Code" page
+    function redirectToUpdateCode() {
+      window.location.href = 'update_code.html';
+    }
+
+    // Function to redirect to the "Replays" page
+    function redirectToReplays() {
+      window.location.href = 'replays.html';
+    }
+
+    // Function to redirect to the "Highscores" page
+    function redirectToHighscores() {
+      window.location.href = 'highscores.html';
+    }
+  </script>
+</body>
+</html>
