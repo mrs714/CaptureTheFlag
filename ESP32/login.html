@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Include shared.css -->
+  <style>
+    /* Additional styles for the Login page */
+    #createUserForm {
+      display: none; /* Hide the Create User elements by default */
+    }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <div class="container">
+    <form id="loginForm">
+      <!-- Login form elements -->
+      <h2>Login</h2>
+      <label for="username">Username:</label>
+      <input type="text" id="username" placeholder="Enter your username">
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Enter your password">
+      <button type="button" onclick="loginButton()">Login</button>
+      <!-- Link to toggle between Login and Create User forms -->
+      <p><a href="#" onclick="toggleCreateUser()">Don't have a user yet?</a></p>
+    </form>
+
+    <form id="createUserForm">
+      <!-- Create User form elements -->
+      <h2>Create User</h2>
+      <label for="newUsername">New Username:</label>
+      <input type="text" id="newUsername" placeholder="Enter new username">
+      <label for="newPassword">New Password:</label>
+      <input type="password" id="newPassword" placeholder="Enter new password">
+      <button type="button" onclick="createUserButton()">Create user</button>
+      <!-- Link to toggle between Login and Create User forms -->
+      <p><a href="#" onclick="toggleCreateUser()">Already have a user?</a></p>
+    </form>
+
+    <p id="message"></p> <!-- Display login error/success message here -->
+
+  </div>
+
+<script src="login_script.js"></script>
+
+</body>
+</html>
