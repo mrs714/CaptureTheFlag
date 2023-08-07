@@ -6,11 +6,11 @@ app = Flask(__name__)
 def login():
     return render_template('login.html')
 
-@app.route('/')
+@app.route('/main_menu')
 def main_menu():
     return render_template('main_menu.html')
 
-@app.route('/')
+@app.route('/update_code')
 def update_code():
     return render_template('update_code.html')
 

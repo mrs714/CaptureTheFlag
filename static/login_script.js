@@ -93,6 +93,6 @@ function createUser(username, password){
 
 function Redirecting(){
   setTimeout(() => {
-    window.location.href = 'main_menu.html';
+    window.location.href = '/main_menu';
   }, 2000);
 }
