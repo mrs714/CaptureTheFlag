@@ -1,0 +1,1 @@
+en shared_script fer que en funció del theme es posi fosc o clar

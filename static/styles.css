@@ -125,3 +125,14 @@ th, td {
 thead {
   background-color: #f2f2f2;
 }
+
+/* Style the checkbox label and input */
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+  vertical-align: middle;
+}

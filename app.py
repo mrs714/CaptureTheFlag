@@ -1,21 +1,15 @@
 from flask import Flask, render_template, session
 
 app = Flask(__name__)
+app.secret_key = 'key' # This serves as a secret key for the session, which is used to encrypt the cookie
 
 @app.route('/')
 def login():
-    return render_template('login.html')
+    # Configure session
+    session['theme'] = 'light'
+    session['username'] = 'Guest'
 
-# Backend logic for login
-@app.route('/login_request', methods=['GET', 'POST'])
-def loginRequest():
-    username = request.form['username']
-    password = request.form['password']
-    if username == 'admin' and password == 'admin':
-        session['username'] = username
-        return render_template('main_menu.html')
-    else:
-        return render_template('login.html', error='Invalid username or password')
+    return render_template('login.html')
 
 @app.route('/main_menu')
 def main_menu():
@@ -27,7 +21,7 @@ def update_code():
 
 @app.route('/options')
 def options():
-    return render_template('options.html')
+    return render_template('options.html', theme=session['theme'])
 
 @app.route('/highscores')
 def highscores():
@@ -36,6 +30,15 @@ def highscores():
 @app.route('/replays')
 def replays():
     return render_template('replays.html')
+
+#logic
+@app.route('/toggle-theme')
+def toggle_theme():
+    if session['theme'] == 'dark':
+        session['theme'] = 'light'
+    elif session['theme'] == 'light':
+        session['theme'] = 'dark'
+    return options()
 
 if __name__ == '__main__':
     app.run()
