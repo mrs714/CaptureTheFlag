@@ -1,2 +1,1 @@
-fer que quan s'entra a un fitxer es pugui accedir a la configuració de la sessió, com el tema, des del script shared_script
--> ajax
+make sure js information persists across html files

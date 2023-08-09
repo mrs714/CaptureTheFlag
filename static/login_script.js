@@ -92,6 +92,7 @@ function createUser(username, password){
 }
 
 function Redirecting(){
+  getSessionData(); // Updates the data from the server for the other html files, like the username
   setTimeout(() => {
     window.location.href = '/main_menu';
   }, 2000);

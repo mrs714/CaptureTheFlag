@@ -11,10 +11,11 @@ app.secret_key = 'key' # This serves as a secret key for the session, which is u
 
 @app.route('/')
 def login():
-    # Configure session
-    session['theme'] = 'light'
-    session['username'] = 'Guest'
-    session['loggedIn'] = False
+    # Default settings, testing purposes and new users
+    if 'loggedIn' not in session:
+        session['theme'] = 'dark'
+        session['username'] = 'Guest'
+        session['loggedIn'] = False
 
     return render_template('login.html')
 
@@ -59,9 +60,9 @@ def update_session_data():
 def toggle_theme():
     if session['theme'] == 'dark':
         session['theme'] = 'light'
-    elif session['theme'] == 'light':
+    else:
         session['theme'] = 'dark'
-    return '', 200
+    return '', 200 # a-ok
 
 def check_login(route): #prevents user from accessing pages without logging in
     if session['loggedIn'] == True:

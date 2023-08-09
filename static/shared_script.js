@@ -1,11 +1,15 @@
-/* Obtention of data from the server */
-var finishedLoadingData = false; // This variable is used to check if the data has been loaded from the server, it is used to prevent other scripts from running before the data is loaded
-var username;
-var theme;
-var loggedIn = false; 
+/* All html files include this script. This means that the variables are mantained across the entire website.
+This allows for easier access to the user data, and carrying information between pages. 
+The first time this will be used will be at the login, wether to load the data for a previous user, 
+or to reflect the newly created data from a new user. This will also be used with the options file. */
 
-function getSessionData(callback) {
-  fetch('/get_session_data') // await is needed here because the function is async, this way other scripts that rely on the information from the server don't run beofre the data is fetched
+/* Obtention of data from the server, and saving to local html session storage */
+username = sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : '';
+theme = sessionStorage.getItem('theme') !== null ? sessionStorage.getItem('theme') : 'light';
+loggedIn = sessionStorage.getItem('loggedIn') !== null ? sessionStorage.getItem('loggedIn') : false;
+
+function fetchSessionData(callback) {
+  fetch('/get_session_data') 
     .then(response => response.json())
     .then(data => {
       callback(data);
@@ -15,56 +19,26 @@ function getSessionData(callback) {
     });
 }
 
-getSessionData(data => { // Callback from getSessionData
-  if (data) {
-    username = data.username;
-    theme = data.theme;
-    loggedIn = data.loggedIn;
-    console.log('username: ' + username);
-    console.log('theme: ' + theme);
-    console.log('loggedIn: ' + loggedIn);
-    finishedLoadingData = true;
-  }
-});
-
-/* Updating server data */
-const newData = {
-  key1: 'value1',
-  key2: 'value2',
-  // ... add more data keys and values as needed
-};
-
-/*
-fetch('/update_data', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(newData)
-})
-.then(response => response.json())
-.then(data => {
-  console.log(data.message);  // Output: Data updated successfully
-})
-.catch(error => {
-  console.error('Error updating data:', error);
-});*/
-
-
-
-
-
-
-
+/* Any script that requires an update on the server-stored data will call this function.
+The changes made will persist to other html files. */
+function getSessionData() { 
+  fetchSessionData(data => { 
+    if (data) {
+      sessionStorage.setItem('username', data.username);
+      sessionStorage.setItem('theme', data.theme);
+      sessionStorage.setItem('loggedIn', data.loggedIn);
+      console.log('username: ' + username);
+      console.log('theme: ' + theme);
+      console.log('loggedIn: ' + loggedIn);
+    }
+  });
+}
 
 
 /* Functions */
 // Go to the previous page
 function goBack() {
-  if (window == window.history.previous){
-    window.history.back(); //quick fix, remove later
-  }
-  window.history.back();
+  window.location.href = '/main_menu';
 }
 
 // Call a certain python function
