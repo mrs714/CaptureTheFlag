@@ -1,36 +1,52 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Main menu</title>
-  <link rel="stylesheet" href="./static/styles.css">
-</head>
-<body>
-  <h1>Welcome to the Game</h1>
+  <head>
+    <title>Main menu</title>
+    <link rel="stylesheet" href="./static/styles.css">
+  </head>
 
-  <!-- Button to update code -->
-  <button onclick="redirectToUpdateCode()">Update Code</button>
+  <body>
+    <div class="container">
+      <h1>Welcome to the Game, username</h1>
 
-  <!-- Button to view replays -->
-  <button onclick="redirectToReplays()">Replays</button>
+      <!-- Button to update code -->
+      <button onclick="redirectToUpdateCode()">Update Code</button>
 
-  <!-- Button to view highscores -->
-  <button onclick="redirectToHighscores()">Highscores</button>
+      <!-- Button to view replays -->
+      <button onclick="redirectToReplays()">Replays</button>
 
-  <script>
-    // Function to redirect to the "Update Code" page
-    function redirectToUpdateCode() {
-      window.location.href = '/update_code';
-    }
+      <!-- Button to view highscores -->
+      <button onclick="redirectToHighscores()">Highscores</button>
 
-    // Function to redirect to the "Replays" page
-    function redirectToReplays() {
-      window.location.href = '/replays';
-    }
+      <!-- Button to options -->
+      <button type="secondary" onclick="redirectToOptions()">Options</button>
 
-    // Function to redirect to the "Highscores" page
-    function redirectToHighscores() {
-      window.location.href = '/highscores';
-    }
-  </script>
-</body>
+      <!-- Button to logout -->
+      <button type="secondary" onclick="logout()">Logout</button>
+
+      <script>
+        // Function to redirect to the "Update Code" page
+        function redirectToUpdateCode() {
+          window.location.href = '/update_code';
+        }
+
+        // Function to redirect to the "Replays" page
+        function redirectToReplays() {
+          window.location.href = '/replays';
+        }
+
+        // Function to redirect to the "Highscores" page
+        function redirectToHighscores() {
+          window.location.href = '/highscores';
+        }
+
+        // Function to redirect to the "Options" page
+        function redirectToOptions() {
+          window.location.href = '/options';
+        }
+      </script>
+    </div>
+
+    <script src="./static/shared_script.js"></script>
+  </body>
 </html>
