@@ -2,16 +2,21 @@
 <html>
   <head>
     <title>Options</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="./static/styles.css"> <!-- Include shared.css -->
   </head>
   <body>
     <div class="container">
-      <h1>Options</h1>
-      <label>
-        <input type="checkbox" id="themeCheckbox" theme="{{theme}}" onchange=toggleTheme()>
-        Dark mode
-      </label>
-      <button type="secondary" onclick="goBack()">Go Back</button>
+      <h1 class="mt-4">Options</h1>
+      
+      <div class="form-group mt-4">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="themeCheckbox" theme="{{theme}}" onchange="toggleTheme()">
+          <label class="custom-control-label" for="themeCheckbox">Dark mode</label>
+        </div>
+      </div>
+      
+      <button class="btn btn-secondary mt-3" onclick="goBack()">Go Back</button>
     </div>
 
     <script src="./static/shared_script.js"></script>

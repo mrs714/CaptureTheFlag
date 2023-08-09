@@ -52,9 +52,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-input[type="text"],
-input[type="password"],
-
 button {
   display: block;
   width: 100%;
@@ -62,27 +59,6 @@ button {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-}
-
-button {
-  background-color: #4CAF50;
-  color: #fff;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #38833c;
-}
-
-
-/* Secondary buttons: go back, options, logout... */
-button[type="secondary"] {
-  background-color: #918d8d;
-  color: #000;
-}
-
-button[type="secondary"]:hover {
-  background-color: #bfb8b8;
 }
 
 /* Center titles */
@@ -103,36 +79,4 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical; /* Allow vertical resizing */
-}
-
-/* Styles for the highscores table */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-th, td {
-  padding: 10px;
-  text-align: center;
-}
-
-thead {
-  background-color: #f2f2f2;
-}
-
-/* Style the checkbox label and input */
-label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-input[type="checkbox"] {
-  margin-right: 8px;
-  vertical-align: middle;
 }

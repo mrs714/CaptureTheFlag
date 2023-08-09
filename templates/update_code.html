@@ -2,28 +2,32 @@
 <html>
 <head>
   <title>Update Code</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="./static/styles.css"> <!-- Include shared.css -->
 </head>
-  <body>
-    <div class="codeContainer">
-      <h1>Update Code</h1>
+<body>
+  <div class="container codeContainer">
+    <h1 class="mt-4">Update Code</h1>
 
-      <form>
-        <textarea id="code" placeholder="Paste your code here..."></textarea>
-        <button type="button" onclick="updateCode()">Update Code</button>
-      </form>
+    <form>
+      <div class="form-group">
+        <label for="code">Paste your code here:</label>
+        <textarea class="form-control" id="code" rows="8" placeholder="Paste your code here..."></textarea>
+      </div>
+      <button class="btn btn-primary" type="button" onclick="updateCode()">Update Code</button>
+    </form>
 
-      <button type="secondary" onclick="goBack()">Go Back</button>
-    </div>
+    <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
+  </div>
 
-    <script>
-      function updateCode() {
-        const newCode = document.getElementById('code').value;
-        // Implement code to update the code on the server
-        alert('Code updated on the server!');
-      }
-    </script>
-    
-    <script src="./static/shared_script.js"></script>
-  </body>
+  <script>
+    function updateCode() {
+      const newCode = document.getElementById('code').value;
+      // Implement code to update the code on the server
+      alert('Code updated on the server!');
+    }
+  </script>
+
+  <script src="./static/shared_script.js"></script>
+</body>
 </html>

@@ -1,1 +1,2 @@
-en shared_script fer que en funció del theme es posi fosc o clar
+fer que quan s'entra a un fitxer es pugui accedir a la configuració de la sessió, com el tema, des del script shared_script
+-> ajax
