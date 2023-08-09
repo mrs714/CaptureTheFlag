@@ -24,28 +24,11 @@
     <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
 
     <script>
-      // Sample highscores data (replace this with the actual data from the server)
-      const highscoresData = [
-        { number: 45, highscore: 300, time: "13:05/5:03" },
-        { number: 44, highscore: 300, time: "13:05/5:03" },
-        { number: 43, highscore: 295, time: "13:05/5:03" },
-        // Add more highscores data here...
-      ];
-
-      // Function to populate the highscores table
-      function populateHighscoresTable() {
-        const tableBody = document.getElementById('replaysTable');
-        highscoresData.forEach(entry => {
-          const row = document.createElement('tr');
-          row.innerHTML = `<td>${entry.number}</td><td>${entry.highscore}</td><td>${entry.time}</td>`;
-          tableBody.appendChild(row);
-        });
-      }
-
       // Call the function to populate the table when the page loads
-      window.onload = populateHighscoresTable;
+      window.onload = populateReplaysTable;
     </script>
 
+    <script src="./static/display_script.js"></script>
     <script src="./static/shared_script.js"></script>
   </div>
 </body>
