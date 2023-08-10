@@ -4,11 +4,23 @@ The first time this will be used will be at the login, wether to load the data f
 or to reflect the newly created data from a new user. This will also be used with the options file. */
 
 /* Obtention of data from the server, and saving to local html session storage */
-username = sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : '';
-theme = sessionStorage.getItem('theme') !== null ? sessionStorage.getItem('theme') : 'light';
-loggedIn = sessionStorage.getItem('loggedIn') !== null ? sessionStorage.getItem('loggedIn') : false;
+// Load the data from the html session storage when the script is first loaded in a page
+// Data used by the scripts:
+var username = ''; // The username of the user
+var theme = ''; // The theme of the user (light or dark)
+updateSessionData();
 
-function fetchSessionData(callback) {
+function updateSessionData() { // Update the data from the html session storage
+  username = sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : '';
+  theme = sessionStorage.getItem('theme') !== null ? sessionStorage.getItem('theme') : 'light';
+}
+
+function updateSessionValue(key, value) { // Update a single value from the html session storage
+  sessionStorage.setItem(key, value);
+  updateSessionData();
+}
+
+function fetchSessionData(callback) { // Fetch the data from the server
   fetch('/get_session_data') 
     .then(response => response.json())
     .then(data => {
@@ -19,29 +31,32 @@ function fetchSessionData(callback) {
     });
 }
 
-/* Any script that requires an update on the server-stored data will call this function.
-The changes made will persist to other html files. */
-function getSessionData() { 
+/* This will only be called when logging in, when the data obtained from the server database is 
+being relayed to the new html session */
+function getSessionData() { // Pass the data from the server to the html session storage
   fetchSessionData(data => { 
     if (data) {
+      // Save the data to html session storage (persists across pages)
       sessionStorage.setItem('username', data.username);
       sessionStorage.setItem('theme', data.theme);
-      sessionStorage.setItem('loggedIn', data.loggedIn);
+
+      // Update the values
+      updateSessionData();
+
+      // Log the values (debugging purposes)
       console.log('username: ' + username);
       console.log('theme: ' + theme);
-      console.log('loggedIn: ' + loggedIn);
     }
   });
 }
 
-
 /* Functions */
-// Go to the previous page
+// Go to the main menu
 function goBack() {
   window.location.href = '/main_menu';
 }
 
-// Call a certain python function
+// Call a certain python function (Functions: /toggle_theme)
 async function triggerPythonFunction(functionName) { 
   try {
       const response = await fetch(functionName);

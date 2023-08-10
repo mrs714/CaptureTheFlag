@@ -1,0 +1,32 @@
+Base de dades:
+ · Per a cada usuari
+    - id
+    - Nom
+    - Contrasenya
+    - Codi
+    - Posició (-1 si error)
+    - Text de l'últim error (python debug)
+    - Updated since error (execute or not execute)
+    - Data de l'última execució
+    - Configuració del robot
+ · Global:
+    - Replay.info (Data i temps d'execució)
+    - replay.mp4
+
+Fitxers:
+ · html:
+    - login
+    - main_menu
+    - update_code
+    - player_info
+    - bot_config
+    - highscore
+    - replays
+ · js:
+    - shared_script
+    - login
+ · css:
+    styles.css
+ · db:
+    - database
+
