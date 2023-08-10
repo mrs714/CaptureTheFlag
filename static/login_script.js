@@ -81,9 +81,10 @@ function createUserButton() {
   
   // Check if the username already exists
   if (!check_user(newUsername)) {
-    createUser(newUsername, newPassword);
-    showMessage('User created successfully! Redirecting to login page...');
-    Redirecting();
+    if (create_user(newUsername, newPassword)){
+      showMessage('User created successfully! Redirecting to login page...');
+      Redirecting();
+    }
   }
   else {
     showMessage('Username already exists. Please try another name. ');
@@ -114,6 +115,30 @@ async function check_user(username) {
   return true;
 }
 
+async function create_user(username, password) {
+  const data = {
+    username: username,
+    password: password,
+  };
+
+  const response = await fetch('/create_user', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    if (response.status == 400) {
+      showMessage('Something went wrong with the server. Please try again.');
+    }
+    return false;
+  }
+  return true;
+}
+
+
 // OTHER FUNCTIONS ---------------------------------------------------------------------------------
 function checkUsernameAndPassword(username, password){
   
@@ -132,11 +157,6 @@ function checkUsernameAndPassword(username, password){
     return false;
   }
  
-  return true;
-}
-
-// A implementar: createUser(username, password)
-function createUser(username, password){
   return true;
 }
 

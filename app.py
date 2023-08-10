@@ -93,7 +93,23 @@ def user_exists():
     # Check that the user exists
     userExists = check_username(username)
     return jsonify({'userExists': userExists}), 200 # a-ok
+
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    # Get the data from the request
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+
+    # Check that the data is clean
+    if (not username.isalnum() or not password.isalnum() or len(username) == 0 or len(password) == 0 or len(username) > 20 or len(password) > 20):
+        return '', 400 # Bad request
     
+    # It has been previously checked that the user does not exist already
+    createUser(username, password)
+    session['loggedIn'] = True
+    session['username'] = username
+    return '', 200 # a-ok
     
 # Logic and functions ---------------------------------------------------------
 # Change the theme of the website (dark/light)
