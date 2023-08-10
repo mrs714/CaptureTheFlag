@@ -4,11 +4,10 @@ setupOptions(); // No changes can be made from the login to here, so the data pr
 function setupOptions() {
   checkbox = document.getElementById('themeCheckbox');
   checkbox.checked = (theme === 'dark' ? true : false);
-  console.log('theme: ' + theme);
 }
 
 function toggleTheme() {
+  sessionStorage.setItem('theme', (theme === 'dark' ? 'light' : 'dark')); 
   triggerPythonFunction('/toggle_theme');
-  setTimeout(() => { getSessionData(); }, 200); // Get the data from the server, and wait until it is loaded
-  setTimeout(() => { setupOptions(); }, 400);
+  setupOptions();
 }

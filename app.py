@@ -9,6 +9,7 @@ jsonify: Converts a dictionary to a JSON object, which can be used in JavaScript
 app = Flask(__name__)
 app.secret_key = 'key' # This serves as a secret key for the session, which is used to encrypt the cookie
 
+# Pages --------------------------------------------------------------------
 @app.route('/')
 def login():
     # Default settings, testing purposes and new users
@@ -21,7 +22,7 @@ def login():
 
 @app.route('/main_menu')
 def main_menu():
-    session['loggedIn'] = True #temporary for testing
+    session['loggedIn'] = True #temporary for testing, should be handled by login
     return check_login(render_template('main_menu.html'))
 
 @app.route('/update_code')
@@ -40,7 +41,7 @@ def highscores():
 def replays():
     return check_login(render_template('replays.html'))
 
-# Obtaining data from the server
+# Obtaining data from the server - updates the html session data ---------------------------------
 @app.route('/get_session_data', methods=['GET'])
 def get_session_data():
     session_data = {
@@ -50,12 +51,8 @@ def get_session_data():
     }
     return jsonify(session_data)
 
-# Updating data on the server
-@app.route('/update_session_data', methods=['POST'])
-def update_session_data():
-    pass
-
-#logic and functions
+# Logic and functions ---------------------------------------------------------
+# Change the theme of the website (dark/light)
 @app.route('/toggle_theme')
 def toggle_theme():
     if session['theme'] == 'dark':
@@ -64,12 +61,13 @@ def toggle_theme():
         session['theme'] = 'dark'
     return '', 200 # a-ok
 
-def check_login(route): #prevents user from accessing pages without logging in
+# Prevents user from accessing pages without logging in
+def check_login(route): 
     if session['loggedIn'] == True:
         return route
     else:
         return login()
 
-#aplication
+#aplication ---------------------------------------------------------
 if __name__ == '__main__':
     app.run()
