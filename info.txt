@@ -1,4 +1,18 @@
 Base de dades:
+
+***SQL***
+CREATE TABLE user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    password TEXT,
+    code TEXT,
+    last_position INTEGER,
+    last_execution_result TEXT,
+    date_last_execution TEXT,
+    is_executable INTEGER
+);
+*********
+
  · Per a cada usuari
     - id
     - Nom
@@ -8,7 +22,7 @@ Base de dades:
     - Text de l'últim error (python debug)
     - Updated since error (execute or not execute)
     - Data de l'última execució
-    - Configuració del robot
+    - Configuració del robot (no añadida aún)
  · Global:
     - Replay.info (Data i temps d'execució)
     - replay.mp4
