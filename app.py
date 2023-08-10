@@ -29,9 +29,13 @@ def main_menu():
 def update_code():
     return check_login(render_template('update_code.html'))
 
-@app.route('/options')
+@app.route('/player_info')
 def options():
-    return check_login(render_template('options.html'))
+    return check_login(render_template('player_info.html'))
+
+@app.route('/bot_config')
+def bot_config():
+    return check_login(render_template('bot_config.html'))
 
 @app.route('/highscores')
 def highscores():
