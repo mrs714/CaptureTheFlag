@@ -1,35 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Replays</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Robot Configuration</title>
   <link rel="stylesheet" href="./static/styles.css"> <!-- Include shared.css -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Include Bootstrap CSS -->
 </head>
 <body>
   <div class="container">
-    <h1 class="mt-4">Last Games</h1>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Number</th>
-          <th>Highscore</th>
-          <th>Time of Execution/Time Elapsed</th>
-        </tr>
-      </thead>
-      <tbody id="replaysTable">
-        <!-- Highscores data will be inserted here -->
-      </tbody>
-    </table>
+    <h1>Robot Configuration</h1>
 
-    <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
+    <form>
+      <div class="form-group">
+        <label for="healthSlider">Health:</label>
+        <input type="range" class="form-control-range" id="healthSlider" min="50" max="150" value="100">
+      </div>
+      
+      <div class="form-group">
+        <label for="shieldSlider">Shield:</label>
+        <input type="range" class="form-control-range" id="shieldSlider" min="50" max="150" value="100">
+      </div>
+      
+      <div class="form-group">
+        <label for="attackSlider">Attack:</label>
+        <input type="range" class="form-control-range" id="attackSlider" min="50" max="150" value="100">
+      </div>
+    </form>
 
-    <script>
-      // Call the function to populate the table when the page loads
-      window.onload = populateReplaysTable;
-    </script>
-
-    <script src="./static/display_script.js"></script>
-    <script src="./static/shared_script.js"></script>
+    <p id="totalPoints">Total Points: 300</p>
   </div>
+
+  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#explanationCollapse">
+    Show Explanation
+  </button>
+
+  <div id="explanationCollapse" class="collapse">
+    <p>
+      Here's an explanation of the page and its purpose.
+      You can provide more details about the configuration options and how to use them effectively.
+    </p>
+  </div>
+
+  <script>
+    const sliders = document.querySelectorAll('.form-control-range');
+    const totalPointsDisplay = document.getElementById('totalPoints');
+    let totalPoints = 300;
+
+    sliders.forEach(slider => {
+      slider.addEventListener('input', () => {
+        totalPoints = 300 - sliders.reduce((total, slider) => total + parseInt(slider.value), 0);
+        totalPointsDisplay.textContent = `Total Points: ${totalPoints}`;
+      });
+    });
+  </script>
+  
+  <script src="./static/shared_script.js"></script>
 </body>
 </html>

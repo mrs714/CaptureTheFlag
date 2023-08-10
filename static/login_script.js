@@ -33,16 +33,18 @@ function loginButton() {
   }
 
   // Check if the username and password match (request to server)
-  if (login(username, password)) {
-    showMessage('Login successful! Redirecting to home page...');
-    Redirecting();
-  }
+  login(username, password).then(success => {
+    if (success) {
+      showMessage('Login successful! Redirecting to home page...');
+      Redirecting();
+    }
+  });
 }
 
 async function login(username, password) {
   const data = {
     username: username,
-    password: hashedPassword,
+    password: password,
   };
 
   const response = await fetch('/login_function', {
@@ -64,6 +66,9 @@ async function login(username, password) {
     else if (response.status == 401) {
       showMessage("The server found something that didn't check out in the user or password. Please try again.");
     }
+    else if (response.status == 404) {
+      showMessage('This username does not exist. Please try again.');
+    }
     return false;
   }
 }
@@ -80,15 +85,19 @@ function createUserButton() {
   }
   
   // Check if the username already exists
-  if (!check_user(newUsername)) {
-    if (create_user(newUsername, newPassword)){
-      showMessage('User created successfully! Redirecting to login page...');
-      Redirecting();
+  check_user(newUsername).then(user_exists => {
+    if (!user_exists) {
+      create_user(newUsername, newPassword).then(success => {
+        if (create_user(newUsername, newPassword)){
+          showMessage('User created successfully! Redirecting to login page...');
+          Redirecting();
+        }
+      });
     }
-  }
-  else {
-    showMessage('Username already exists. Please try another name. ');
-  }
+    else {
+      showMessage('Username already exists. Please try another name. ');
+    }
+  });
 }
 
 async function check_user(username) {
@@ -97,7 +106,7 @@ async function check_user(username) {
   };
 
   const response = await fetch('/user_exists', {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -152,7 +161,7 @@ function checkUsernameAndPassword(username, password){
     return false;
   }
 
-  if (length(password) > 20 || length(username) > 20) {
+  if (password.length > 20 || username.length > 20) {
     showMessage('Username or password cannot be longer than 20 characters. Please try again.');
     return false;
   }

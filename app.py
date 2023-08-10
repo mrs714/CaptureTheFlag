@@ -1,13 +1,30 @@
-from flask import Flask, render_template, session, jsonify
+from flask import Flask, render_template, session, jsonify, request
 """
 Flask: Framework for the web application
 render_template: Renders a template from the templates folder (html file)
 session: A dictionary that stores data for the user
 jsonify: Converts a dictionary to a JSON object, which can be used in JavaScript
+request: Used to get data from the client
 """
 
 app = Flask(__name__)
 app.secret_key = 'key' # This serves as a secret key for the session, which is used to encrypt the cookie
+
+# Database ---------------------------------------------------------
+def check_username(username):
+    # Check if the username exists in the database
+    # Returns True if it does, False if it doesn't
+    return False
+
+def check_login(username, password):
+    # Check if the login is correct
+    # Returns True if it is, False if it isn't
+    return True
+
+def createUser(username, password):
+    # Create a new user in the database
+    # Returns True if it was successful, False if it wasn't
+    return False
 
 # Pages --------------------------------------------------------------------
 @app.route('/')
@@ -23,27 +40,27 @@ def login():
 @app.route('/main_menu')
 def main_menu():
     session['loggedIn'] = True #temporary for testing, should be handled by login
-    return check_login(render_template('main_menu.html'))
+    return validate_login(render_template('main_menu.html'))
 
 @app.route('/update_code')
 def update_code():
-    return check_login(render_template('update_code.html'))
+    return validate_login(render_template('update_code.html'))
 
 @app.route('/player_info')
 def options():
-    return check_login(render_template('player_info.html'))
+    return validate_login(render_template('player_info.html'))
 
 @app.route('/bot_config')
 def bot_config():
-    return check_login(render_template('bot_config.html'))
+    return validate_login(render_template('bot_config.html'))
 
 @app.route('/highscores')
 def highscores():
-    return check_login(render_template('highscores.html'))
+    return validate_login(render_template('highscores.html'))
 
 @app.route('/replays')
 def replays():
-    return check_login(render_template('replays.html'))
+    return validate_login(render_template('replays.html'))
 
 # Obtaining data from the server and server functions ---------------------------------
 @app.route('/get_session_data', methods=['GET'])
@@ -79,9 +96,10 @@ def login_function():
             session['username'] = username
             return '', 200 # a-ok
         
-    return '', 401 # Unauthorized
+        return '', 401 # Unauthorized
+    return '', 404 # Not found
 
-@app.route('/user_exists', methods=['GET'])
+@app.route('/user_exists', methods=['POST'])
 def user_exists():
     # Get the data from the request
     username = request.get_json()['username']
@@ -91,8 +109,8 @@ def user_exists():
         return '', 400 # Bad request
     
     # Check that the user exists
-    userExists = check_username(username)
-    return jsonify({'userExists': userExists}), 200 # a-ok
+    user_exists = check_username(username)
+    return jsonify({'user_exists': user_exists}), 200 # a-ok
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
@@ -122,7 +140,7 @@ def toggle_theme():
     return '', 200 # a-ok
 
 # Prevents user from accessing pages without logging in
-def check_login(route): 
+def validate_login(route): 
     if session['loggedIn'] == True:
         return route
     else:
@@ -131,3 +149,4 @@ def check_login(route):
 #aplication ---------------------------------------------------------
 if __name__ == '__main__':
     app.run()
+
