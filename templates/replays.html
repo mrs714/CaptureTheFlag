@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Replays</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./static/styles.css"> <!-- Include shared.css -->
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4">Last Games</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Number</th>
+          <th>Highscore</th>
+          <th>Time of Execution/Time Elapsed</th>
+        </tr>
+      </thead>
+      <tbody id="replaysTable">
+        <!-- Highscores data will be inserted here -->
+      </tbody>
+    </table>
+
+    <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
+
+    <script>
+      // Call the function to populate the table when the page loads
+      window.onload = populateReplaysTable;
+    </script>
+
+    <script src="./static/display_script.js"></script>
+    <script src="./static/shared_script.js"></script>
+  </div>
+</body>
+</html>

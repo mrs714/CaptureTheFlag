@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game Highscores</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./static/styles.css"> <!-- Include shared.css -->
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4">Top 10 Highscores</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Username</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody id="highscoresTable">
+        <!-- Highscores data will be inserted here -->
+      </tbody>
+    </table>
+
+    <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
+
+    <script>
+      // Call the function to populate the table when the page loads
+      window.onload = populateHighscoresTable;
+    </script>
+
+    <script src="./static/shared_script.js"></script>
+  </div>
+</body>
+</html>
