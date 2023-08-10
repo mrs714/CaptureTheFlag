@@ -45,7 +45,7 @@ def highscores():
 def replays():
     return check_login(render_template('replays.html'))
 
-# Obtaining data from the server - updates the html session data ---------------------------------
+# Obtaining data from the server and server functions ---------------------------------
 @app.route('/get_session_data', methods=['GET'])
 def get_session_data():
     session_data = {
@@ -55,6 +55,46 @@ def get_session_data():
     }
     return jsonify(session_data)
 
+@app.route('/login_function', methods=['POST'])
+def login_function():
+    # Get the data from the request
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+
+    # Check that the data is clean
+    if (not username.isalnum() or not password.isalnum() or len(username) == 0 or len(password) == 0 or len(username) > 20 or len(password) > 20):
+        return '', 400 # Bad request
+
+    # Check that the user exists
+    userExists = check_username(username)
+
+    if userExists:
+        # Check that the login is correct
+        loginOk = check_login(username, password)
+
+        # LOGIN
+        if loginOk:
+            session['loggedIn'] = True
+            session['username'] = username
+            return '', 200 # a-ok
+        
+    return '', 401 # Unauthorized
+
+@app.route('/user_exists', methods=['GET'])
+def user_exists():
+    # Get the data from the request
+    username = request.get_json()['username']
+
+    # Check that the data is clean
+    if (not username.isalnum() or len(username) == 0 or len(username) > 20):
+        return '', 400 # Bad request
+    
+    # Check that the user exists
+    userExists = check_username(username)
+    return jsonify({'userExists': userExists}), 200 # a-ok
+    
+    
 # Logic and functions ---------------------------------------------------------
 # Change the theme of the website (dark/light)
 @app.route('/toggle_theme')

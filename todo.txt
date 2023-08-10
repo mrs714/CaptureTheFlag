@@ -1,0 +1,6 @@
+implementar:
+check_login(username, password):
+    True si la contrasenya és correcta, false si no
+
+check_username(username):
+    True si l'usuari existeix a la database, false si no (i per tant està disponible)

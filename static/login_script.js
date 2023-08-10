@@ -22,7 +22,7 @@ function toggleCreateUser() {
   showMessage('');
 }
 
-// A implementar: checkLogin(username, password)
+// LOGIN --------------------------------------------------------------------------------------------
 function loginButton() {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
@@ -32,16 +32,45 @@ function loginButton() {
     return;
   }
 
-  // Check if the username and password match
-  if (checkLogin(username, password)) {
+  // Check if the username and password match (request to server)
+  if (login(username, password)) {
     showMessage('Login successful! Redirecting to home page...');
     Redirecting();
   }
 }
 
+async function login(username, password) {
+  const data = {
+    username: username,
+    password: hashedPassword,
+  };
+
+  const response = await fetch('/login_function', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (response.ok) {
+    // Successfully logged in
+    return true;
+
+  } else {
+    if (response.status == 400) {
+      showMessage('Incorrect username or password. Please try again.');
+    }
+    else if (response.status == 401) {
+      showMessage("The server found something that didn't check out in the user or password. Please try again.");
+    }
+    return false;
+  }
+}
+
+// CREATE USER -------------------------------------------------------------------------------------
 // A implementar: checkUsernameAvailable(username), createUser(username, password)
 function createUserButton() {
-  showMessage('showpls2');
   const newUsername = document.getElementById('newUsername').value;
   const newPassword = document.getElementById('newPassword').value;
 
@@ -51,7 +80,7 @@ function createUserButton() {
   }
   
   // Check if the username already exists
-  if (checkUsernameAvailable(newUsername)){
+  if (!check_user(newUsername)) {
     createUser(newUsername, newPassword);
     showMessage('User created successfully! Redirecting to login page...');
     Redirecting();
@@ -61,6 +90,31 @@ function createUserButton() {
   }
 }
 
+async function check_user(username) {
+  const data = {
+    username: username,
+  };
+
+  const response = await fetch('/user_exists', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (response.ok) {
+    const responseData = await response.json();
+    return responseData.user_exists;
+  } else {
+    if (response.status == 400) {
+      showMessage('Something went wrong with the server. Please try again.');
+    }
+  }
+  return true;
+}
+
+// OTHER FUNCTIONS ---------------------------------------------------------------------------------
 function checkUsernameAndPassword(username, password){
   
   if (username == '' || password == '') {
@@ -73,16 +127,11 @@ function checkUsernameAndPassword(username, password){
     return false;
   }
 
-  return true;
-}
-
-// A implementar: checkLogin(username, password)
-function checkLogin(username, password){
-  return true;
-}
-
-// A implementar: checkUsernameAvailable(username)
-function checkUsernameAvailable(username){
+  if (length(password) > 20 || length(username) > 20) {
+    showMessage('Username or password cannot be longer than 20 characters. Please try again.');
+    return false;
+  }
+ 
   return true;
 }
 
