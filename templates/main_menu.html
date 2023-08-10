@@ -13,14 +13,17 @@
       <!-- Button to update code -->
       <button class="btn btn-primary mt-3" onclick="redirectToUpdateCode()">Update Code</button>
 
+      <!-- Button to view bot configuration -->
+      <button class="btn btn-primary mt-3" onclick="redirectToBotConfig()">Bot configuration</button>
+
+      <!-- Button to view player info -->
+      <button class="btn btn-primary mt-3" onclick="redirectToPlayerInfo()">Player info</button>
+
       <!-- Button to view replays -->
       <button class="btn btn-primary mt-3" onclick="redirectToReplays()">Replays</button>
 
       <!-- Button to view highscores -->
       <button class="btn btn-primary mt-3" onclick="redirectToHighscores()">Highscores</button>
-
-      <!-- Button to options -->
-      <button class="btn btn-secondary mt-3" onclick="redirectToOptions()">Options</button>
 
       <!-- Button to logout -->
       <button class="btn btn-secondary mt-3" onclick="logout()">Logout</button>
@@ -42,10 +45,16 @@
         window.location.href = '/highscores';
       }
 
-      // Function to redirect to the "Options" page
-      function redirectToOptions() {
-        window.location.href = '/options';
+      // Function to redirect to the "Player Info" page
+      function redirectToPlayerInfo() {
+        window.location.href = '/player_info';
       }
+
+      // Function to redirect to the "Bot Config" page
+      function redirectToBotConfig() {
+        window.location.href = '/bot_config';
+      }
+
     </script>
     <script src="./static/shared_script.js"></script>
   </body>
