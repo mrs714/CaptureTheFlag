@@ -159,6 +159,18 @@ def save_config():
     saveConfig(id, health, shield, attack)
     return '', 200 # a-ok
 
+@app.route('/save_code', methods=['POST'])
+def save_code():
+    # Get the data from the request
+    code = request.get_json()['code']
+
+    # Check that the data is clean ????? pablo?
+    if (False):
+        return '', 400 # Bad request
+    
+    saveCode(code)
+    return '', 200 # a-ok
+
 # Logic and functions ---------------------------------------------------------
 
 
