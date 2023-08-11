@@ -173,7 +173,7 @@ def save_code():
         saveCode(id, code)
         return '', 200 # a-ok
     else:
-        return error_details, 400 # Bad request
+        return jsonify({"error":str(error_details)}), 400 # Bad request
 
 # Logic and functions ---------------------------------------------------------
 # Syntax checking for users code

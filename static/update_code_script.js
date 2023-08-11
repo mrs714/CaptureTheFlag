@@ -1,5 +1,5 @@
 function showMessage(message) { // Success/error loging
-  document.getElementById('message_area').textContent = message; 
+  document.getElementById('message_area').innerHTML = message; 
 }
 
 // UPDATE CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ async function update_code() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
-  });
+  }).then(response => response.json());
 
   if (response.ok) {
     // Successfully saved configuration
@@ -29,7 +29,7 @@ async function update_code() {
     return true;
 
   } else {
-      showMessage("Your code isn't working. Here's the compiler's output: " + response.body + ". Please make sure to compile your code before saving it.");
+      showMessage("Your code isn't working. Here's the compiler's output: <br><br>" + response.error + "<br><br>Please make sure to compile your code before saving it.");
     return false;
   }
 }
