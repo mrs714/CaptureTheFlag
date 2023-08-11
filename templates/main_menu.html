@@ -8,7 +8,7 @@
 
   <body>
     <div class="container">
-      <h1 class="text-center mt-4">Welcome to the Game, username</h1>
+      <h1 class="text-center mt-4" id="welcome_text"></h1>
 
       <!-- Button to update code -->
       <button class="btn btn-primary mt-3" onclick="redirectToUpdateCode()">Update Code</button>
@@ -54,6 +54,9 @@
       function redirectToBotConfig() {
         window.location.href = '/bot_config';
       }
+
+      welcome_text = document.getElementById('welcome_text');
+      welcome_text.innerHTML = 'Welcome to the Game, ' + username + '!';
 
     </script>
     <script src="./static/shared_script.js"></script>
