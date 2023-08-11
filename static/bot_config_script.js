@@ -101,6 +101,7 @@ function fix_sliders() {
 }
 
 function update_info() {
+  fix_sliders();
   document.getElementById("health_slider_info").innerHTML = "Health: " + health_slider.value;
   document.getElementById("shield_slider_info").innerHTML = "Shield: " + shield_slider.value;
   document.getElementById("attack_slider_info").innerHTML = "Attack: " + attack_slider.value;
