@@ -1,5 +1,6 @@
 from flask import Flask, render_template, session, jsonify, request
 import database.db_access as db
+import json
 """
 Flask: Framework for the web application
 render_template: Renders a template from the templates folder (html file)
@@ -28,15 +29,16 @@ def createUser(username, password):
 
 def saveConfig(id, health, shield, attack):
     # Save the config in the database for a certain id
-    return True
+    config = {"health": health, "shield": shield, "attack": attack}
+    db.save_config(id, json.dumps(config))
 
-def saveCode(code):
+def saveCode(id, code):
     # Save the code in the database
-    return True
+    db.save_code(id, code)
 
 def IdFromUser(username):
     # Get the id of a user
-    return 1
+    return db.get_user_id(username)
 
 # Pages --------------------------------------------------------------------
 @app.route('/')
