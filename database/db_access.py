@@ -48,3 +48,19 @@ def check_user_credentials(username, password):
         c = db.get_cursor()
         c.execute(f"SELECT * FROM {DATABASE_USER_TABLE} WHERE username = ? AND password = ?", (username, password))
         return c.fetchone() is not None
+    
+def get_user_id(username):
+    with _db as db:
+        c = db.get_cursor()
+        c.execute(f"SELECT id FROM {DATABASE_USER_TABLE} WHERE username = ?", (username,))
+        return c.fetchone()[0]
+
+def save_code(id, code):
+    with _db as db:
+        c = db.get_cursor()
+        c.execute(f"UPDATE {DATABASE_USER_TABLE} SET code = ? WHERE id = ?", (code, id))
+
+def save_config(id, config):
+    with _db as db:
+        c = db.get_cursor()
+        c.execute(f"UPDATE {DATABASE_USER_TABLE} SET config = ? WHERE id = ?", (config, id))
