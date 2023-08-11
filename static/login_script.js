@@ -35,6 +35,7 @@ function loginButton() {
   // Check if the username and password match (request to server)
   login(username, password).then(success => {
     if (success) {
+      saveSessionData(username); // Saves the username in the session storage
       showMessage('Login successful! Redirecting to home page...');
       Redirecting();
     }
@@ -89,6 +90,7 @@ function createUserButton() {
     if (!user_exists) {
       create_user(newUsername, newPassword).then(success => {
         if (create_user(newUsername, newPassword)){
+          saveSessionData(newUsername); // Saves the username in the session storage
           showMessage('User created successfully! Redirecting to login page...');
           Redirecting();
         }

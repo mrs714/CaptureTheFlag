@@ -26,13 +26,17 @@ def createUser(username, password):
     # Create a new user in the database
     db.insert_user(username, password)
 
-def saveConfig(health, shield, attack):
-    # Save the config in the database
+def saveConfig(id, health, shield, attack):
+    # Save the config in the database for a certain id
     return True
 
 def saveCode(code):
     # Save the code in the database
     return True
+
+def IdFromUser(username):
+    # Get the id of a user
+    return 1
 
 # Pages --------------------------------------------------------------------
 @app.route('/')
@@ -102,6 +106,7 @@ def login_function():
         if loginOk:
             session['loggedIn'] = True
             session['username'] = username
+            print('User ' + username + ' logged in')
             return '', 200 # a-ok
         
         return '', 401 # Unauthorized
@@ -149,7 +154,9 @@ def save_config():
     if (health + shield + attack != 300 or health < 50 or shield < 50 or attack < 50 or health > 150 or shield > 150 or attack > 150 or not isinstance(health, int) or not isinstance(shield, int) or not isinstance(attack, int)):
         return '', 400 # Bad request
     
-    saveConfig(health, shield, attack)
+    id = IdFromUser(session['username'])
+
+    saveConfig(id, health, shield, attack)
     return '', 200 # a-ok
 
 # Logic and functions ---------------------------------------------------------
