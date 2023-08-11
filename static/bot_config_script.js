@@ -12,19 +12,33 @@ update_info();
 
 function first_slider() {
   var points_to_give = 300 - parseInt(total_value());
-  if (points_to_give %2 != 0) {
-    shield_slider.value = parseInt(shield_slider.value) + parseInt(points_to_give/2);
-    attack_slider.value = parseInt(attack_slider.value) + parseInt(points_to_give/2);
-    if (parseInt(shield_slider.value) < parseInt(attack_slider.value)) {
-      shield_slider.value = parseInt(shield_slider.value) + 1;
-    }
-    else {
-      attack_slider.value = parseInt(attack_slider.value) + 1;
-    }
+  if (parseInt(shield_slider.value) == 50 && points_to_give < 0){
+    attack_slider.value = parseInt(attack_slider.value) + points_to_give;
+  }
+  else if (parseInt(shield_slider.value) == 150 && points_to_give > 0){
+    attack_slider.value = parseInt(attack_slider.value) + points_to_give;
+  }
+  else if (parseInt(attack_slider.value) == 50 && points_to_give < 0){
+    shield_slider.value = parseInt(shield_slider.value) + points_to_give;
+  }
+  else if (parseInt(attack_slider.value) == 150 && points_to_give > 0){
+    shield_slider.value = parseInt(shield_slider.value) + points_to_give;
   }
   else {
-    shield_slider.value = parseInt(shield_slider.value) + parseInt(points_to_give/2);
-    attack_slider.value = parseInt(attack_slider.value) + parseInt(points_to_give/2);
+    if (points_to_give %2 != 0) {
+      shield_slider.value = parseInt(shield_slider.value) + parseInt(points_to_give/2);
+      attack_slider.value = parseInt(attack_slider.value) + parseInt(points_to_give/2);
+      if (parseInt(shield_slider.value) < parseInt(attack_slider.value)) {
+        shield_slider.value = parseInt(shield_slider.value) + 1;
+      }
+      else {
+        attack_slider.value = parseInt(attack_slider.value) + 1;
+      }
+    }
+    else {
+      shield_slider.value = parseInt(shield_slider.value) + parseInt(points_to_give/2);
+      attack_slider.value = parseInt(attack_slider.value) + parseInt(points_to_give/2);
+    }
   }
   
 
@@ -73,10 +87,16 @@ function total_value() {
 
 function fix_sliders() {
   if (total_value() > 300) {
-    health_slider.value = 100;
+    shield_slider.value = parseInt(shield_slider.value) - 1;
   }
-  else {
-    health_slider.value = 300 - total_value();
+  if (total_value() > 300) {
+    attack_slider.value = parseInt(attack_slider.value) - 1;
+  }
+  if (total_value() < 300) {
+    shield_slider.value = parseInt(shield_slider.value) + 1;
+  }
+  if (total_value() < 300) {
+    attack_slider.value = parseInt(attack_slider.value) + 1;
   }
 }
 
