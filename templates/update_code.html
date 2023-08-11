@@ -2,6 +2,9 @@
 <html>
 <head>
   <title>Update Code</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css"> <!-- Include CodeMirror CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/dracula.min.css"> <!-- Include CodeMirror dark theme CSS -->
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="./static/styles.css"> <!-- Include shared.css -->
 </head>
@@ -12,7 +15,10 @@
 
     <form>
       <div class="form-group">
-        <textarea class="form-control" id="code_zone" rows="8" placeholder="Paste your code here..."></textarea>
+        <div class="codeContainer">
+          <div class="line-numbers" id="lineNumbers"></div>
+          <textarea class="form-control" id="code_zone" rows="25" placeholder="Paste your code here..."></textarea>
+        </div>        
       </div>
       <p id="message_area"></p> <!-- Display login error/success message here -->
       <button class="btn btn-primary" type="button" onclick="update_code()">Update Code</button>
@@ -23,5 +29,26 @@
 
   <script src="./static/shared_script.js"></script>
   <script src="./static/update_code_script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
+
+  <script>
+    // Initialize CodeMirror instance, can't be used in the script file because of imports ES6 syntax 
+    const codeTextarea = document.getElementById('code_zone');
+    
+    // Initialize CodeMirror with the dark theme (dracula)
+    const editor = CodeMirror.fromTextArea(codeTextarea, {
+      theme: 'dracula', // Use the 'dracula' theme
+      mode: 'python',   // Set the mode to Python
+      lineNumbers: true // Show line numbers
+    });
+
+    // Synchronize scrolling between CodeMirror and line numbers
+    const lineNumbers = document.getElementById('lineNumbers');
+    editor.on('scroll', function () {
+      lineNumbers.scrollTop = editor.getScrollInfo().top;
+    });
+  </script>
+
 </body>
 </html>
