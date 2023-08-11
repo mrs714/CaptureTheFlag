@@ -3,11 +3,16 @@ import pygame
 from datetime import datetime
 import numpy as np
 from moviepy.editor import ImageSequenceClip
+import log
+import sys
 
 class Simulation:
 
     def __init__(self):
+        log.d("Initializing pygame...")
         pygame.init()
+        log.d("Pygame initialized")
+        
         self.__screen = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
         self.__clock = pygame.time.Clock()
         self.__current_tick = 0
