@@ -124,20 +124,27 @@ def create_user():
         return '', 400 # Bad request
     
     # It has been previously checked that the user does not exist already
-    createUser(username, password)
+    newUserId = createUser(username, password)
     session['loggedIn'] = True
     session['username'] = username
     return '', 200 # a-ok
     
+@app.route('/save_config', methods=['POST'])
+def save_config():
+    # Get the data from the request
+    data = request.get_json()
+    health = data['health']
+    shield = data['shield']
+    attack = data['attack']
+
+    # Check that the data is clean (300 points)
+    if (health + shield + attack != 300 or health < 50 or shield < 50 or attack < 50 or health > 150 or shield > 150 or attack > 150 or not isinstance(health, int) or not isinstance(shield, int) or not isinstance(attack, int)):
+        return '', 400 # Bad request
+    
+    saveConfig(health, shield, attack)
+
 # Logic and functions ---------------------------------------------------------
-# Change the theme of the website (dark/light)
-@app.route('/toggle_theme')
-def toggle_theme():
-    if session['theme'] == 'dark':
-        session['theme'] = 'light'
-    else:
-        session['theme'] = 'dark'
-    return '', 200 # a-ok
+
 
 # Prevents user from accessing pages without logging in
 def validate_login(route): 

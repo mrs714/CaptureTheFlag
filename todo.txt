@@ -9,6 +9,10 @@ PABLO:
     create_user(username, password):
         Crea un nou usuari amb les dades corresponents
 
+    saveConfig(health, shield, attack):
+        Guarda la configuració del jugador a la database
+        returns ??
+
     totes les funcions estan al app.py, al final de tot
 MIQUEL:
     implementar: 
