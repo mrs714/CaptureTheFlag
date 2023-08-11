@@ -26,6 +26,14 @@ def createUser(username, password):
     # Create a new user in the database
     db.insert_user(username, password)
 
+def saveConfig(health, shield, attack):
+    # Save the config in the database
+    return True
+
+def saveCode(code):
+    # Save the code in the database
+    return True
+
 # Pages --------------------------------------------------------------------
 @app.route('/')
 def login():
@@ -142,6 +150,7 @@ def save_config():
         return '', 400 # Bad request
     
     saveConfig(health, shield, attack)
+    return '', 200 # a-ok
 
 # Logic and functions ---------------------------------------------------------
 
