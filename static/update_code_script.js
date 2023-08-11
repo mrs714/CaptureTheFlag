@@ -7,9 +7,6 @@ async function update_code() {
 
   const textarea = document.getElementById('code_zone');
   const inputValue = textarea.value;
-
-  console.log("Code: ");
-  console.log(inputValue);
   
   const data = {
     code: inputValue
