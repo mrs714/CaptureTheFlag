@@ -30,7 +30,7 @@ def saveConfig(id, health, shield, attack):
     # Save the config in the database for a certain id
     return True
 
-def saveCode(id, code):
+def saveCode(code):
     # Save the code in the database
     return True
 
