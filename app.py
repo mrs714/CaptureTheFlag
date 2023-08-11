@@ -30,7 +30,7 @@ def saveConfig(id, health, shield, attack):
     # Save the config in the database for a certain id
     return True
 
-def saveCode(code):
+def saveCode(id, code):
     # Save the code in the database
     return True
 
@@ -168,7 +168,9 @@ def save_code():
     is_valid, error_details = check_syntax(code)
 
     if is_valid:
-        saveCode(code)
+        user = session['username']
+        id = IdFromUser(user)
+        saveCode(id, code)
         return '', 200 # a-ok
     else:
         return error_details, 400 # Bad request
