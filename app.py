@@ -1,4 +1,5 @@
 from flask import Flask, render_template, session, jsonify, request
+import database.db_access as db
 """
 Flask: Framework for the web application
 render_template: Renders a template from the templates folder (html file)
@@ -14,17 +15,16 @@ app.secret_key = 'key' # This serves as a secret key for the session, which is u
 def check_username(username):
     # Check if the username exists in the database
     # Returns True if it does, False if it doesn't
-    return False
+    return db.exists_user(username)
 
 def check_login(username, password):
     # Check if the login is correct
     # Returns True if it is, False if it isn't
-    return True
+    return db.check_user_credentials(username, password)
 
 def createUser(username, password):
     # Create a new user in the database
-    # Returns True if it was successful, False if it wasn't
-    return False
+    db.insert_user(username, password)
 
 # Pages --------------------------------------------------------------------
 @app.route('/')
