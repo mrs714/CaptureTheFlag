@@ -179,7 +179,7 @@ def save_code():
 # Syntax checking for users code
 def check_syntax(code):
     try:
-        compile(code, '<string>', 'exec')
+        compile(code, '<string>', 'exec') # Code to be compiled, filename name, mode
         return True, None  # Syntax is valid
     except SyntaxError as e:
         return False, e  # Syntax error details
