@@ -1,3 +1,7 @@
+function showMessage(message) { // Success/error loging
+  document.getElementById('message_area').textContent = message; 
+}
+
 // UPDATE CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 async function update_code() {
 
@@ -21,12 +25,11 @@ async function update_code() {
 
   if (response.ok) {
     // Successfully saved configuration
+    showMessage('Code saved successfully!');
     return true;
 
   } else {
-    if (response.status == 400) {
-      showMessage('Something went wrong. Please try again later.');
-    }
+      showMessage("Your code isn't working. Here's the compiler's output: " + response.body + ". Please make sure to compile your code before saving it.");
     return false;
   }
 }

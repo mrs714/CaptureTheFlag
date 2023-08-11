@@ -25,3 +25,6 @@ MIQUEL:
             informació sobre cada cosa?
         player info:
             mostrar les dades del jugador ()
+
+    fer que es llegeixi el return del server quan es fa update_code()
+    comprovar que no siguin més de x caràcters

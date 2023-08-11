@@ -164,15 +164,23 @@ def save_code():
     # Get the data from the request
     code = request.get_json()['code']
 
-    # Check that the data is clean ????? pablo?
-    if (False):
-        return '', 400 # Bad request
-    
-    saveCode(code)
-    return '', 200 # a-ok
+    # Check that the code is valid
+    is_valid, error_details = check_syntax(code)
+
+    if is_valid:
+        saveCode(code)
+        return '', 200 # a-ok
+    else:
+        return error_details, 400 # Bad request
 
 # Logic and functions ---------------------------------------------------------
-
+# Syntax checking for users code
+def check_syntax(code):
+    try:
+        compile(code, '<string>', 'exec')
+        return True, None  # Syntax is valid
+    except SyntaxError as e:
+        return False, e  # Syntax error details
 
 # Prevents user from accessing pages without logging in
 def validate_login(route): 
