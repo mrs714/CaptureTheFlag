@@ -52,19 +52,8 @@
 
   </div>
 
-  <script>
-    const sliders = document.querySelectorAll('.form-control-range');
-    const totalPointsDisplay = document.getElementById('totalPoints');
-    let totalPoints = 300;
-
-    sliders.forEach(slider => {
-      slider.addEventListener('input', () => {
-        totalPoints = 300 - sliders.reduce((total, slider) => total + parseInt(slider.value), 0);
-        totalPointsDisplay.textContent = `Total Points: ${totalPoints}`;
-      });
-    });
-  </script>
   
   <script src="./static/shared_script.js"></script>
+  <script src="./static/bot_config_script.js"></script>
 </body>
 </html>
