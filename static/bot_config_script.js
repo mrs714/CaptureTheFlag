@@ -136,18 +136,12 @@ async function save_configuration() {
   });
 
   if (response.ok) {
-    // Successfully logged in
+    // Successfully saved configuration
     return true;
 
   } else {
     if (response.status == 400) {
-      showMessage('Incorrect username or password. Please try again.');
-    }
-    else if (response.status == 401) {
-      showMessage("The server found something that didn't check out in the user or password. Please try again.");
-    }
-    else if (response.status == 404) {
-      showMessage('This username does not exist. Please try again.');
+      showMessage('Incorrect ammount of points. Please try again.');
     }
     return false;
   }
