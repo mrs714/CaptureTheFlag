@@ -139,14 +139,9 @@ def save_config():
 
     # Check that the data is clean (300 points)
     if (health + shield + attack != 300 or health < 50 or shield < 50 or attack < 50 or health > 150 or shield > 150 or attack > 150 or not isinstance(health, int) or not isinstance(shield, int) or not isinstance(attack, int)):
-        return '', 400
+        return '', 400 # Bad request
     
     saveConfig(health, shield, attack)
-
-    
-
-    
-
 
 # Logic and functions ---------------------------------------------------------
 

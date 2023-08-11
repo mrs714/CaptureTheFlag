@@ -120,7 +120,7 @@ function help_button() {
 }
 
 // UPDATE CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-async function save_config() {
+async function save_configuration() {
   const data = {
     health: parseInt(health_slider.value),
     shield: parseInt(shield_slider.value),
