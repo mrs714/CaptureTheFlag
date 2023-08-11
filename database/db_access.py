@@ -1,4 +1,4 @@
-from db_consts import *
+from database.db_consts import *
 import sqlite3
 
 class _DBManager:
