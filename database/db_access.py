@@ -34,7 +34,7 @@ _db = _DBManager()
 def insert_user(username, password):
     with _db as db:
         c = db.get_cursor()
-        c.execute(f"INSERT INTO {DATABASE_USER_TABLE} VALUES (null, ?, ?, null, null, null, null, 1)", (username, password))
+        c.execute(f"INSERT INTO {DATABASE_USER_TABLE} VALUES (null, ?, ?, null, null, null, null, 1, null)", (username, password))
         return c.lastrowid
 
 def exists_user(username):
