@@ -1,16 +1,17 @@
-code = document.getElementById('code').value;
-// obtain text
-code = code.value;
-
 // UPDATE CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 async function update_code() {
+
+  const textarea = document.getElementById('code_zone');
+  const inputValue = textarea.value;
+
   console.log("Code: ");
-  console.log(code);
+  console.log(inputValue);
+  
   const data = {
-    code: code
+    code: inputValue
   };
 
-  const response = await fetch('/save_config', {
+  const response = await fetch('/save_code', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -24,7 +25,7 @@ async function update_code() {
 
   } else {
     if (response.status == 400) {
-      showMessage('Incorrect ammount of points. Please try again.');
+      showMessage('Something went wrong. Please try again later.');
     }
     return false;
   }

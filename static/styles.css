@@ -1,31 +1,11 @@
 /* Define common styles for all pages */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  background-color: #2d2d2d; /* Dark background color */
+  color: #ffffff; /* Light text color */
   margin: 0;
   padding: 0;
   transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-/* Dark and light mode colors */
-.dark-mode-body {
-  background-color: #333;
-  color: #fff;
-}
-
-.light-mode-body {
-  background-color: #f2f2f2;
-  color: #000;
-}
-
-.dark-mode-container {
-  background-color: #414040;
-  color: #c9c9c9;
-}
-
-.light-mode-container {
-  background-color: #fff;
-  color: #000;
 }
 
 .container {
@@ -35,7 +15,7 @@ body {
   padding: 4%;
   padding-top: 1%;
   padding-bottom: 2%;
-  background-color: #fff;
+  background-color: #383838; /* Darker container background color */
   border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -47,7 +27,7 @@ body {
   padding: 4%;
   padding-top: 1%;
   padding-bottom: 2%;
-  background-color: #fff;
+  background-color: #383838; /* Darker container background color */
   border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -57,8 +37,10 @@ button {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #5d5d5d; /* Darker border color */
   border-radius: 4px;
+  background-color: #5d5d5d; /* Darker button background color */
+  color: #ffffff; /* Light text color */
 }
 
 /* Center titles */
@@ -69,6 +51,7 @@ h2 {
   text-align: center;
 }
 
+/* CODE INPUT -----------------------------------------------------------------------------*/
 /* Additional styles for the area where the code is inputed */
 textarea {
   display: block;
@@ -76,7 +59,41 @@ textarea {
   height: 200px;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #5d5d5d; /* Darker border color */
   border-radius: 4px;
   resize: vertical; /* Allow vertical resizing */
+  background-color: #2d2d2d; /* Dark background color */
+  color: #ffffff; /* Light text color */
 }
+
+/* Dark theme for form-control */
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #ffffff; /* Light text color */
+  background-color: #2d2d2d; /* Dark background color */
+  background-clip: padding-box;
+  border: 1px solid #5d5d5d; /* Darker border color */
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Hover and focus effects */
+.form-control:focus {
+  color: #ffffff; /* Light text color */
+  background-color: #2d2d2d; /* Dark background color */
+  border-color: #5d5d5d; /* Darker border color */
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(93, 93, 93, 0.25); /* Darker shadow color on focus */
+}
+
+/* Disabled state */
+.form-control:disabled {
+  background-color: #383838; /* Darker container background color */
+  opacity: 0.65;
+}
+
