@@ -7,53 +7,74 @@
 </head>
 <body>
   <div class="container">
-    <h1>Robot Configuration</h1>
+      <h1>Robot Configuration</h1>
 
-    <form>
-      <div class="form-group">
-        <label id="health_slider_info">Health:</label>
-        <input type="range" class="form-control-range" id="health_slider" min="50" max="150" value="100" step="1">
-      </div>
-      
-      <div class="form-group">
-        <label id="shield_slider_info">Shield:</label>
-        <input type="range" class="form-control-range" id="shield_slider" min="50" max="150" value="100" step="1">
-      </div>
-      
-      <div class="form-group">
-        <label id="attack_slider_info">Attack:</label>
-        <input type="range" class="form-control-range" id="attack_slider" min="50" max="150" value="100" step="1">
-      </div>
-    </form>
+      <form>
+        <div class="form-group">
+          <label id="health_slider_info">Health:</label>
+          <input type="range" class="form-control-range" id="health_slider" min="50" max="150" value="100" step="1">
+        </div>
+        
+        <div class="form-group">
+          <label id="shield_slider_info">Shield:</label>
+          <input type="range" class="form-control-range" id="shield_slider" min="50" max="150" value="100" step="1">
+        </div>
+        
+        <div class="form-group">
+          <label id="attack_slider_info">Attack:</label>
+          <input type="range" class="form-control-range" id="attack_slider" min="50" max="150" value="100" step="1">
+        </div>
+      </form>
 
-    <p id="totalPoints">Total Points: 300</p>
-  
-  <div>
-    <p>
-      <b>How does this work?</b><br>
-      You have 300 points to distribute between your robot's health, shield, and attack.
-      <br><br>
-      <b>Health:</b><br>
-      Health is how much damage your robot can take before it is destroyed, and can be replenished with a health pack.
-      <br><br>
-      <b>Shield:</b><br>
-      The shield on the other hand, absorbes damage before it can affect your robot's health, and it slowly regenerates as time passes, as long as it is not taking damage.
-      However, it can be ignored by some attacks, and once it's depleted, it doesn't come back.
-      <br><br>
-      <b>Attack:</b><br>
-      There are two types of attack: melee and bullets. The attack stat affects only the melee attack, which cannot be blocked by a shield.
-      The other attack your bot has, bullets, always does the same, lower damage. They can be fired at a distance, but they can also be blocked by a shield.
-      <br><br>
-      <b>So... how do i win?</b><br>
-      There are many possible strategies, you can have a balanced robot, or center on one stat and focus your coding around that.
-      Use the combination that better suits your playstyle, but don't neglect any stat, or you might find yourself in a tight spot...
-    </p>
-  </div>
+      <p id="totalPoints">Total Points: 300</p>
+    
+      <div class="mb-3">
+        <button id="help_button" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#explanationCollapse" aria-expanded="false" aria-controls="explanationCollapse" onclick="help_button()">
+          Need some help?
+        </button>
+      </div>
+
+    <div class="collapse" id="explanationCollapse">
+      <p>
+        <b>How does this work?</b><br>
+        You have 300 points to distribute between your robot's health, shield, and attack.
+        <br><br>
+        <b>Health:</b><br>
+        Health is how much damage your robot can take before it is destroyed, and can be replenished with a health pack.
+        <br><br>
+        <b>Shield:</b><br>
+        The shield on the other hand, absorbes damage before it can affect your robot's health, and it slowly regenerates as time passes, as long as it is not taking damage.
+        However, it can be ignored by some attacks, and once it's depleted, it doesn't come back.
+        <br><br>
+        <b>Attack:</b><br>
+        There are two types of attack: melee and bullets. The attack stat affects only the melee attack, which cannot be blocked by a shield.
+        The other attack your bot has, bullets, always does the same, lower damage. They can be fired at a distance, but they can also be blocked by a shield.
+        <br><br>
+        <b>So... how do i win?</b><br>
+        There are many possible strategies, you can have a balanced robot, or center on one stat and focus your coding around that.
+        Use the combination that better suits your playstyle, but don't neglect any stat, or you might find yourself in a tight spot...
+      </p>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-secondary btn-block" onclick="goBack()">Go Back</button>
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-primary btn-block" onclick="save_configuration()">Save Configuration</button>
+      </div>
+    </div>
 
   </div>
 
   
   <script src="./static/shared_script.js"></script>
   <script src="./static/bot_config_script.js"></script>
+
+  <!-- Include jQuery and Bootstrap JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

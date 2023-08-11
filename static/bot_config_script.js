@@ -1,3 +1,4 @@
+// SLIDERS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 health_slider = document.getElementById("health_slider");
 shield_slider = document.getElementById("shield_slider");
 attack_slider = document.getElementById("attack_slider");
@@ -105,4 +106,49 @@ function update_info() {
   document.getElementById("health_slider_info").innerHTML = "Health: " + health_slider.value;
   document.getElementById("shield_slider_info").innerHTML = "Shield: " + shield_slider.value;
   document.getElementById("attack_slider_info").innerHTML = "Attack: " + attack_slider.value;
+}
+
+// BUTTONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function help_button() {
+  button = document.getElementById("help_button");
+  if (button.innerHTML !== "Got it.") {
+    button.innerHTML = "Got it.";
+  }
+  else {
+    button.innerHTML = "Need some help?";
+  }
+}
+
+// UPDATE CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+async function save_config() {
+  const data = {
+    health: parseInt(health_slider.value),
+    shield: parseInt(shield_slider.value),
+    attack: parseInt(attack_slider.value)
+  };
+
+  const response = await fetch('/save_config', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (response.ok) {
+    // Successfully logged in
+    return true;
+
+  } else {
+    if (response.status == 400) {
+      showMessage('Incorrect username or password. Please try again.');
+    }
+    else if (response.status == 401) {
+      showMessage("The server found something that didn't check out in the user or password. Please try again.");
+    }
+    else if (response.status == 404) {
+      showMessage('This username does not exist. Please try again.');
+    }
+    return false;
+  }
 }
