@@ -4,7 +4,6 @@ from datetime import datetime
 import numpy as np
 from moviepy.editor import ImageSequenceClip
 import log
-import sys
 
 class Simulation:
 
@@ -13,14 +12,29 @@ class Simulation:
         pygame.init()
         log.d("Pygame initialized")
         
+        log.d("Creating the screen...")
         self.__screen = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
+        log.d("Screen created")
+
+        log.d("Initializing simulation object variables...")
         self.__clock = pygame.time.Clock()
         self.__current_tick = 0
         self.__frames = []
+        self.__id_counter = 0
+        self.__entities = {
+            "bots": {},
+            "bullets": {}
+        }
+        log.d("Simulation object variables initialized")
+    
+    def get_id(self):
+        self.__id_counter += 1
+        return self.__id_counter
     
     def run(self):
-        running = True
 
+
+        running = True
         while self.__current_tick < DURATION and running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -49,8 +63,13 @@ class Simulation:
         self.__frames.append(frame)
     
     def save_replay(self):
+
+        log.d("Saving the mp4 file...")
         video_clip = ImageSequenceClip(self.__frames, fps=FPS)
         video_clip.write_videofile(SIM_MP4_NAME, fps=FPS)
+        log.d("Mp4 file saved")
 
+        log.d("Saving the simulation info file...")
         with open(SIM_INFO_NAME, "w") as f:
             f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+        log.d("Simulation info file saved")

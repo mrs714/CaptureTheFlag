@@ -41,10 +41,13 @@ class Log:
     def write(self, level, msg):
         if _max_level >= level >= self.__level:
             self._define_dir()
-            with open(self.__logfile_path, "a") as f:
-                type_str = "[DEBUG]" if level == DEBUG else "[INFO]" if level == INFO else "[ERROR]"
-                time_str = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
-                f.write(f"{type_str}{time_str}: {msg}\n")
+            try:
+                with open(self.__logfile_path, "a") as f:
+                    type_str = "[DEBUG]" if level == DEBUG else "[INFO]" if level == INFO else "[ERROR]"
+                    time_str = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
+                    f.write(f"{type_str}{time_str}: {msg}\n")
+            except:
+                print("Error writing to log file")
 
 def _init_log():
     global _log_object

@@ -27,28 +27,11 @@
     <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
   </div>
 
-  <script src="./static/shared_script.js"></script>
-  <script src="./static/update_code_script.js"></script>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
-
-  <script>
-    // Initialize CodeMirror instance, can't be used in the script file because of imports ES6 syntax 
-    const codeTextarea = document.getElementById('code_zone');
-    
-    // Initialize CodeMirror with the dark theme (dracula)
-    const editor = CodeMirror.fromTextArea(codeTextarea, {
-      theme: 'dracula', // Use the 'dracula' theme
-      mode: 'python',   // Set the mode to Python
-      lineNumbers: true // Show line numbers
-    });
-
-    // Synchronize scrolling between CodeMirror and line numbers
-    const lineNumbers = document.getElementById('lineNumbers');
-    editor.on('scroll', function () {
-      lineNumbers.scrollTop = editor.getScrollInfo().top;
-    });
-  </script>
-
+  <script src="./static/shared_script.js"></script>
+  <script src="./static/update_code_script.js"></script>
+  
 </body>
 </html>

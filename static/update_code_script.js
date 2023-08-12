@@ -5,8 +5,7 @@ function showMessage(message) { // Success/error loging
 // UPDATE CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 async function update_code() {
 
-  const textarea = document.getElementById('code_zone');
-  const inputValue = textarea.value;
+  const inputValue = editor.getValue()
   
   const data = {
     code: inputValue
@@ -32,3 +31,18 @@ async function update_code() {
 }
 
 // CODE MIRROR --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Initialize CodeMirror instance, can't be used in the script file because of imports ES6 syntax 
+const codeTextarea = document.getElementById('code_zone');
+    
+// Initialize CodeMirror with the dark theme (dracula)
+const editor = CodeMirror.fromTextArea(codeTextarea, {
+  theme: 'dracula', // Use the 'dracula' theme
+  mode: 'python',   // Set the mode to Python
+  lineNumbers: true // Show line numbers
+});
+
+// Synchronize scrolling between CodeMirror and line numbers
+const lineNumbers = document.getElementById('lineNumbers');
+editor.on('scroll', function () {
+  lineNumbers.scrollTop = editor.getScrollInfo().top;
+});

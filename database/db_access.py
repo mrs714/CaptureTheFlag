@@ -34,7 +34,7 @@ _db = _DBManager()
 def insert_user(username, password):
     with _db as db:
         c = db.get_cursor()
-        c.execute(f"INSERT INTO {DATABASE_USER_TABLE} VALUES (null, ?, ?, null, null, null, null, 1, null)", (username, password))
+        c.execute(f"INSERT INTO {DATABASE_USER_TABLE} VALUES (null, ?, ?, null, null, null, null, 0, null)", (username, password))
         return c.lastrowid
 
 def exists_user(username):
@@ -58,7 +58,7 @@ def get_user_id(username):
 def save_code(id, code):
     with _db as db:
         c = db.get_cursor()
-        c.execute(f"UPDATE {DATABASE_USER_TABLE} SET code = ? WHERE id = ?", (code, id))
+        c.execute(f"UPDATE {DATABASE_USER_TABLE} SET code = ?, is_executable = 1 WHERE id = ?", (code, id))
 
 def save_config(id, config):
     with _db as db:

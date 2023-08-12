@@ -7,21 +7,21 @@ if __name__ == '__main__':
     log.i("Starting the simulation engine...")
 
     while True:
-        log.d("Creating the simulation object...")
+        log.i("Creating the simulation object...")
         # Create an empty simulation
         sim = Simulation()
-        log.d("Simulation created")
+        log.i("Simulation created")
 
-        log.d("Running the simulation...")
+        log.i("Running the simulation...")
         # Run the simulation
         sim.run()
-        log.d("The simulation has run successfully")
+        log.i("The simulation has run successfully")
 
-        log.d("Saving the animation...")
+        log.i("Saving the animation...")
         # Save the animation
         sim.save_replay()
-        log.d("Simulation saved")
+        log.i("Simulation saved")
 
-        log.d("Sleeping...")
+        log.i("Sleeping...")
         # Wait x minutes before running the simulation again
         sleep(INTER_SIMULATION_TIME)
