@@ -1,2 +1,5 @@
 __pycache__/
-database/database.db
+database.db
+simulation.mp4
+simulation_info.txt
+logs/*
