@@ -48,6 +48,10 @@ def downloadCode(id):
     # Get the code of a user
     return db.get_code(id)
 
+def downloadInfo(id):
+    # Get the info of a user
+    return db.get_info(id)
+
 # Pages --------------------------------------------------------------------
 @app.route('/')
 def login():

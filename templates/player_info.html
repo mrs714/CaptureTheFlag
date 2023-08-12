@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="./static/styles.css"> <!-- Include shared.css -->
 </head>
 <body>
-  <div class="container mt-4">
+  <div class="container mt-4" id="info_container">
     <h1>Player Info</h1>
     
     <!-- Display player information -->
@@ -23,6 +23,8 @@
         </ul>
       </div>
     </div>
+
+    <span id="message_span" style="color: red;"><p id="message"></p></span> <!-- Display login error/success message here -->
     
     <!-- Button to show error details -->
     <div class="row mt-4">
@@ -47,7 +49,7 @@
   
   <script>
     function expandForm() {
-      const errorDetails = document.getElementById('errorDetails');
+      const errorDetails = document.getElementById('info_container');
       errorDetails.classList.remove('collapse');
       errorDetails.classList.add('expanded');
     }
@@ -60,8 +62,8 @@
     }
   </style>
 
+  <script src="./static/player_info_script.js"></script> <!-- Include player_info.js -->
   <script src="./static/shared_script.js"></script>
-  <script src="./static/bot_config_script.js"></script>
 
   <!-- Include jQuery and Bootstrap JavaScript -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
