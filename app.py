@@ -173,9 +173,9 @@ def save_code():
         user = session['username']
         id = IdFromUser(user)
         saveCode(id, code)
-        return '', 200 # a-ok
+        return jsonify({"ok":True}), 200 # a-ok
     else:
-        return error_details, 400 # Bad request
+        return jsonify({"ok":False, "error":str(error_details)}), 400 # Bad request
 
 # Logic and functions ---------------------------------------------------------
 # Syntax checking for users code
