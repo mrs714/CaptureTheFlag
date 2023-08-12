@@ -7,7 +7,9 @@ from random import randint
 import log
 import database.db_access as db
 from simulation.bot import Bot
+from simulation.bullet import Bullet
 import json
+from RestrictedPython import compile_restricted, safe_builtins
 
 class Simulation:
 
@@ -42,7 +44,15 @@ class Simulation:
         for bot in list_of_bots:
             config = json.loads(bot["config"])
             sim_id = self.get_id()
-            self.__entities["bots"][sim_id] = Bot(sim_id, bot["id"], bot["username"], randint(100, 900), randint(100, 900), bot["code"], config["health"], config["shield"], config["attack"])
+            self.__entities["bots"][sim_id] = Bot(sim_id, 
+                                                  bot["id"], 
+                                                  bot["username"], 
+                                                  randint(100, 900), 
+                                                  randint(100, 900), 
+                                                  bot["code"], 
+                                                  config["health"], 
+                                                  config["shield"], 
+                                                  config["attack"])
         log.d("Simulation prepared")
 
         log.d("Running the simulation loop...")
@@ -64,15 +74,46 @@ class Simulation:
         pygame.quit()
         log.d("Simulation loop finished")
     
+    def __generate_actions(self, bot):
+        def move(dx, dy):
+            bot.move(dx, dy)
+        
+        def shot(dx, dy):
+            sim_id = self.get_id()
+            self.__entities["bullets"][sim_id] = Bullet(sim_id, 
+                                                        bot.x(), 
+                                                        bot.y(), 
+                                                        dx, 
+                                                        dy, 
+                                                        BULLET_DAMAGE)
+
+        return move, shot
+
     def __perform_actions(self):
-        pass
+        for bot in self.__entities["bots"].values():
+            move, shot = self.__generate_actions(bot) #for the context enviroment
+            context = {
+                "__builtins__": safe_builtins,
+                "move": move,
+                "shot": shot
+            }
+            try:
+                bot_code = compile_restricted(bot.code(), '<string>', 'exec')
+                exec(bot_code, context, {}) #execute the bot code
+            except Exception as e:
+                log.e(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
+                self.__entities["bots"].pop(bot.get_sim_id())
+                continue
+        
+        for bullet in self.__entities["bullets"].values():
+            bullet.move()
     
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
         for bot in self.__entities["bots"].values():
-            pygame.draw.circle(self.__screen, BOT_COLOR, (bot.x(), bot.y()), BOT_RADIUS)
+            pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
         for bullet in self.__entities["bullets"].values():
-            pygame.draw.circle(self.__screen, BULLET_COLOR, (bullet.x(), bullet.y()), BULLET_RADIUS)
+            pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
     
     def __save_frame(self):
         frame = pygame.surfarray.array3d(self.__screen)
