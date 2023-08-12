@@ -1,3 +1,6 @@
+// Load the data from the server
+download_config();
+
 // SLIDERS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 health_slider = document.getElementById("health_slider");
 shield_slider = document.getElementById("shield_slider");
@@ -101,11 +104,23 @@ function fix_sliders() {
   }
 }
 
+// FUNCTIONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function showMessage(message) { // Success/error loging
+  document.getElementById('message_area').innerHTML = message; 
+}
+
 function update_info() {
   fix_sliders();
   document.getElementById("health_slider_info").innerHTML = "Health: " + health_slider.value;
   document.getElementById("shield_slider_info").innerHTML = "Shield: " + shield_slider.value;
   document.getElementById("attack_slider_info").innerHTML = "Attack: " + attack_slider.value;
+}
+
+function set_sliders(health, shield, attack) {
+  health_slider.value = health;
+  shield_slider.value = shield;
+  attack_slider.value = attack;
+  update_info();
 }
 
 // BUTTONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -119,7 +134,7 @@ function help_button() {
   }
 }
 
-// UPDATE CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// UPLOAD CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 async function upload_config() {
   const data = {
     health: parseInt(health_slider.value),
@@ -145,4 +160,29 @@ async function upload_config() {
     }
     return false;
   }
+}
+
+// DOWNLOAD CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+async function download_config() {
+
+  const response = await fetch('/download_config').then(response => 
+      {
+        if (response.ok) {
+          data = response.json();
+
+          // Load data
+          health = data.health;
+          shield = data.shield;
+          attack = data.attack;
+
+          // Load previous code
+          set_sliders(health, shield, attack);
+          return true;
+      
+        } else {
+            showMessage("Your configuration couldn't be loaded. Please input it again. ");
+          return false;
+        }
+      }
+    );
 }
