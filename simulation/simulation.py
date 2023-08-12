@@ -7,6 +7,7 @@ from random import randint
 import log
 import database.db_access as db
 from simulation.bot import Bot
+import json
 
 class Simulation:
 
@@ -39,8 +40,9 @@ class Simulation:
         log.d("Preparing to run the simulation...")
         list_of_bots = db.get_bots_to_execute()
         for bot in list_of_bots:
+            config = json.loads(bot["config"])
             sim_id = self.get_id()
-            self.__entities["bots"][sim_id] = Bot(sim_id, bot["id"], bot["username"], randint(100, 900), randint(100, 900), bot["code"])
+            self.__entities["bots"][sim_id] = Bot(sim_id, bot["id"], bot["username"], randint(100, 900), randint(100, 900), bot["code"], config["health"], config["shield"], config["attack"])
         log.d("Simulation prepared")
 
         log.d("Running the simulation loop...")
@@ -68,9 +70,9 @@ class Simulation:
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
         for bot in self.__entities["bots"].values():
-            pygame.draw.circle(self.__screen, BOT_COLOR, (bot.x, bot.y), BOT_RADIUS)
+            pygame.draw.circle(self.__screen, BOT_COLOR, (bot.x(), bot.y()), BOT_RADIUS)
         for bullet in self.__entities["bullets"].values():
-            pygame.draw.circle(self.__screen, BULLET_COLOR, (bullet.x, bullet.y), BULLET_RADIUS)
+            pygame.draw.circle(self.__screen, BULLET_COLOR, (bullet.x(), bullet.y()), BULLET_RADIUS)
     
     def __save_frame(self):
         frame = pygame.surfarray.array3d(self.__screen)

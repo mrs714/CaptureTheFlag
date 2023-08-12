@@ -1,5 +1,6 @@
 from database.db_consts import *
 import sqlite3
+import json
 
 class _DBManager:
     def __init__(self):
@@ -33,9 +34,11 @@ class _DBManager:
 _db = _DBManager()
 
 def insert_user(username, password):
+    config = {"health": 100, "shield": 100, "attack": 100}
+    config_string = json.dumps(config)
     with _db as db:
         c = db.get_cursor()
-        c.execute(f"INSERT INTO {DATABASE_USER_TABLE} VALUES (null, ?, ?, null, null, null, null, 0, null)", (username, password))
+        c.execute(f"INSERT INTO {DATABASE_USER_TABLE} VALUES (null, ?, ?, null, null, null, null, 0, ?)", (username, password, config_string))
         return c.lastrowid
 
 def exists_user(username):
