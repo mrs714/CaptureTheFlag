@@ -179,7 +179,7 @@ def download_config():
         return jsonify({"health": "100", "shield": "100", "attack": "100"}), 201
     id = IdFromUser(session['username'])
     data = downloadConfig(id)
-    print("Bot configuration succesfully loaded for user " + session['username'] + ".")
+    print("Bot configuration succesfully loaded for user " + session['username'] + ": " + data + ".")
     return data, 200
 
 @app.route('/upload_code', methods=['POST'])
