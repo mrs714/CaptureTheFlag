@@ -61,7 +61,7 @@ async function download_code() {
           text = response.json().code;
 
           // Load previous code
-          showMessage('Welcome back!');
+          showMessage('Code time!');
           editor.setValue(text);
           return true;
       
@@ -72,5 +72,3 @@ async function download_code() {
       }
     );
 }
-
-

@@ -44,6 +44,10 @@ def downloadCode(id):
     # Get the code of a user
     return db.get_code(id)
 
+def downloadConfig(id):
+    # Get the config of a user
+    return db.get_config(id)
+
 # Pages --------------------------------------------------------------------
 @app.route('/')
 def login():
@@ -166,6 +170,14 @@ def upload_config():
 
     uploadConfig(id, health, shield, attack)
     return '', 200 # a-ok
+
+@app.route('/download_config', methods=['GET'])
+def download_config():
+    if session['newUser']:
+        return jsonify({"health": "100", "shield": "100", "attack": "100"}), 200
+    id = IdFromUser(session['username'])
+    data = downloadConfig(id)
+    return data, 200
 
 @app.route('/upload_code', methods=['POST'])
 def upload_code():
