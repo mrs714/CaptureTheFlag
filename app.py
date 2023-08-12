@@ -209,6 +209,12 @@ def download_code():
     print("\nCode succesfully loaded for user " + session['username'] + ".\n")
     return jsonify({"code": code}), 200
 
+@app.route('/logout')
+def logout():
+    print("\nUser " + session['user'] + " has logged off.")
+    session.clear()
+    return login()
+
 # Logic and functions ---------------------------------------------------------
 # Syntax checking for users code
 def check_syntax(code):
