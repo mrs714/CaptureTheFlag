@@ -85,7 +85,6 @@ function total_value() {
   sliders.forEach(slider => {
     total_ammount += parseInt(slider.value);
   });
-  console.log(total_ammount);
   return total_ammount;
 }
 
@@ -152,6 +151,7 @@ async function upload_config() {
 
   if (response.ok) {
     // Successfully saved configuration
+    showMessage('Configuration saved successfully.');
     return true;
 
   } else {
