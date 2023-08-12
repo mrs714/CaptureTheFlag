@@ -170,7 +170,7 @@ def upload_config():
     id = IdFromUser(session['username'])
 
     uploadConfig(id, health, shield, attack)
-    print("User " + session['username'] + " has updated their bot configuration.")
+    print("\nUser " + session['username'] + " has updated their bot configuration.\n")
     return '', 200 # a-ok
 
 @app.route('/download_config', methods=['GET'])
@@ -179,7 +179,7 @@ def download_config():
         return jsonify({"health": "100", "shield": "100", "attack": "100"}), 201
     id = IdFromUser(session['username'])
     data = downloadConfig(id)
-    print("Bot configuration succesfully loaded for user " + session['username'] + ": " + data + ".")
+    print("\nBot configuration succesfully loaded for user " + session['username'] + ": " + data + ".\n")
     return data, 200
 
 @app.route('/upload_code', methods=['POST'])
@@ -195,7 +195,7 @@ def upload_code():
         user = session['username']
         id = IdFromUser(user)
         uploadCode(id, code)
-        print("User " + session['username'] + " has updated their code.")
+        print("\nUser " + session['username'] + " has updated their code.\n")
         return jsonify({"ok":True}), 200 # a-ok
     else:
         return jsonify({"ok":False, "error":str(error_details)}), 400 # Bad request
@@ -206,7 +206,7 @@ def download_code():
         return jsonify({"code": ""}), 200
     id = IdFromUser(session['username'])
     code = downloadCode(id)
-    print("Code succesfully loaded for user " + session['username'] + ".")
+    print("\nCode succesfully loaded for user " + session['username'] + ".\n")
     return jsonify({"code": code}), 200
 
 # Logic and functions ---------------------------------------------------------
