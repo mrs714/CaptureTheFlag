@@ -27,18 +27,22 @@ def createUser(username, password):
     # Create a new user in the database
     db.insert_user(username, password)
 
-def saveConfig(id, health, shield, attack):
+def uploadConfig(id, health, shield, attack):
     # Save the config in the database for a certain id
     config = {"health": health, "shield": shield, "attack": attack}
     db.save_config(id, json.dumps(config))
 
-def saveCode(id, code):
+def uploadCode(id, code):
     # Save the code in the database
     db.save_code(id, code)
 
 def IdFromUser(username):
     # Get the id of a user
     return db.get_user_id(username)
+
+def downloadCode(id):
+    # Get the code of a user
+    return db.get_code(id)
 
 # Pages --------------------------------------------------------------------
 @app.route('/')
@@ -106,6 +110,7 @@ def login_function():
 
         # LOGIN
         if loginOk:
+            session['newUser'] = False
             session['loggedIn'] = True
             session['username'] = username
             print('User ' + username + ' logged in')
@@ -140,12 +145,13 @@ def create_user():
     
     # It has been previously checked that the user does not exist already
     newUserId = createUser(username, password)
+    session['newUser'] = True
     session['loggedIn'] = True
     session['username'] = username
     return '', 200 # a-ok
     
-@app.route('/save_config', methods=['POST'])
-def save_config():
+@app.route('/upload_config', methods=['POST'])
+def upload_config():
     # Get the data from the request
     data = request.get_json()
     health = data['health']
@@ -158,11 +164,11 @@ def save_config():
     
     id = IdFromUser(session['username'])
 
-    saveConfig(id, health, shield, attack)
+    uploadConfig(id, health, shield, attack)
     return '', 200 # a-ok
 
-@app.route('/save_code', methods=['POST'])
-def save_code():
+@app.route('/upload_code', methods=['POST'])
+def upload_code():
 
     # Get the data from the request
     code = request.get_json()['code']
@@ -173,10 +179,18 @@ def save_code():
     if is_valid:
         user = session['username']
         id = IdFromUser(user)
-        saveCode(id, code)
+        uploadCode(id, code)
         return jsonify({"ok":True}), 200 # a-ok
     else:
         return jsonify({"ok":False, "error":str(error_details)}), 400 # Bad request
+    
+@app.route('/download_code', methods=['GET'])
+def download_code():
+    if session['newUser']:
+        return jsonify({"code": ""}), 200
+    id = IdFromUser(session['username'])
+    code = downloadCode(id)
+    return jsonify({"code": code}), 200
 
 # Logic and functions ---------------------------------------------------------
 # Syntax checking for users code

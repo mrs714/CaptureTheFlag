@@ -120,14 +120,14 @@ function help_button() {
 }
 
 // UPDATE CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-async function save_configuration() {
+async function upload_config() {
   const data = {
     health: parseInt(health_slider.value),
     shield: parseInt(shield_slider.value),
     attack: parseInt(attack_slider.value)
   };
 
-  const response = await fetch('/save_config', {
+  const response = await fetch('/upload_config', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
