@@ -38,6 +38,15 @@ function showMessage(message, error) {
   }
 }
 
+function add_event_listener(element, funct){
+  element.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      // Call function given when the event happens
+      funct();
+    }
+  });
+}
+
 // Call a certain python function (Functions: none for the moment)
 async function triggerPythonFunction(functionName) { 
   try {

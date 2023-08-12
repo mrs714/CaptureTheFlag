@@ -1,3 +1,10 @@
+// Prepare events
+add_event_listener(document.getElementById("username"), loginButton)
+add_event_listener(document.getElementById("password"), loginButton)
+
+add_event_listener(document.getElementById("newUsername"), createUserButton)
+add_event_listener(document.getElementById("newPassword"), createUserButton)
+
 flag = 0;
 // Toggles the visibility of the Create User form and Login form
 function toggleCreateUser() {
