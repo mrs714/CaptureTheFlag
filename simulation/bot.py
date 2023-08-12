@@ -13,6 +13,14 @@ class Bot(Entity):
         self.__db_id = db_id
         self.__name = name
         self.__exec_events = []
+        self.__last_shot = 0 #Last time the bot shot a bullet in ticks
+
+    def shoot(self, actual_tick):
+        if actual_tick - self.__last_shot >= BOT_SHOOT_COOLDOWN:
+            self.__last_shot = actual_tick
+            return True
+        return False
+        
 
     def get_db_id(self):
         return self.__db_id
@@ -34,8 +42,8 @@ class Bot(Entity):
         dy *= BOT_SPEED
 
         #Move the bot
-        self.__x += dx
-        self.__y += dy
+        self.__x__ += dx
+        self.__y__ += dy
     
     def code(self):
         return self.__code

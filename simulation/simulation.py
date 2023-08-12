@@ -78,33 +78,39 @@ class Simulation:
         def move(dx, dy):
             bot.move(dx, dy)
         
-        def shot(dx, dy):
-            sim_id = self.get_id()
-            self.__entities["bullets"][sim_id] = Bullet(sim_id, 
-                                                        bot.x(), 
-                                                        bot.y(), 
-                                                        dx, 
-                                                        dy, 
-                                                        BULLET_DAMAGE)
+        def shoot(dx, dy):
+            if bot.shoot(self.__current_tick):
+                sim_id = self.get_id()
+                self.__entities["bullets"][sim_id] = Bullet(sim_id, 
+                                                            bot.x(), 
+                                                            bot.y(), 
+                                                            dx, 
+                                                            dy, 
+                                                            BULLET_DAMAGE,
+                                                            bot.id())
 
-        return move, shot
+        return move, shoot
 
     def __perform_actions(self):
+        bots_to_remove = []
         for bot in self.__entities["bots"].values():
-            move, shot = self.__generate_actions(bot) #for the context enviroment
+            move, shoot = self.__generate_actions(bot) #for the context enviroment
             context = {
-                "__builtins__": safe_builtins,
+                "__builtins__": {},
                 "move": move,
-                "shot": shot
+                "shoot": shoot
             }
             try:
-                bot_code = compile_restricted(bot.code(), '<string>', 'exec')
-                exec(bot_code, context, {}) #execute the bot code
+                #bot_code = compile_restricted(bot.code(), '<string>', 'exec')
+                exec(bot.code(), context, {}) #execute the bot code
             except Exception as e:
                 log.e(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
-                self.__entities["bots"].pop(bot.get_sim_id())
+                bots_to_remove.append(bot.id())
                 continue
         
+        for bot_id in bots_to_remove:
+            del self.__entities["bots"][bot_id]
+
         for bullet in self.__entities["bullets"].values():
             bullet.move()
     
