@@ -161,29 +161,26 @@ async function upload_config() {
 // DOWNLOAD CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 async function download_config() {
 
-  const response = await fetch('/download_config').then(response => 
-      {
-        if (response.ok) {
-          data = response.json();
+  const response = await fetch('/download_config').then(response => response);
+  const responseData = await response.json();
+      
+  if (response.ok) {
+    // Load data
+    health = responseData.health;
+    shield = responseData.shield;
+    attack = responseData.attack;
 
-          // Load data
-          health = data.health;
-          shield = data.shield;
-          attack = data.attack;
-
-          // Load previous code
-          set_sliders(health, shield, attack);
-          if (response.status == 200) {
-            showMessage("Your configuration has been loaded successfully.", false);
-          }
-          if (response.status == 201){
-            showMessage("Welcome to the configuration.", false);
-          }
-          return true;
-        } else {
-            showMessage("Your configuration couldn't be loaded. Please input it again. ", true);
-          return false;
-        }
-      }
-    );
+    // Load previous code
+    set_sliders(health, shield, attack);
+    if (response.status == 200) {
+      showMessage("Your configuration has been loaded successfully.", false);
+    }
+    if (response.status == 201){
+      showMessage("Welcome to the configuration.", false);
+    }
+    return true;
+  } else {
+      showMessage("Your configuration couldn't be loaded. Please input it again. ", true);
+    return false;
+  }
 }
