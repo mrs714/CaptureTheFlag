@@ -27,26 +27,26 @@ def createUser(username, password):
     # Create a new user in the database
     db.insert_user(username, password)
 
+def IdFromUser(username):
+    # Get the id of a user
+    return db.get_user_id(username)
+
 def uploadConfig(id, health, shield, attack):
     # Save the config in the database for a certain id
     config = {"health": health, "shield": shield, "attack": attack}
     db.save_config(id, json.dumps(config))
 
+def downloadConfig(id):
+    # Get the config of a user
+    return db.get_config(id)
+
 def uploadCode(id, code):
     # Save the code in the database
     db.save_code(id, code)
 
-def IdFromUser(username):
-    # Get the id of a user
-    return db.get_user_id(username)
-
 def downloadCode(id):
     # Get the code of a user
     return db.get_code(id)
-
-def downloadConfig(id):
-    # Get the config of a user
-    return db.get_config(id)
 
 # Pages --------------------------------------------------------------------
 @app.route('/')
