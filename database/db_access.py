@@ -68,6 +68,12 @@ def save_config(id, config):
     with _db as db:
         c = db.get_cursor()
         c.execute(f"UPDATE {DATABASE_USER_TABLE} SET config = ? WHERE id = ?", (config, id))
+
+def get_config(id):
+    with _db as db:
+        c = db.get_cursor()
+        c.execute(f"SELECT config FROM {DATABASE_USER_TABLE} WHERE id = ?", (id,))
+        return c.fetchone()[0]
     
 def get_code(id):
     with _db as db:

@@ -1,5 +1,5 @@
 MAP_WIDTH, MAP_HEIGHT = 1000, 1000 # pixels
-BULLET_RADIUS = 10 # pixels
+BULLET_RADIUS = 4 # pixels
 BOT_RADIUS = 4 * BULLET_RADIUS # pixels
 PLAYER_SPEED = 3 # pixels per frame
 BULLET_SPEED = PLAYER_SPEED * 4 # pixels per frame
