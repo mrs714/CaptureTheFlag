@@ -174,7 +174,7 @@ def upload_config():
 @app.route('/download_config', methods=['GET'])
 def download_config():
     if session['newUser']:
-        return jsonify({"health": "100", "shield": "100", "attack": "100"}), 200
+        return jsonify({"health": "100", "shield": "100", "attack": "100"}), 201
     id = IdFromUser(session['username'])
     data = downloadConfig(id)
     return data, 200
