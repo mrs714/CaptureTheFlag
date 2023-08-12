@@ -1,6 +1,6 @@
-from simulation import Simulation
+from simulation.simulation import Simulation
 from time import sleep
-from simulation_consts import *
+from simulation.simulation_consts import *
 import log
 
 if __name__ == '__main__':

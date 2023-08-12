@@ -1,9 +1,12 @@
-from simulation_consts import *
+from simulation.simulation_consts import *
 import pygame
 from datetime import datetime
 import numpy as np
 from moviepy.editor import ImageSequenceClip
+from random import randint
 import log
+import database.db_access as db
+from simulation.bot import Bot
 
 class Simulation:
 
@@ -33,13 +36,21 @@ class Simulation:
     
     def run(self):
 
+        log.d("Preparing to run the simulation...")
+        list_of_bots = db.get_bots_to_execute()
+        for bot in list_of_bots:
+            sim_id = self.get_id()
+            self.__entities["bots"][sim_id] = Bot(sim_id, bot["id"], bot["username"], randint(100, 900), randint(100, 900), bot["code"])
+        log.d("Simulation prepared")
 
+        log.d("Running the simulation loop...")
         running = True
         while self.__current_tick < DURATION and running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
             
+            self.__perform_actions()
             self.__update_frame()
             pygame.display.flip()
 
@@ -49,10 +60,17 @@ class Simulation:
             self.__clock.tick(FPS)
 
         pygame.quit()
+        log.d("Simulation loop finished")
+    
+    def __perform_actions(self):
+        pass
     
     def __update_frame(self):
-        self.__screen.fill((0, 0, 0))
-        pygame.draw.circle(self.__screen, (255, 0, 0), (500, 500), 30)
+        self.__screen.fill(BACKGROUND_COLOR)
+        for bot in self.__entities["bots"].values():
+            pygame.draw.circle(self.__screen, BOT_COLOR, (bot.x, bot.y), BOT_RADIUS)
+        for bullet in self.__entities["bullets"].values():
+            pygame.draw.circle(self.__screen, BULLET_COLOR, (bullet.x, bullet.y), BULLET_RADIUS)
     
     def __save_frame(self):
         frame = pygame.surfarray.array3d(self.__screen)

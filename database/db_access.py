@@ -9,6 +9,7 @@ class _DBManager:
 
     def __enter__(self):
         self._conn = sqlite3.connect(self._path)
+        self._conn.row_factory = sqlite3.Row
         self._cursor = self._conn.cursor()
         return self
     
@@ -64,3 +65,15 @@ def save_config(id, config):
     with _db as db:
         c = db.get_cursor()
         c.execute(f"UPDATE {DATABASE_USER_TABLE} SET config = ? WHERE id = ?", (config, id))
+    
+def get_code(id):
+    with _db as db:
+        c = db.get_cursor()
+        c.execute(f"SELECT code FROM {DATABASE_USER_TABLE} WHERE id = ?", (id,))
+        return c.fetchone()[0]
+
+def get_bots_to_execute():
+    with _db as db:
+        c = db.get_cursor()
+        c.execute(f"SELECT id, username, code, config FROM {DATABASE_USER_TABLE} WHERE is_executable = 1")
+        return c.fetchall()
