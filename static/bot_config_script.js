@@ -177,6 +177,9 @@ async function download_config() {
 
           // Load previous code
           set_sliders(health, shield, attack);
+          if (!(health == 100 && shield == 100 && attack == 100)) {
+            showMessage("Your configuration has been loaded successfully.");
+          }
           return true;
       
         } else {
