@@ -211,7 +211,7 @@ def download_code():
 
 @app.route('/logout')
 def logout():
-    print("\nUser " + session['user'] + " has logged off.")
+    print("\nUser " + session['username'] + " has logged off.")
     session.clear()
     return login()
 
