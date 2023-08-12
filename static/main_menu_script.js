@@ -25,3 +25,8 @@ function redirectToPlayerInfo() {
 function redirectToBotConfig() {
   window.location.href = '/bot_config';
 }
+
+// Log off user:
+function logout() {
+  window.location.href = '/logout';
+}

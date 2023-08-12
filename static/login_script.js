@@ -1,6 +1,9 @@
-function showMessage(message) {
-  document.getElementById('message').textContent = message;
-}
+// Prepare events
+add_event_listener(document.getElementById("username"), loginButton)
+add_event_listener(document.getElementById("password"), loginButton)
+
+add_event_listener(document.getElementById("newUsername"), createUserButton)
+add_event_listener(document.getElementById("newPassword"), createUserButton)
 
 flag = 0;
 // Toggles the visibility of the Create User form and Login form
@@ -36,7 +39,7 @@ function loginButton() {
   login(username, password).then(success => {
     if (success) {
       saveSessionData(username); // Saves the username in the session storage
-      showMessage('Login successful! Redirecting to home page...');
+      showMessage('Login successful! Redirecting to home page...', false);
       Redirecting();
     }
   });
@@ -62,13 +65,13 @@ async function login(username, password) {
 
   } else {
     if (response.status == 400) {
-      showMessage('Incorrect username or password. Please try again.');
+      showMessage('Incorrect username or password. Please try again.', true);
     }
     else if (response.status == 401) {
-      showMessage("The server found something that didn't check out in the user or password. Please try again.");
+      showMessage("The server found something that didn't check out in the user or password. Please try again.", true);
     }
     else if (response.status == 404) {
-      showMessage('This username does not exist. Please try again.');
+      showMessage('This username does not exist. Please try again.', true);
     }
     return false;
   }
@@ -91,13 +94,13 @@ function createUserButton() {
       create_user(newUsername, newPassword).then(success => {
         if (create_user(newUsername, newPassword)){
           saveSessionData(newUsername); // Saves the username in the session storage
-          showMessage('User created successfully! Redirecting to login page...');
+          showMessage('User created successfully! Redirecting to main page...', false);
           Redirecting();
         }
       });
     }
     else {
-      showMessage('Username already exists. Please try another name. ');
+      showMessage('Username already exists. Please try another name. ', true);
     }
   });
 }
@@ -120,7 +123,7 @@ async function check_user(username) {
     return responseData.user_exists;
   } else {
     if (response.status == 400) {
-      showMessage('Something went wrong with the server. Please try again.');
+      showMessage('Something went wrong with the server. Please try again.', true);
     }
   }
   return true;
@@ -142,7 +145,7 @@ async function create_user(username, password) {
 
   if (!response.ok) {
     if (response.status == 400) {
-      showMessage('Something went wrong with the server. Please try again.');
+      showMessage('Something went wrong with the server. Please try again.', true);
     }
     return false;
   }
@@ -154,17 +157,17 @@ async function create_user(username, password) {
 function checkUsernameAndPassword(username, password){
   
   if (username == '' || password == '') {
-    showMessage('Username or password cannot be empty. Please try again.');
+    showMessage('Username or password cannot be empty. Please try again.', true);
     return false;
   }
 
   if (!(/^[A-Za-z0-9]*$/.test(username)) || (!/^[A-Za-z0-9]*$/.test(password))) {
-    showMessage('Username or password can only contain letters and numbers. Please try again.');
+    showMessage('Username or password can only contain letters and numbers. Please try again.', true);
     return false;
   }
 
   if (password.length > 20 || username.length > 20) {
-    showMessage('Username or password cannot be longer than 20 characters. Please try again.');
+    showMessage('Username or password cannot be longer than 20 characters. Please try again.', true);
     return false;
   }
  

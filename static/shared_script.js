@@ -26,6 +26,27 @@ function goBack() {
   window.location.href = '/main_menu';
 }
 
+function showMessage(message, error) {
+  /* Pre: the html contains the message and message_span */
+  document.getElementById('message').innerHTML = message;
+  span = document.getElementById('message_span');
+  if (error) {
+    span.style.color = "red";
+  }
+  else {
+    span.style.color = "white";
+  }
+}
+
+function add_event_listener(element, funct){
+  element.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      // Call function given when the event happens
+      funct();
+    }
+  });
+}
+
 // Call a certain python function (Functions: none for the moment)
 async function triggerPythonFunction(functionName) { 
   try {

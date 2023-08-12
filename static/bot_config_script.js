@@ -104,10 +104,6 @@ function fix_sliders() {
 }
 
 // FUNCTIONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-function showMessage(message) { // Success/error loging
-  document.getElementById('message_area').innerHTML = message; 
-}
-
 function update_info() {
   fix_sliders();
   document.getElementById("health_slider_info").innerHTML = "Health: " + health_slider.value;
@@ -151,12 +147,12 @@ async function upload_config() {
 
   if (response.ok) {
     // Successfully saved configuration
-    showMessage('Configuration saved successfully.');
+    showMessage('Configuration saved successfully.', false);
     return true;
 
   } else {
     if (response.status == 400) {
-      showMessage('Incorrect ammount of points. Please try again.');
+      showMessage('Incorrect ammount of points. Please try again.', true);
     }
     return false;
   }
@@ -165,27 +161,26 @@ async function upload_config() {
 // DOWNLOAD CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 async function download_config() {
 
-  const response = await fetch('/download_config').then(response => 
-      {
-        if (response.ok) {
-          data = response.json();
-
-          // Load data
-          health = data.health;
-          shield = data.shield;
-          attack = data.attack;
-
-          // Load previous code
-          set_sliders(health, shield, attack);
-          if (!(health == 100 && shield == 100 && attack == 100)) {
-            showMessage("Your configuration has been loaded successfully.");
-          }
-          return true;
+  const response = await fetch('/download_config').then(response => response);
+  const responseData = await response.json();
       
-        } else {
-            showMessage("Your configuration couldn't be loaded. Please input it again. ");
-          return false;
-        }
-      }
-    );
+  if (response.ok) {
+    // Load data
+    health = responseData.health;
+    shield = responseData.shield;
+    attack = responseData.attack;
+
+    // Load previous code
+    set_sliders(health, shield, attack);
+    if (response.status == 200) {
+      showMessage("Your configuration has been loaded successfully.", false);
+    }
+    if (response.status == 201){
+      showMessage("Welcome to the configuration.", false);
+    }
+    return true;
+  } else {
+      showMessage("Your configuration couldn't be loaded. Please input it again. ", true);
+    return false;
+  }
 }
