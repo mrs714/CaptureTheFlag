@@ -13,6 +13,11 @@ function update_info() {
   document.getElementById("attackConfig").innerHTML = attack;
 }
 
+function expand_form() {
+  const container = document.getElementById("info_container");
+  container.style.maxWidth != '75%' ? container.style.maxWidth = '75%' : container.style.maxWidth = '35%';
+}
+
 // BUTTONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*function help_button() {
   button = document.getElementById("help_button");

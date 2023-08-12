@@ -29,12 +29,12 @@
     <!-- Button to show error details -->
     <div class="row mt-4">
       <div class="col-md-12">
-        <button class="btn btn-primary" type="button" onclick="expandForm()" data-toggle="collapse" data-target="#errorDetails" aria-expanded="false" aria-controls="errorDetails">
+        <button class="btn btn-primary" type="button" onclick="expand_form()" data-toggle="collapse" data-target="#errorDetails" aria-expanded="false" aria-controls="errorDetails">
           Error thrown in last game
         </button>
         <div class="collapse mt-3" id="errorDetails">
           <h3>Error Details:</h3>
-          <pre id="errorText">No error information available.</pre>
+          <span id="errorSpan" style="color: rgb(0, 255, 0);"><p id="error">No error information available.</p></span>
         </div>
       </div>
     </div>
@@ -46,21 +46,6 @@
       </div>
     </div>
   </div>
-  
-  <script>
-    function expandForm() {
-      const errorDetails = document.getElementById('info_container');
-      errorDetails.classList.remove('collapse');
-      errorDetails.classList.add('expanded');
-    }
-  </script>
-
-  <style>
-    /* Additional styles */
-    .expanded {
-      width: 200%; /* Adjust this value as needed */
-    }
-  </style>
 
   <script src="./static/player_info_script.js"></script> <!-- Include player_info.js -->
   <script src="./static/shared_script.js"></script>
