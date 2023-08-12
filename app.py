@@ -40,6 +40,10 @@ def IdFromUser(username):
     # Get the id of a user
     return db.get_user_id(username)
 
+def getCode(id):
+    # Get the code of a user
+    return db.get_code(id)
+
 # Pages --------------------------------------------------------------------
 @app.route('/')
 def login():
@@ -161,8 +165,8 @@ def save_config():
     saveConfig(id, health, shield, attack)
     return '', 200 # a-ok
 
-@app.route('/save_code', methods=['POST'])
-def save_code():
+@app.route('/upload_code', methods=['POST'])
+def upload_code():
 
     # Get the data from the request
     code = request.get_json()['code']
@@ -177,6 +181,12 @@ def save_code():
         return jsonify({"ok":True}), 200 # a-ok
     else:
         return jsonify({"ok":False, "error":str(error_details)}), 400 # Bad request
+    
+@app.route('/download_code', methods=['GET'])
+def download_code():
+    id = IdFromUser(session['username'])
+    code = db.get_code(id)
+    return jsonify({"code": code}), 200
 
 # Logic and functions ---------------------------------------------------------
 # Syntax checking for users code

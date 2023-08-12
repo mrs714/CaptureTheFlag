@@ -1,9 +1,31 @@
+// Load the code from the server
+download_code();
+
+
+// FUNCTIONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function showMessage(message) { // Success/error loging
   document.getElementById('message_area').innerHTML = message; 
 }
 
-// UPDATE CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-async function update_code() {
+// CODE MIRROR --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Initialize CodeMirror instance
+const codeTextArea = document.getElementById('code_zone');
+    
+// Initialize CodeMirror with the dark theme (dracula)
+const editor = CodeMirror.fromTextArea(codeTextArea, {
+  theme: 'dracula', // Use the 'dracula' theme
+  mode: 'python',   // Set the mode to Python
+  lineNumbers: true // Show line numbers
+});
+
+// Synchronize scrolling between CodeMirror and line numbers
+const lineNumbers = document.getElementById('lineNumbers');
+editor.on('scroll', function () {
+  lineNumbers.scrollTop = editor.getScrollInfo().top;
+});
+
+// UPDATE CODE --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+async function upload_code() {
 
   const inputValue = editor.getValue()
   
@@ -11,7 +33,7 @@ async function update_code() {
     code: inputValue
   };
 
-  const response = await fetch('/save_code', {
+  const response = await fetch('/upload_code', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,19 +52,25 @@ async function update_code() {
   }
 }
 
-// CODE MIRROR --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// Initialize CodeMirror instance, can't be used in the script file because of imports ES6 syntax 
-const codeTextarea = document.getElementById('code_zone');
-    
-// Initialize CodeMirror with the dark theme (dracula)
-const editor = CodeMirror.fromTextArea(codeTextarea, {
-  theme: 'dracula', // Use the 'dracula' theme
-  mode: 'python',   // Set the mode to Python
-  lineNumbers: true // Show line numbers
-});
+// DOWNLOAD CODE --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+async function download_code() {
 
-// Synchronize scrolling between CodeMirror and line numbers
-const lineNumbers = document.getElementById('lineNumbers');
-editor.on('scroll', function () {
-  lineNumbers.scrollTop = editor.getScrollInfo().top;
-});
+  const response = await fetch('/download_code').then(response => 
+      {
+        if (response.ok) {
+          text = response.json().code;
+
+          // Load previous code
+          showMessage('Welcome back!');
+          editor.setValue(text);
+          return true;
+      
+        } else {
+            showMessage("Your last code couldn't be loaded correctly. Please input it again, and don't use this as your default editor.");
+          return false;
+        }
+      }
+    );
+}
+
+
