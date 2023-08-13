@@ -49,8 +49,12 @@ def downloadCode(id):
     return db.get_code(id)
 
 def downloadInfo(id):
-    # Get the info of a user: last position, error last game, date of last game
+    # Get the info of a user: last position, date of last game
     return db.get_info(id)
+
+def downloadError(id):
+    # Get the error of a user
+    return db.get_error(id)
 
 # Pages --------------------------------------------------------------------
 @app.route('/')

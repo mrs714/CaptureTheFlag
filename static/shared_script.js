@@ -47,6 +47,13 @@ function add_event_listener(element, funct){
   });
 }
 
+function expand_form() {
+  const container = document.getElementById("container");
+  width = 75;
+  string_percentage = width + '%';
+  container.style.maxWidth != width ? container.style.maxWidth = width : container.style.maxWidth = '35%';
+}
+
 // Call a certain python function (Functions: none for the moment)
 async function triggerPythonFunction(functionName) { 
   try {
