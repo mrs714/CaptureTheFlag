@@ -1,6 +1,7 @@
 from flask import Flask, render_template, session, jsonify, request, send_file
 import database.db_access as db
 import json
+import os
 """
 Flask: Framework for the web application
 render_template: Renders a template from the templates folder (html file)
@@ -50,7 +51,7 @@ def downloadError(id):
 
 
 """
-SERVER DATA UPLOAD AND DOWNLOAD FUNCTIONS: Get session data, upload and download config, upload and download code, download user info, download error log
+SERVER DATA UPLOAD AND DOWNLOAD FUNCTIONS: Get session data, upload and download config, upload and download code, download user info, download error log, download simulation info
 ----------------------------------------------------------------------------------------------------------
 """
 @app.route('/get_session_data', methods=['GET'])
@@ -134,6 +135,17 @@ def download_error_log():
     """
     return jsonify({"error_log": "error_log"}), 200
 
+@app.route('/download_simulation_info', methods=['GET'])
+def download_simulation_info():
+    path = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(path, "replays\simulation_info.txt")
+    with open(file_path, "r") as file:
+    # Read the content of the file
+        file_content = "".join(file.read().split(" ")[3]).join(" ").join(file.read().split(" ")[4]) #Day and time
+
+    print(file_content)
+
+    return jsonify({"simulation_info": file_content}), 200
 
 """
 OTHER SERVER FETCH FUNCTIONS: User exists, login function, create user
