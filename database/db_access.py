@@ -86,3 +86,15 @@ def get_bots_to_execute():
         c = db.get_cursor()
         c.execute(f"SELECT id, username, code, config FROM {DATABASE_USER_TABLE} WHERE is_executable = 1")
         return c.fetchall()
+
+def get_info(id):
+    with _db as db:
+        c = db.get_cursor()
+        c.execute(f"SELECT last_position, date_last_execution FROM {DATABASE_USER_TABLE} WHERE id = ?", (id,))
+        return c.fetchone()["last_position"], c.fetchone()["date_last_execution"]
+
+def get_error(id):
+    with _db as db:
+        c = db.get_cursor()
+        c.execute(f"SELECT last_execution_result FROM {DATABASE_USER_TABLE} WHERE id = ?", (id,))
+        return c.fetchone()[0]

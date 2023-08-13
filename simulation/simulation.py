@@ -77,8 +77,14 @@ class Simulation:
         pygame.quit()
         log.d("Simulation loop finished")
 
-
     
+
+
+##########################################################################################
+
+
+
+
     def __generate_actions(self, bot):
         def move(dx, dy):
             bot.move(dx, dy)
@@ -116,6 +122,7 @@ class Simulation:
 
         try:
             #bot_code = compile_restricted(bot.code(), '<string>', 'exec')
+            print('prueba')
             exec(bot.code(), context, {}) #execute the bot code
         except Exception as e:
             log.e(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
@@ -124,9 +131,20 @@ class Simulation:
         finally:
             event = temp_out.getvalue()
             if event != "":
-                bot.add_event()
+                bot.add_event(event)
             sys.stdout = sys.__stdout__
             sys.stderr = sys.__stderr__
+            temp_out.close()
+
+
+
+
+##########################################################################################
+
+
+
+
+
 
     def __perform_actions(self):
         bots_to_remove = []
@@ -134,7 +152,9 @@ class Simulation:
             self.__execute_bot_code(bot, bots_to_remove)
         
         for bot_id in bots_to_remove:
+            db_bot = self.__entities["bots"][bot_id].get_db_id()
             del self.__entities["bots"][bot_id]
+            log.d(f"Bot with db_id = {db_bot} removed")
 
         for bullet in self.__entities["bullets"].values():
             bullet.move()
