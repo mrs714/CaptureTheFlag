@@ -47,10 +47,8 @@ function add_event_listener(element, funct){
   });
 }
 
-function expand_form() {
+function expand_form(width) {
   const container = document.getElementById("container");
-  width = 75;
-  string_percentage = width + '%';
   container.style.maxWidth != width ? container.style.maxWidth = width : container.style.maxWidth = '35%';
 }
 
