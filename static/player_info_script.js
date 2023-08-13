@@ -17,16 +17,24 @@ error_status = false;
 date = "00/00/0000 00:00:00";
 
 // Load previous data from server and update labels and information
-if (download_config() && download_error_log() && download_user_info() != "") {
-  // If all data could be loaded successfully, update labels
-  showMessage("Your information has been loaded successfully.", false);
-}
-else {
-  // If not, show error message
-  showMessage("Your information couldn't be loaded. Please refresh the page or input the information again. ", true);
+function load_data() {
+  if (config_successful && error_log_successful && user_info_successful) {
+    // If all data could be loaded successfully, update labels
+    showMessage("Your information has been loaded successfully.", false);
+  }
+  else {
+    // If not, show error message
+    showMessage("Your information couldn't be loaded. Please refresh the page or input the information again. ", true);
+  }
 }
 
+const [config_successful, error_log_successful, user_info_successful] = [
+  download_config(),
+  download_error_log(),
+  download_user_info()
+]
 
+setTimeout(load_data, 2000); // Wait 2 seconds before loading data
 
 // FUNCTIONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function update_config(successful_download) {
@@ -106,7 +114,6 @@ async function download_config() {
 }
 
 async function download_error_log() {
-
   const response = await fetch('/download_error_log').then(response => response);
   const responseData = await response.json();
       

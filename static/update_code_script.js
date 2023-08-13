@@ -59,7 +59,6 @@ async function download_code() {
     
   if (response.ok) {
     text = responseData.code;
-    console.log(text);
 
     // Load previous code
     showMessage('Code time!', false);
