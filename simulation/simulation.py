@@ -1,15 +1,18 @@
-from simulation.simulation_consts import *
-import pygame
-from datetime import datetime
-import numpy as np
-from moviepy.editor import ImageSequenceClip
-from random import randint
-import log
-import database.db_access as db
-from simulation.bot import Bot
-from simulation.bullet import Bullet
-import json
-from RestrictedPython import compile_restricted, safe_builtins
+from simulation.simulation_consts import * #import all the constants
+import pygame #import pygame
+from datetime import datetime #import datetime (to get the current date and time)
+import numpy as np #import numpy
+from moviepy.editor import ImageSequenceClip #import ImageSequenceClip (for saving the mp4 file)
+from random import randint #import randint (for generating random numbers)
+import log #import log (for logging into files)
+import database.db_access as db #import db_access (for accessing the database)
+from simulation.bot import Bot #import Bot
+from simulation.bullet import Bullet #import Bullet
+import json #import json (for parsing the bot config)
+from RestrictedPython import compile_restricted, safe_builtins #import compile_restricted and safe_builtins (for executing the bot code)
+from io import StringIO #import StringIO (for capturing the bot output)
+import sys #import sys
+import traceback #import traceback (for printing the traceback in case of an error)
 
 class Simulation:
 
@@ -73,6 +76,8 @@ class Simulation:
 
         pygame.quit()
         log.d("Simulation loop finished")
+
+
     
     def __generate_actions(self, bot):
         def move(dx, dy):
@@ -91,22 +96,42 @@ class Simulation:
 
         return move, shoot
 
+    def __execute_bot_code(self, bot, bots_to_remove):
+
+
+        #TODO: se puede mover varias veces wtf
+
+
+
+        move, shoot = self.__generate_actions(bot) #for the context enviroment
+        context = {
+            "__builtins__": safe_builtins,
+            "move": move,
+            "shoot": shoot
+        }
+
+        temp_out = StringIO()
+        sys.stdout = temp_out
+        sys.stderr = temp_out
+
+        try:
+            #bot_code = compile_restricted(bot.code(), '<string>', 'exec')
+            exec(bot.code(), context, {}) #execute the bot code
+        except Exception as e:
+            log.e(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
+            traceback.print_exc()
+            bots_to_remove.append(bot.id())
+        finally:
+            event = temp_out.getvalue()
+            if event != "":
+                bot.add_event()
+            sys.stdout = sys.__stdout__
+            sys.stderr = sys.__stderr__
+
     def __perform_actions(self):
         bots_to_remove = []
         for bot in self.__entities["bots"].values():
-            move, shoot = self.__generate_actions(bot) #for the context enviroment
-            context = {
-                "__builtins__": {},
-                "move": move,
-                "shoot": shoot
-            }
-            try:
-                #bot_code = compile_restricted(bot.code(), '<string>', 'exec')
-                exec(bot.code(), context, {}) #execute the bot code
-            except Exception as e:
-                log.e(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
-                bots_to_remove.append(bot.id())
-                continue
+            self.__execute_bot_code(bot, bots_to_remove)
         
         for bot_id in bots_to_remove:
             del self.__entities["bots"][bot_id]

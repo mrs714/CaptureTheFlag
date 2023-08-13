@@ -12,7 +12,7 @@ class Bot(Entity):
         self.__shield = shield
         self.__db_id = db_id
         self.__name = name
-        self.__exec_events = []
+        self.__exec_events = [] #List of strings captured from stdout and stderr
         self.__last_shot = 0 #Last time the bot shot a bullet in ticks
 
     def shoot(self, actual_tick):

@@ -26,7 +26,10 @@ class Log:
     def _allocate_logs(self):
         """
         removes the oldest log file if the number of logs is equal or greater than _max_logs
-        """       
+        """
+        if not os.path.exists(_logfile_dir):
+            os.mkdir(_logfile_dir)
+              
         logs = os.listdir(_logfile_dir)
         if len(logs) >= _max_logs:
             oldest_log = min([(f"{_logfile_dir}/{log}", os.path.getmtime(f"{_logfile_dir}/{log}")) for log in logs])[0]
