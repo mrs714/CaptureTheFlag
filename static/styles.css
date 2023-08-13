@@ -21,18 +21,6 @@ body {
   transition: max-width 1.5s ease;
 }
 
-.codeContainer {
-  max-width: 90%;
-  margin: 0 auto;
-  margin-top: 1%;
-  padding: 4%;
-  padding-top: 1%;
-  padding-bottom: 2%;
-  background-color: #383838; /* Darker container background color */
-  border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
 button {
   display: block;
   width: 100%;
