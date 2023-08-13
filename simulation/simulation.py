@@ -32,6 +32,7 @@ class Simulation:
         self.__id_counter = 0
         self.__entities = {
             "bots": {},
+            "dead_bots": {},
             "bullets": {}
         }
         log.d("Simulation object variables initialized")
@@ -125,7 +126,7 @@ class Simulation:
             print('prueba')
             exec(bot.code(), context, {}) #execute the bot code
         except Exception as e:
-            log.e(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
+            log.i(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
             traceback.print_exc()
             bots_to_remove.append(bot.id())
         finally:
@@ -153,7 +154,7 @@ class Simulation:
         
         for bot_id in bots_to_remove:
             db_bot = self.__entities["bots"][bot_id].get_db_id()
-            del self.__entities["bots"][bot_id]
+            self.__entities["dead_bots"][bot_id] = self.__entities["bots"].pop(bot_id)
             log.d(f"Bot with db_id = {db_bot} removed")
 
         for bullet in self.__entities["bullets"].values():
