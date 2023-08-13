@@ -21,6 +21,13 @@
       </tbody>
     </table>
 
+    <button class="btn btn-secondary mt-3" type="button" data-toggle="collapse" data-target="#videoCollapse">Show Video</button>
+
+    <!-- Collapsible video iframe -->
+    <div id="videoCollapse" class="collapse">
+      <iframe width="560" height="315" src="your_video_url.mp4" frameborder="0" allowfullscreen></iframe>
+    </div>
+
     <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
 
     <script>
@@ -28,8 +35,12 @@
       window.onload = populateReplaysTable;
     </script>
 
-    <script src="./static/display_script.js"></script>
     <script src="./static/shared_script.js"></script>
+
+    <!-- Include jQuery and Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </div>
 </body>
 </html>
