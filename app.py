@@ -186,15 +186,6 @@ def upload_config():
     print("\nUser " + session['username'] + " has updated their bot configuration.\n")
     return '', 200 # a-ok
 
-@app.route('/download_config', methods=['GET'])
-def download_config():
-    if session['newUser']:
-        return jsonify({"health": "100", "shield": "100", "attack": "100"}), 201
-    id = IdFromUser(session['username'])
-    data = downloadConfig(id)
-    print("\nBot configuration succesfully loaded for user " + session['username'] + ": " + data + ".\n")
-    return data, 200
-
 @app.route('/upload_code', methods=['POST'])
 def upload_code():
 
@@ -221,6 +212,25 @@ def download_code():
     code = downloadCode(id)
     print("\nCode succesfully loaded for user " + session['username'] + ".\n")
     return jsonify({"code": code}), 200
+
+
+@app.route('/download_config', methods=['GET'])
+def download_config():
+    if session['newUser']:
+        return jsonify({"health": "100", "shield": "100", "attack": "100"}), 201
+    id = IdFromUser(session['username'])
+    data = downloadConfig(id)
+    print("\nBot configuration succesfully loaded for user " + session['username'] + ": " + data + ".\n")
+    return data, 200
+
+@app.route('/download_error_log', methods=['GET'])
+def download_error_log():
+    id = IdFromUser(session['username'])
+    error_log = downloadError(id)
+    print(error_log)
+    print("\nError log succesfully loaded for user " + session['username'] + ".\n")
+    return jsonify({"error_log": error_log}), 200
+
 
 @app.route('/logout')
 def logout():

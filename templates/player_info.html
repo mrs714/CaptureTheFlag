@@ -12,9 +12,9 @@
     <!-- Display player information -->
     <div class="row mt-4">
       <div class="col-md-12">
-        <h3>Position in the last game: <span id="lastGamePosition">...</span></h3>
-        <h3>Error in last game: <span id="lastGameError">...</span></h3>
-        <h3>Date of last game: <span id="lastGameDate">...</span></h3>
+        <h3>Position in the last game: <span id="position_span">...</span></h3>
+        <h3>Error in last game: <span id="error_status_span">...</span></h3>
+        <h3>Date of last game: <span id="date_span">...</span></h3>
         <h3>Configuration used:</h3>
         <ul>
           <li>Health: <span id="healthConfig">...</span></li>
@@ -29,12 +29,12 @@
     <!-- Button to show error details -->
     <div class="row mt-4">
       <div class="col-md-12">
-        <button class="btn btn-primary" type="button" onclick="expand_form('75%')" data-toggle="collapse" data-target="#errorDetails" aria-expanded="false" aria-controls="errorDetails">
-          Error thrown in last game
+        <button id="log_button" class="btn btn-primary" type="button" onclick="log_button()" data-toggle="collapse" data-target="#errorDetails" aria-expanded="false" aria-controls="errorDetails">
+          Show last error log
         </button>
         <div class="collapse mt-3" id="errorDetails">
           <h3>Error Details:</h3>
-          <span id="errorSpan" style="color: rgb(0, 255, 0);"><p id="error">No error information available.</p></span>
+          <span id="error_span" style="color: rgb(0, 255, 0);"><p id="error">No error information available.</p></span>
         </div>
       </div>
     </div>
@@ -46,9 +46,9 @@
       </div>
     </div>
   </div>
-
-  <script src="./static/player_info_script.js"></script> <!-- Include player_info.js -->
+  
   <script src="./static/shared_script.js"></script>
+  <script src="./static/player_info_script.js"></script> <!-- Include player_info.js -->
 
   <!-- Include jQuery and Bootstrap JavaScript -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
