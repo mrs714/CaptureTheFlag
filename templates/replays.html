@@ -21,13 +21,15 @@
       </tbody>
     </table>
 
-    <button class="btn btn-secondary mt-3" type="button" data-toggle="collapse" onclick="expand_form('75%')" data-target="#videoCollapse">Show last video</button>
+    <button class="btn btn-secondary mt-3" type="button" data-toggle="collapse" onclick="video_button()" id="video_button" data-target="#videoCollapse">Show last video</button>
 
     <!-- Collapsible video iframe -->
     <div id="videoCollapse" class="collapse">
-      <video width="500px" height="500px" controls="controls">
-        <source src="/simulation_video" type="video/mp4" />
-       </video>
+      <div class="d-flex justify-content-center align-items-center" style="height: 75vh;">
+        <video width="50%" controls="controls">
+          <source src="/simulation_video" type="video/mp4" />
+        </video>
+      </div>
     </div>
 
     <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
@@ -37,6 +39,7 @@
     </script>
 
     <script src="./static/shared_script.js"></script>
+    <script src="./static/replays_script.js"></script>
 
     <!-- Include jQuery and Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
