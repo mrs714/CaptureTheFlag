@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, jsonify, request
+from flask import Flask, render_template, session, jsonify, request, send_file
 import database.db_access as db
 import json
 """
@@ -7,6 +7,7 @@ render_template: Renders a template from the templates folder (html file)
 session: A dictionary that stores data for the user
 jsonify: Converts a dictionary to a JSON object, which can be used in JavaScript
 request: Used to get data from the client
+send_file: Used to send a file to the client
 """
 
 app = Flask(__name__)
@@ -91,6 +92,10 @@ def highscores():
 @app.route('/replays')
 def replays():
     return validate_login(render_template('replays.html'))
+
+@app.route('/simulation_video')
+def video():
+    return validate_login(send_file('replays/simulation.mp4'))
 
 # Obtaining data from the server and server functions ---------------------------------
 @app.route('/get_session_data', methods=['GET'])
