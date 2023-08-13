@@ -121,6 +121,7 @@ function set_sliders(health, shield, attack) {
 // BUTTONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function help_button() {
   button = document.getElementById("help_button");
+  expand_form('75%');
   if (button.innerHTML !== "Got it.") {
     button.innerHTML = "Got it.";
   }
