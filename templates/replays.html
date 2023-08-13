@@ -25,14 +25,15 @@
 
     <!-- Collapsible video iframe -->
     <div id="videoCollapse" class="collapse">
-      <iframe width="560" height="315" src="your_video_url.mp4" frameborder="0" allowfullscreen></iframe>
+      <video width="500px" height="500px" controls="controls">
+        <source src="/simulation_video" type="video/mp4" />
+       </video>
     </div>
 
     <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
 
     <script>
       // Call the function to populate the table when the page loads
-      window.onload = populateReplaysTable;
     </script>
 
     <script src="./static/shared_script.js"></script>
