@@ -223,14 +223,23 @@ def download_config():
     print("\nBot configuration succesfully loaded for user " + session['username'] + ": " + data + ".\n")
     return data, 200
 
+@app.route('/download_user_info', methods=['GET'])
+def download_user_info():
+    id = IdFromUser(session['username'])
+    """user_info = downloadInfo(id)
+    print(user_info)
+    print("\nUser info succesfully loaded for user " + session['username'] + ".\n")
+    """
+    return jsonify({"user_info": "user_info"}), 200
+
 @app.route('/download_error_log', methods=['GET'])
 def download_error_log():
     id = IdFromUser(session['username'])
-    error_log = downloadError(id)
+    """error_log = downloadError(id)
     print(error_log)
     print("\nError log succesfully loaded for user " + session['username'] + ".\n")
-    return jsonify({"error_log": error_log}), 200
-
+    """
+    return jsonify({"error_log": "error_log"}), 200
 
 @app.route('/logout')
 def logout():
