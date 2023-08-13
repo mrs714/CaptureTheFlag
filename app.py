@@ -37,7 +37,7 @@ def uploadConfig(id, health, shield, attack):
     db.save_config(id, json.dumps(config))
 
 def downloadConfig(id):
-    # Get the config of a user
+    # Get the config of a user: health, shield, attack
     return db.get_config(id)
 
 def uploadCode(id, code):
@@ -47,6 +47,10 @@ def uploadCode(id, code):
 def downloadCode(id):
     # Get the code of a user
     return db.get_code(id)
+
+def downloadInfo(id):
+    # Get the info of a user: last position, error last game, date of last game
+    return db.get_info(id)
 
 # Pages --------------------------------------------------------------------
 @app.route('/')

@@ -1,35 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Replays</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Player Information</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Include Bootstrap CSS -->
   <link rel="stylesheet" href="./static/styles.css"> <!-- Include shared.css -->
 </head>
 <body>
-  <div class="container">
-    <h1 class="mt-4">Last Games</h1>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Number</th>
-          <th>Highscore</th>
-          <th>Time of Execution/Time Elapsed</th>
-        </tr>
-      </thead>
-      <tbody id="replaysTable">
-        <!-- Highscores data will be inserted here -->
-      </tbody>
-    </table>
+  <div class="container mt-4" id="info_container">
+    <h1>Player Info</h1>
+    
+    <!-- Display player information -->
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <h3>Position in the last game: <span id="lastGamePosition">...</span></h3>
+        <h3>Error in last game: <span id="lastGameError">...</span></h3>
+        <h3>Date of last game: <span id="lastGameDate">...</span></h3>
+        <h3>Configuration used:</h3>
+        <ul>
+          <li>Health: <span id="healthConfig">...</span></li>
+          <li>Shield: <span id="shieldConfig">...</span></li>
+          <li>Attack: <span id="attackConfig">...</span></li>
+        </ul>
+      </div>
+    </div>
 
-    <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
-
-    <script>
-      // Call the function to populate the table when the page loads
-      window.onload = populateReplaysTable;
-    </script>
-
-    <script src="./static/display_script.js"></script>
-    <script src="./static/shared_script.js"></script>
+    <span id="message_span" style="color: red;"><p id="message"></p></span> <!-- Display login error/success message here -->
+    
+    <!-- Button to show error details -->
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <button class="btn btn-primary" type="button" onclick="expand_form()" data-toggle="collapse" data-target="#errorDetails" aria-expanded="false" aria-controls="errorDetails">
+          Error thrown in last game
+        </button>
+        <div class="collapse mt-3" id="errorDetails">
+          <h3>Error Details:</h3>
+          <span id="errorSpan" style="color: rgb(0, 255, 0);"><p id="error">No error information available.</p></span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Go back button -->
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <button class="btn btn-secondary"  onclick="goBack()" >Go Back</button>
+      </div>
+    </div>
   </div>
+
+  <script src="./static/player_info_script.js"></script> <!-- Include player_info.js -->
+  <script src="./static/shared_script.js"></script>
+
+  <!-- Include jQuery and Bootstrap JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
