@@ -9,7 +9,7 @@ import database.db_access as db #import db_access (for accessing the database)
 from simulation.bot import Bot #import Bot
 from simulation.bullet import Bullet #import Bullet
 import json #import json (for parsing the bot config)
-from RestrictedPython import compile_restricted, safe_builtins #import compile_restricted and safe_builtins (for executing the bot code)
+from RestrictedPython import safe_builtins #import safe_builtins (for executing the bot code)
 from io import StringIO #import StringIO (for capturing the bot output)
 import sys #import sys
 import traceback #import traceback (for printing the traceback in case of an error)
@@ -78,8 +78,13 @@ class Simulation:
         pygame.quit()
         log.d("Simulation loop finished")
 
-    
+        log.d("Performing post-simulation tasks...")
+        for bot in self.__entities["bots"].values():
+            db.update_info(bot.get_db_id(), bot.get_last_position(), datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
 
+        for bot in self.__entities["dead_bots"].values():
+            db.update_info(bot.get_db_id(), bot.get_last_position(), datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
+        log.d("Post-simulation tasks performed")
 
 ##########################################################################################
 
@@ -88,7 +93,7 @@ class Simulation:
 
     def __generate_actions(self, bot):
         def move(dx, dy):
-            bot.move(dx, dy)
+            bot.move(dx, dy, self.__current_tick)
         
         def shoot(dx, dy):
             if bot.shoot(self.__current_tick):
@@ -105,11 +110,6 @@ class Simulation:
 
     def __execute_bot_code(self, bot, bots_to_remove):
 
-
-        #TODO: se puede mover varias veces wtf
-
-
-
         move, shoot = self.__generate_actions(bot) #for the context enviroment
         context = {
             "__builtins__": safe_builtins,
@@ -123,11 +123,11 @@ class Simulation:
 
         try:
             #bot_code = compile_restricted(bot.code(), '<string>', 'exec')
-            print('prueba')
             exec(bot.code(), context, {}) #execute the bot code
         except Exception as e:
             log.i(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
             traceback.print_exc()
+            bot.set_last_position(-1)
             bots_to_remove.append(bot.id())
         finally:
             event = temp_out.getvalue()
