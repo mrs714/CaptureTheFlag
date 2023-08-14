@@ -1,4 +1,5 @@
-// Labels and constants
+// LABELS AND CONSTANTS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Bot config
 health_label = document.getElementById("healthConfig");
 shield_label = document.getElementById("shieldConfig");
 attack_label = document.getElementById("attackConfig");
@@ -6,9 +7,11 @@ health = 0;
 shield = 0;
 attack = 0;
 
+// Error log
 error_label = document.getElementById("error_span");
-error = "No status";
+error = "No status. ";
 
+// User info
 position_label = document.getElementById("position_span");
 error_status_label = document.getElementById("error_status_span");
 date_label = document.getElementById("date_span");
@@ -52,8 +55,13 @@ function update_config(successful_download) {
 
 function update_error_log(successful_download) {
   if (successful_download) {
-    error_label.innerHTML = error;
-    error_label.style.color = "red";
+    if (error_log == null) {
+      error_log = "No errors.";
+    }
+    else {
+      error_label.innerHTML = error_log;
+      error_label.style.color = "red";
+    }
   }
   else {
     error_label.innerHTML = "Couldn't load the log.";
@@ -120,6 +128,7 @@ async function download_error_log() {
   if (response.ok) {
     // Load data
     error_log = responseData.error_log;
+    console.log(error_log);
 
     update_error_log(true);
 
@@ -133,11 +142,15 @@ async function download_error_log() {
 }
 
 async function download_user_info() {
+  return true;
 
   const response = await fetch('/download_user_info').then(response => response);
   const responseData = await response.json();
       
   if (response.ok) {
+
+    console.log(responseData);
+
     // Load data
     position = responseData.position;
     error_status = responseData.error_status;
