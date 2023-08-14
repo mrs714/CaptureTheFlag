@@ -31,13 +31,12 @@ function load_data() {
   }
 }
 
-const [config_successful, error_log_successful, user_info_successful] = [
-  download_config(),
-  download_error_log(),
-  download_user_info()
-]
+download_config(),
+download_error_log(),
+download_user_info()
 
-setTimeout(load_data, 2000); // Wait 2 seconds before loading data
+setTimeout(load_data, 2000); // Wait 2 seconds before loading data to make sure that the data has been downloaded
+
 
 // FUNCTIONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function update_config(successful_download) {
@@ -98,71 +97,74 @@ function log_button() {
 // DOWNLOAD CONFIG AND INFO --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 async function download_config() {
 
-  const response = await fetch('/download_config').then(response => response);
-  const responseData = await response.json();
+  const response = await fetch('/download_config').then(response => {
+    const responseData = response.json();
+        
+    if (response.ok) {
+
+      health = responseData.health;
+      shield = responseData.shield;
+      attack = responseData.attack;
       
-  if (response.ok) {
-
-    health = responseData.health;
-    shield = responseData.shield;
-    attack = responseData.attack;
+      update_config(true);
     
-    update_config(true);
-  
-    return true;
+      config_successful = true;
 
-  }
-  else {
+    }
+    else {
 
-    update_config(false);
+      update_config(false);
 
-    return false;
+      config_successful = false;
 
-  }
+    }
+  });
 }
 
 async function download_error_log() {
-  const response = await fetch('/download_error_log').then(response => response);
-  const responseData = await response.json();
-      
-  if (response.ok) {
-    // Load data
-    error_log = responseData.error_log;
-    console.log(error_log);
+  const response = await fetch('/download_error_log').then(response => {
+    const responseData = response.json();
+        
+    if (response.ok) {
+      // Load data
+      error_log = responseData.error_log;
+      console.log(error_log);
 
-    update_error_log(true);
+      update_error_log(true);
 
-    return true;
+      error_log_successful = true;
 
-  } 
-  else {
-    update_error_log(false);
-    return false;
-  }
+    } 
+    else {
+      update_error_log(false);
+      error_log_successful = false;
+    }
+  });
 }
 
 async function download_user_info() {
-  return true;
 
-  const response = await fetch('/download_user_info').then(response => response);
-  const responseData = await response.json();
+  const response = await fetch('/download_user_info').then(response => response).then(response => 
+  {
+    const responseData = response.json();
       
-  if (response.ok) {
+    if (response.ok) {
 
-    console.log(responseData);
+      console.log(responseData);
 
-    // Load data
-    position = responseData.position;
-    error_status = responseData.error_status;
-    date = responseData.date;
+      // Load data
+      position = responseData.position;
+      error_status = responseData.error_status;
+      date = responseData.date;
 
-    update_user_info(true);
+      update_user_info(true);
 
-    return true;
+      user_info_successful = true;
 
-  } 
-  else {
-    update_user_info(false);
-    return false;
-  }
+    } 
+    else {
+      update_user_info(false);
+      user_info_successful = false;
+    }
+  });
 }

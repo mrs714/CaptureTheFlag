@@ -34,7 +34,7 @@ function showMessage(message, error) {
     span.style.color = "red";
   }
   else {
-    span.style.color = "white";
+    span.style.color = "#66ff00";
   }
 }
 

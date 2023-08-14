@@ -123,6 +123,8 @@ def download_code():
 def download_user_info():
     id = IdFromUser(session['username'])
     user_info = downloadInfo(id)
+    if not user_info:
+        return '', 400
     print(user_info)
     print("\nUser info succesfully loaded for user " + session['username'] + ".\n")
     
@@ -132,6 +134,8 @@ def download_user_info():
 def download_error_log():
     id = IdFromUser(session['username'])
     error_log = downloadError(id)
+    if not error_log:
+        return '', 400
     print(error_log)
     print("\nError log succesfully loaded for user " + session['username'] + ".\n")
     
