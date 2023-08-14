@@ -142,9 +142,6 @@ def download_simulation_info():
     with open(file_path, "r") as file:
     # Read the content of the file
         file_content = "".join(file.read().split(" ")[3]).join(" ").join(file.read().split(" ")[4]) #Day and time
-
-    print(file_content)
-
     return jsonify({"simulation_info": file_content}), 200
 
 """

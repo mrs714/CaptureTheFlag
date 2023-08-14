@@ -85,3 +85,7 @@ textarea {
   opacity: 0.65;
 }
 
+/* Dark theme for bootstrap table */
+.table tbody td {
+  color: rgba(255, 255, 255, 0.747);
+}
