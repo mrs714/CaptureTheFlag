@@ -1,27 +1,37 @@
 from simulation.simulation import Simulation
 from time import sleep
 from simulation.simulation_consts import *
-import log
+from log import setup_logger
+import atexit
 
 if __name__ == '__main__':
-    log.i("Starting the simulation engine...")
+    # Setup the logger
+    logger, handlers = setup_logger("simulation", "logs/simulation")
+
+    logger.info("Starting the simulation engine...")
 
     while True:
-        log.i("Creating the simulation object...")
+        logger.info("Creating the simulation object...")
         # Create an empty simulation
-        sim = Simulation()
-        log.i("Simulation created")
+        sim = Simulation(logger)
+        logger.info("Simulation created")
 
-        log.i("Running the simulation...")
+        logger.info("Running the simulation...")
         # Run the simulation
         sim.run()
-        log.i("The simulation has run successfully")
+        logger.info("The simulation has run successfully")
 
-        log.i("Saving the animation...")
+        logger.info("Saving the animation...")
         # Save the animation
         sim.save_replay()
-        log.i("Simulation saved")
+        logger.info("Simulation saved")
 
-        log.i("Sleeping...")
+        logger.info("Sleeping...")
         # Wait x minutes before running the simulation again
         sleep(INTER_SIMULATION_TIME)
+
+@atexit.register
+def clean_up():
+    global handlers
+    for handler in handlers:
+        handler.close()

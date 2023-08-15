@@ -2,6 +2,19 @@ from flask import Flask, render_template, session, jsonify, request, send_file
 import database.db_access as db
 import json
 import os
+from global_consts import *
+import atexit
+from log import setup_logger
+
+
+@atexit.register
+def clean_up():
+    global handlers
+    for handler in handlers:
+        handler.close()
+
+logger, handlers = setup_logger("web_app", "logs/web_app")
+
 """
 Flask: Framework for the web application
 render_template: Renders a template from the templates folder (html file)
@@ -13,41 +26,85 @@ send_file: Used to send a file to the client
 
 app = Flask(__name__)
 app.secret_key = 'key' # This serves as a secret key for the session, which is used to encrypt the cookie
+logger.info("Web app started")
 
 """
 DATABASE FETCH FUNCTIONS: Check username, check login, create user, get user id, upload and download config, upload and download code, download user info, download error log
 ----------------------------------------------------------------------------------------------------------
 """
 def check_username(username):
-    return db.exists_user(username) # True: user exists, False: user does not exist
+    try:
+        return db.exists_user(username) # True: user exists, False: user does not exist
+    except:
+        logger.exception(f"Error checking user {username} in database")
+        return False
 
 def check_login(username, password):
-    return db.check_user_credentials(username, password) # True: login correct, False: login incorrect
+    try:
+        return db.check_user_credentials(username, password) # True: login correct, False: login incorrect
+    except:
+        logger.exception(f"Error checking login for user {username} in database")
+        return False
 
 def createUser(username, password):
-    db.insert_user(username, password)
+    try:
+        db.insert_user(username, password)
+        return True
+    except:
+        logger.exception(f"Error creating user {username} in database")
+        return False
 
 def IdFromUser(username):
-    return db.get_user_id(username)
+    try:
+        return db.get_user_id(username)
+    except:
+        logger.exception(f"Error getting user id for user {username} in database")
+        return False
 
 def uploadConfig(id, health, shield, attack):
-    config = {"health": health, "shield": shield, "attack": attack}
-    db.save_config(id, json.dumps(config))
+    try:
+        config = {"health": health, "shield": shield, "attack": attack}
+        db.save_config(id, json.dumps(config))
+        return True
+    except:
+        logger.exception(f"Error uploading config for user with id {id} in database")
+        return False
 
 def downloadConfig(id):
-    return db.get_config(id) # JSON: {health, shield, attack}
+    try:
+        return db.get_config(id) # JSON: {health, shield, attack}
+    except:
+        logger.exception(f"Error downloading config for user with id {id} in database")
+        return False
 
 def uploadCode(id, code):
-    db.save_code(id, code)
+    try:
+        db.save_code(id, code)
+        return True
+    except:
+        logger.exception(f"Error uploading code for user with id {id} in database")
+        return False
 
 def downloadCode(id):
-    return db.get_code(id)
+    try:
+        return db.get_code(id)
+    except:
+        logger.exception(f"Error downloading code for user with id {id} in database")
+        return False
 
 def downloadInfo(id):
-    return db.get_info(id) # JSON: {last_position, last_game}
+    try:
+        return db.get_info(id) # JSON: {last_position, last_game}
+    except:
+        logger.exception(f"Error downloading info for user with id {id} in database")
+        return False
 
 def downloadError(id):
-    return db.get_error(id) # JSON: {error = "error message"}
+    try:
+        return db.get_error(id) # JSON: {error = "error message"}
+    except:
+        logger.exception(f"Error downloading error for user with id {id} in database")
+        return False
 
 
 """
