@@ -31,9 +31,7 @@ function load_data() {
   }
 }
 
-download_config(),
-download_error_log(),
-download_user_info()
+download_config() // Config calls error which in turn calls user info
 
 setTimeout(load_data, 2000); // Wait 2 seconds before loading data to make sure that the data has been downloaded
 
@@ -110,6 +108,8 @@ async function download_config() {
     
       config_successful = true;
 
+      download_error_log()
+
     }
     else {
 
@@ -133,6 +133,8 @@ async function download_error_log() {
       update_error_log(true);
 
       error_log_successful = true;
+
+      download_user_info()
 
     } 
     else {
