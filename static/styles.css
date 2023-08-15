@@ -89,3 +89,8 @@ textarea {
 .table tbody td {
   color: rgba(255, 255, 255, 0.747);
 }
+
+/* Any element with this class will have an off white color, displaying info to the user*/
+.info_label {
+  color: #f0f0f0c0; /* Off-white color */
+}
