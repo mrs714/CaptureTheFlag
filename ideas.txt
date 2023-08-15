@@ -1,23 +1,30 @@
 Classes:
    Tenir certs punts a distribuir entre atributs
    -Vida (apareixen rewards que donen vida)
-   -Escut (si s'acaba no es regenera, ignorat per la melee)
+   -Escut (regenera de normal, si s'acaba no es regenera, ignorat per la melee)
    -Dany (melee, molt més efectiu que les bales, con delay)
 
-Habilitats:
-   Teleport
-   Bala anti-shield
+Accions:
+   Capacitats
+      move
+      shoot (daño constante)
+      melee (daño configurable) ignora el escudo
+
+   Habilitats
+      dash (teleport)
+      super-shot (daño base de melee (ignora el escudo))
+      super-melee (quita el daño normal a la vida pero el doble al escudo) ex: 30dmg -> -30 vida, -60 escudo
+
+Drops:
+   puntos (básico)
+   vida (el valor de la mínima vida posible (50))
+   restore shield (hace que pueda volver a regenerar escudo si se le ha acabado)
 
 Nivell de coneixement del jugador?  
    El més alt possible (sense interferir en el gameplay)
 
 Joc:
-   Tens x temps per aconseguir els màxims punts possibles.
-   Cada y temps apareixen (ràndom o posició predeterminat?) rewards que donen z punts 
-   independentment dels que hi ha en el mapa. Al principi no n'hi ha.
-   Quan mates algú, et dona els seus punts + u punts.
-
-   idees - modificar la distribució de aparicions al llarg del temps? 
-
-Mapa: 
-   Quadrat (epic mp4)
+   Tens x temps (ticks) per aconseguir els màxims punts possibles.
+   Cada y temps apareixen (ràndom o posició predeterminat?) rewards (agar.io) que donen z punts 
+   independentment dels que hi ha en el mapa. (min (ceil(players/4)) y max max((players-1), 1)) (players va disminuyendo a medida que mueren)
+   Quan mates algú, et dona 50% dels seus punts + u punts. (te los da directamente)
