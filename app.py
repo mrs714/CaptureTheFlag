@@ -128,7 +128,7 @@ def download_user_info():
     print(user_info)
     print("\nUser info succesfully loaded for user " + session['username'] + ".\n")
     
-    return jsonify({"user_info": user_info}), 200
+    return jsonify({"position": user_info[0], "date": user_info[1]}), 200
 
 @app.route('/download_error_log', methods=['GET'])
 def download_error_log():
