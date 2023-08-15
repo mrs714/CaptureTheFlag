@@ -24,7 +24,7 @@ class Simulation:
         self.__logger.debug("Pygame initialized")
         
         self.__logger.debug("Creating the screen...")
-        self.__screen = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
+        self.__screen = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT), pygame.NOFRAME)
         self.__logger.debug("Screen created")
 
         self.__logger.debug("Initializing simulation object variables...")
@@ -108,7 +108,7 @@ class Simulation:
                                                             BULLET_DAMAGE,
                                                             bot.id())
         def debug(msg):
-            print(msg)
+            print(msg, end="")
 
         return move, shoot, debug
 

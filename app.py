@@ -25,6 +25,7 @@ send_file: Used to send a file to the client
 """
 
 app = Flask(__name__)
+app.logger = logger
 app.secret_key = 'key' # This serves as a secret key for the session, which is used to encrypt the cookie
 logger.info("Web app started")
 
@@ -101,7 +102,7 @@ def downloadInfo(id):
 
 def downloadError(id):
     try:
-        return db.get_error(id) # JSON: {error = "error message"}
+        return db.get_exec_output(id)
     except:
         logger.exception(f"Error downloading error for user with id {id} in database")
         return False

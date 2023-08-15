@@ -81,7 +81,7 @@ def get_info(id):
         temp = c.fetchone()
         return temp[0], temp[1]
 
-def get_error(id):
+def get_exec_output(id):
     with _db as c:
         c.execute(f"SELECT last_execution_result FROM {DATABASE_USER_TABLE} WHERE id = ?", (id,))
         return c.fetchone()[0]
