@@ -293,7 +293,7 @@ def validate_login(route):
         return login()
 
 
-""" HTML pages and routes: Login, main menu, update code, bot config, player info, replays, highscores, logout, simulation video
+""" HTML pages and routes: Login, main menu, update code, bot config, player info, replays, highscores, logout
 ----------------------------------------------------------------------------------------------------------
 """
 @app.route('/')
@@ -330,9 +330,17 @@ def logout():
     session.clear()
     return login()
 
+""" MEDIA: Simulation video, help icon
+----------------------------------------------------------------------------------------------------------
+"""
+
 @app.route('/simulation_video')
 def video():
     return validate_login(send_file('replays/simulation.mp4'))
+
+@app.route('/help_icon')
+def help_icon():
+    return send_file('static/help_icon.png')
 
 
 """ RUN APP 

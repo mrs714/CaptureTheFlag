@@ -94,3 +94,10 @@ textarea {
 .info_label {
   color: #f0f0f0c0; /* Off-white color */
 }
+
+/* Used in the main menu to obtain information*/
+.help_icon {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
