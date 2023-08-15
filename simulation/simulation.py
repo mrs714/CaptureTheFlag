@@ -8,7 +8,7 @@ import database.db_access as db #import db_access (for accessing the database)
 from simulation.bot import Bot #import Bot
 from simulation.bullet import Bullet #import Bullet
 import json #import json (for parsing the bot config)
-from RestrictedPython import safe_builtins #import safe_builtins (for executing the bot code)
+from RestrictedPython import safe_builtins, compile_restricted #import safe_builtins (for executing the bot code)
 from io import StringIO #import StringIO (for capturing the bot output)
 import sys #import sys
 
@@ -107,16 +107,19 @@ class Simulation:
                                                             dy, 
                                                             BULLET_DAMAGE,
                                                             bot.id())
+        def debug(msg):
+            print(msg)
 
-        return move, shoot
+        return move, shoot, debug
 
     def __execute_bot_code(self, bot, bots_to_remove):
 
-        move, shoot = self.__generate_actions(bot) #for the context enviroment
+        move, shoot, debug = self.__generate_actions(bot) #for the context enviroment
         context = {
             "__builtins__": safe_builtins,
             "move": move,
-            "shoot": shoot
+            "shoot": shoot,
+            "debug": debug
         }
 
         temp_out = StringIO()
@@ -124,8 +127,8 @@ class Simulation:
         sys.stderr = temp_out
 
         try:
-            #bot_code = compile_restricted(bot.code(), '<string>', 'exec')
-            exec(bot.code(), context, {}) #execute the bot code
+            bot_code = compile_restricted(bot.code(), '<string>', 'exec')
+            exec(bot_code, context, {}) #execute the bot code
         except Exception as e:
             self.__logger.warning(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
             #traceback.print_exc() #too much info
