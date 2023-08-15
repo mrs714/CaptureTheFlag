@@ -106,9 +106,9 @@ function fix_sliders() {
 // FUNCTIONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function update_info() {
   fix_sliders();
-  document.getElementById("health_slider_info").innerHTML = "Health: " + health_slider.value;
-  document.getElementById("shield_slider_info").innerHTML = "Shield: " + shield_slider.value;
-  document.getElementById("attack_slider_info").innerHTML = "Attack: " + attack_slider.value;
+  document.getElementById("health_slider_info").innerHTML = health_slider.value;
+  document.getElementById("shield_slider_info").innerHTML = shield_slider.value;
+  document.getElementById("attack_slider_info").innerHTML = attack_slider.value;
 }
 
 function set_sliders(health, shield, attack) {

@@ -17,7 +17,7 @@ body {
   background-color: #383838; /* Darker container background color */
   border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: max-width 1.5s ease;
+  transition: 1.5s ease;
 }
 
 button {
@@ -88,4 +88,9 @@ textarea {
 /* Dark theme for bootstrap table */
 .table tbody td {
   color: rgba(255, 255, 255, 0.747);
+}
+
+/* Any element with this class will have an off white color, displaying info to the user*/
+.info_label {
+  color: #f0f0f0c0; /* Off-white color */
 }
