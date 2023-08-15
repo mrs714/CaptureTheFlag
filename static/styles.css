@@ -102,3 +102,22 @@ textarea {
   bottom: 20px;
   right: 20px;
 }
+
+ /* Override Bootstrap's default accordion styles */
+ .accordion {
+  background-color: #1f1f1f; /* Darker background color for accordion */
+} 
+
+.card {
+  background-color: #292828; /* Dark background color for card */
+  border: none; /* Remove card border */
+}
+
+.card-header {
+  background-color: #404040; /* Dark background color for card header */
+  border: none; /* Remove card header border */
+}
+
+.btn-link {
+  color: #fff; /* Light text color for accordion button */
+}

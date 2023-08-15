@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Info and help</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="./static/styles.css"> <!-- Include shared.css -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -11,9 +11,55 @@
     <div class="container">
       <h1 class="text-center">The Game</h1>
       
-  </div>
+      <div id="accordion">
+        <div class="card">
+          <div class="card-header" id="section1">
+            <h5 class="mb-0">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                Section 1: Rules
+              </button>
+            </h5>
+          </div>
+  
+          <div id="collapse1" class="collapse show" aria-labelledby="section1" data-parent="#accordion">
+            <div class="card-body">
+              <!-- Content of Section 1 -->
+              Rules and instructions...
+            </div>
+          </div>
+        </div>
+  
+        <div class="card">
+          <div class="card-header" id="section2">
+            <h5 class="mb-0">
+              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                Section 2: Gameplay
+              </button>
+            </h5>
+          </div>
+          
+          <div id="collapse2" class="collapse" aria-labelledby="section2" data-parent="#accordion">
+            <div class="card-body">
+              <!-- Content of Section 2 -->
+              Gameplay details...
+            </div>
+          </div>
+        </div>
+        
+        <!-- Add more sections as needed -->
+      </div>
+
+      <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
+
+    </div>
 
     <script src="./static/shared_script.js"></script>
     <script src="./static/login_script.js"></script>
+
+    <!-- Include jQuery and Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
   </body>
 </html>
