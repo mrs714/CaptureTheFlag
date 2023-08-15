@@ -292,7 +292,7 @@ def validate_login(route):
         return login()
 
 
-""" HTML pages and routes: Login, main menu, update code, bot config, player info, replays, highscores, logout
+""" HTML pages and routes: Login, main menu, update code, bot config, player info, replays, highscores, help, logout
 ----------------------------------------------------------------------------------------------------------
 """
 @app.route('/')
@@ -322,6 +322,10 @@ def replays():
 @app.route('/highscores')
 def highscores():
     return validate_login(render_template('highscores.html'))
+
+@app.route('/help')
+def help():
+    return validate_login(render_template('help.html'))
 
 @app.route('/logout')
 def logout():
