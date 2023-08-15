@@ -156,7 +156,7 @@ async function download_user_info() {
     position = responseData.position;
     date = responseData.date;
 
-    error_status = position == -1 ? false : true;
+    error_status = position == -1 ? true : false;
 
     update_user_info(true);
 
