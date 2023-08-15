@@ -4,7 +4,6 @@ from datetime import datetime #import datetime (to get the current date and time
 import numpy as np #import numpy
 from moviepy.editor import ImageSequenceClip #import ImageSequenceClip (for saving the mp4 file)
 from random import randint #import randint (for generating random numbers)
-import log #import log (for logging into files)
 import database.db_access as db #import db_access (for accessing the database)
 from simulation.bot import Bot #import Bot
 from simulation.bullet import Bullet #import Bullet
@@ -12,20 +11,23 @@ import json #import json (for parsing the bot config)
 from RestrictedPython import safe_builtins #import safe_builtins (for executing the bot code)
 from io import StringIO #import StringIO (for capturing the bot output)
 import sys #import sys
-import traceback #import traceback (for printing the traceback in case of an error)
+
 
 class Simulation:
 
-    def __init__(self):
-        log.d("Initializing pygame...")
-        pygame.init()
-        log.d("Pygame initialized")
+    def __init__(self, logger):
         
-        log.d("Creating the screen...")
-        self.__screen = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
-        log.d("Screen created")
+        self.__logger = logger
 
-        log.d("Initializing simulation object variables...")
+        self.__logger.debug("Initializing pygame...")
+        pygame.init()
+        self.__logger.debug("Pygame initialized")
+        
+        self.__logger.debug("Creating the screen...")
+        self.__screen = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
+        self.__logger.debug("Screen created")
+
+        self.__logger.debug("Initializing simulation object variables...")
         self.__clock = pygame.time.Clock()
         self.__current_tick = 0
         self.__frames = []
@@ -35,7 +37,7 @@ class Simulation:
             "dead_bots": {},
             "bullets": {}
         }
-        log.d("Simulation object variables initialized")
+        self.__logger.debug("Simulation object variables initialized")
     
     def get_id(self):
         self.__id_counter += 1
@@ -43,7 +45,7 @@ class Simulation:
     
     def run(self):
 
-        log.d("Preparing to run the simulation...")
+        self.__logger.debug("Preparing to run the simulation...")
         list_of_bots = db.get_bots_to_execute()
         for bot in list_of_bots:
             config = json.loads(bot["config"])
@@ -57,9 +59,9 @@ class Simulation:
                                                   config["health"], 
                                                   config["shield"], 
                                                   config["attack"])
-        log.d("Simulation prepared")
+        self.__logger.debug("Simulation prepared")
 
-        log.d("Running the simulation loop...")
+        self.__logger.debug("Running the simulation loop...")
         running = True
         while self.__current_tick < DURATION and running:
             for event in pygame.event.get():
@@ -76,15 +78,15 @@ class Simulation:
             self.__clock.tick(FPS)
 
         pygame.quit()
-        log.d("Simulation loop finished")
+        self.__logger.debug("Simulation loop finished")
 
-        log.d("Performing post-simulation tasks...")
-        for bot in self.__entities["bots"].values():
-            db.update_info(bot.get_db_id(), bot.get_last_position(), datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
+        self.__logger.debug("Performing post-simulation tasks...")
 
-        for bot in self.__entities["dead_bots"].values():
-            db.update_info(bot.get_db_id(), bot.get_last_position(), datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
-        log.d("Post-simulation tasks performed")
+        all_bots = [val for d in (self.__entities["bots"], self.__entities["dead_bots"]) for val in d.values()]
+        for bot in all_bots:
+            db.update_info(bot.get_db_id(), bot.get_last_position(), datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
+
+        self.__logger.debug("Post-simulation tasks performed")
 
 ##########################################################################################
 
@@ -125,8 +127,9 @@ class Simulation:
             #bot_code = compile_restricted(bot.code(), '<string>', 'exec')
             exec(bot.code(), context, {}) #execute the bot code
         except Exception as e:
-            log.i(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
-            traceback.print_exc()
+            self.__logger.warning(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
+            #traceback.print_exc() #too much info
+            print(e)
             bot.set_last_position(-1)
             bots_to_remove.append(bot.id())
         finally:
@@ -155,7 +158,7 @@ class Simulation:
         for bot_id in bots_to_remove:
             db_bot = self.__entities["bots"][bot_id].get_db_id()
             self.__entities["dead_bots"][bot_id] = self.__entities["bots"].pop(bot_id)
-            log.d(f"Bot with db_id = {db_bot} removed")
+            self.__logger.debug(f"Bot with db_id = {db_bot} removed")
 
         for bullet in self.__entities["bullets"].values():
             bullet.move()
@@ -177,12 +180,12 @@ class Simulation:
     
     def save_replay(self):
 
-        log.d("Saving the mp4 file...")
+        self.__logger.debug("Saving the mp4 file...")
         video_clip = ImageSequenceClip(self.__frames, fps=FPS)
         video_clip.write_videofile(SIM_MP4_NAME, fps=FPS)
-        log.d("Mp4 file saved")
+        self.__logger.debug("Mp4 file saved")
 
-        log.d("Saving the simulation info file...")
+        self.__logger.debug("Saving the simulation info file...")
         with open(SIM_INFO_NAME, "w") as f:
             f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-        log.d("Simulation info file saved")
+        self.__logger.debug("Simulation info file saved")

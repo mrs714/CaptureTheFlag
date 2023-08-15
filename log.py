@@ -1,86 +1,28 @@
-from datetime import datetime, date
+from global_consts import *
+import logging
+from logging.handlers import TimedRotatingFileHandler
 import os
+from datetime import datetime
 
-_log_object = None
-_logfile_dir = "logs"
-_max_logs = 10
+def setup_logger(name, path):
+    # create logger
+    logger = logging.getLogger(name)
+    logger.setLevel(LOG_LEVEL)
 
-#Log levels
-_max_level = 2
-DEBUG = 0
-INFO = 1
-ERROR = 2
+    log_filename = f"{path}/{name}_{LOG_FILE_NAME}"
+    if not os.path.exists(path):
+        os.makedirs(path)
 
+    formatter = logging.Formatter(fmt = '[%(levelname)s][%(asctime)s.%(msecs)03d][%(name)s]: %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
 
-class Log:
-    
-    def __init__(self, level):
-        if 0 <= level <= _max_level:
-            self.__level = level
-        else:
-            self.__level = ERROR
-        
-        self.__logfile_path = None
-        self.__date = None
-    
-    def _allocate_logs(self):
-        """
-        removes the oldest log file if the number of logs is equal or greater than _max_logs
-        """
-        if not os.path.exists(_logfile_dir):
-            os.mkdir(_logfile_dir)
-              
-        logs = os.listdir(_logfile_dir)
-        if len(logs) >= _max_logs:
-            oldest_log = min([(f"{_logfile_dir}/{log}", os.path.getmtime(f"{_logfile_dir}/{log}")) for log in logs])[0]
-            os.remove(oldest_log)    
-    
-    def _define_dir(self):
-        if self.__date != date.today():
-            self.__date = date.today()
-            self._allocate_logs()
-            self.__logfile_path = f"{_logfile_dir}/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')}.log"
-    
-    def write(self, level, msg):
-        if _max_level >= level >= self.__level:
-            self._define_dir()
-            try:
-                with open(self.__logfile_path, "a") as f:
-                    type_str = "[DEBUG]" if level == DEBUG else "[INFO]" if level == INFO else "[ERROR]"
-                    time_str = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
-                    f.write(f"{type_str}{time_str}: {msg}\n")
-            except:
-                print("Error writing to log file")
+    day_file_handler = TimedRotatingFileHandler(filename=log_filename, when="midnight", interval=1, backupCount=30)
+    day_file_handler.setFormatter(formatter)
+    logger.addHandler(day_file_handler)
 
-def _init_log():
-    global _log_object
-    if _log_object is not None:
-        return
-    correct = False
-    while not correct:
-        try:
-            level = int(input(f"Enter the log level ({DEBUG}: DEBUG, {INFO}: INFO, {ERROR}: ERROR): "))
-            if 0 <= level <= _max_level:
-                correct = True
-        except:
-            print("Error")
-    _log_object = Log(level)
-    _log_object._define_dir()      
-    
-def w(level, msg):
-    """
-    Writes a message to the log file
-    """
-    _init_log()
-    _log_object.write(level, msg)
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S_%f")
+    log_filename = log_filename + "_" + timestamp + ".log"
+    exec_file_handler = logging.FileHandler(log_filename)
+    exec_file_handler.setFormatter(formatter)
+    logger.addHandler(exec_file_handler)
 
-def d(msg):
-    w(DEBUG, msg)
-
-def i(msg):
-    w(INFO, msg)
-
-def e(msg):
-    w(ERROR, msg)
-
-_init_log()
+    return logger, (day_file_handler, exec_file_handler)
