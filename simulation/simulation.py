@@ -8,10 +8,10 @@ import database.db_access as db #import db_access (for accessing the database)
 from simulation.bot import Bot #import Bot
 from simulation.bullet import Bullet #import Bullet
 import json #import json (for parsing the bot config)
-from RestrictedPython import safe_builtins, compile_restricted #import safe_builtins (for executing the bot code)
+from RestrictedPython import safe_builtins, compile_restricted_exec #import safe_builtins (for executing the bot code)
 from io import StringIO #import StringIO (for capturing the bot output)
 import sys #import sys
-
+import traceback #import traceback (for printing the bot errors)
 
 class Simulation:
 
@@ -87,7 +87,6 @@ class Simulation:
             db.update_info(bot.get_db_id(), bot.get_last_position(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
 
         self.__logger.debug("Post-simulation tasks performed")
-
 ##########################################################################################
 
 
@@ -126,13 +125,21 @@ class Simulation:
         sys.stdout = temp_out
         sys.stderr = temp_out
 
+        bot_code_compiled = compile_restricted_exec(bot.code())
+
         try:
-            bot_code = compile_restricted(bot.code(), '<string>', 'exec')
-            exec(bot_code, context, {}) #execute the bot code
-        except Exception as e:
-            self.__logger.warning(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {e}")
-            #traceback.print_exc() #too much info
-            print(e)
+            if bot_code_compiled.errors:
+                for error in bot_code_compiled.errors:
+                    temp_out.write(error)
+                self.__logger.warning(f"Error while compiling the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {bot_code_compiled.errors}")
+            else:
+                exec(bot_code_compiled.code, context, {}) #execute the bot code
+        except:
+            self.__logger.warning(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {traceback.format_exc()}")
+            cl, exc, tb = sys.exc_info()
+            tb2 = traceback.extract_tb(tb)
+            temp_out.write(f"Line {tb2[-1].lineno}: {cl.__name__}: {exc}")
+            
             bot.set_last_position(-1)
             bots_to_remove.append(bot.id())
         finally:
