@@ -13,7 +13,7 @@
     <div class="row mt-4">
       <div class="col-md-12">
         <h3>Position in the last game: <br><span id="position_span" class="info_label">...</span></h3>
-        <h3>Error in last game: <br><span id="error_status_span" class="info_label">...</span></h3>
+        <h3>Errors found: <br><span id="error_status_span" class="info_label">...</span></h3>
         <h3>Date of last game: <br><span id="date_span" class="info_label">...</span></h3>
         <h3>Configuration used:</h3>
         <ul>
@@ -30,11 +30,10 @@
     <div class="row mt-4">
       <div class="col-md-12">
         <button id="log_button" class="btn btn-primary" type="button" onclick="log_button()" data-toggle="collapse" data-target="#errorDetails" aria-expanded="false" aria-controls="errorDetails">
-          Show last error log
+          Show last simulation log
         </button>
         <div class="collapse mt-3" id="errorDetails">
-          <h3>Error Details:</h3>
-          <span id="error_span" style="color: rgb(0, 255, 0);"><p id="error">No error information available.</p></span>
+          <span id="error_span" class="info_label"><p id="error">No error information available.</p></span>
         </div>
       </div>
     </div>

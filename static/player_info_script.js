@@ -33,7 +33,7 @@ function load_data() {
 
 download_config() // Config calls error which in turn calls user info
 
-setTimeout(load_data, 4000); // Wait 2 seconds before loading data to make sure that the data has been downloaded
+setTimeout(load_data, 2000); // Wait 2 seconds before loading data to make sure that the data has been downloaded
 
 
 // FUNCTIONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -53,16 +53,14 @@ function update_config(successful_download) {
 function update_error_log(successful_download) {
   if (successful_download) {
     if (error_log == null) {
-      error_log = "No errors.";
+      error_log = "No log.";
     }
     else {
       error_label.innerHTML = error_log;
-      error_label.style.color = "red";
     }
   }
   else {
     error_label.innerHTML = "Couldn't load the log.";
-    error_label.style.color = "red";
   }
 }
 
@@ -88,7 +86,7 @@ function log_button() {
     button.innerHTML = "Hide log";
   }
   else {
-    button.innerHTML = "Show last error log";
+    button.innerHTML = "Show last simulation log";
   }
 }
 
@@ -156,7 +154,7 @@ async function download_user_info() {
     position = responseData.position;
     date = responseData.date;
 
-    error_status = position == -1 ? false : true;
+    error_status = position == -1 ? "Error on the last simulation." : "No error on the last simulation.";
 
     update_user_info(true);
 
