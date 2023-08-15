@@ -8,6 +8,7 @@ body {
 }
 
 .container {
+  position: relative;
   max-width: 35%;
   margin: 0 auto;
   margin-top: 1%;
@@ -93,4 +94,11 @@ textarea {
 /* Any element with this class will have an off white color, displaying info to the user*/
 .info_label {
   color: #f0f0f0c0; /* Off-white color */
+}
+
+/* Used in the main menu to obtain information*/
+.help_icon {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 }
