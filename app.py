@@ -340,7 +340,7 @@ def video():
 
 @app.route('/help_icon')
 def help_icon():
-    return send_file('static/help_icon.png')
+    return send_file('static/question_icon.png')
 
 
 """ RUN APP 

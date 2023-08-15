@@ -8,6 +8,7 @@ body {
 }
 
 .container {
+  position: relative;
   max-width: 35%;
   margin: 0 auto;
   margin-top: 1%;
