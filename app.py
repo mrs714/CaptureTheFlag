@@ -136,7 +136,7 @@ def upload_config():
     id = IdFromUser(session['username'])
 
     uploadConfig(id, health, shield, attack)
-    logger.debug("\nUser " + session['username'] + " has updated their bot configuration.\n")
+    logger.debug("User " + session['username'] + " has updated their bot configuration.")
     return '', 200 # a-ok
 
 @app.route('/download_config', methods=['GET'])
@@ -147,7 +147,7 @@ def download_config():
     data = downloadConfig(id)
     if not data: 
         return '', 400 # Bad request
-    logger.debug("\nBot configuration succesfully loaded for user " + session['username'] + ": " + data + ".\n")
+    logger.debug("Bot configuration succesfully loaded for user " + session['username'] + ": " + data + ".")
     return data, 200
 
 @app.route('/upload_code', methods=['POST'])
@@ -163,7 +163,7 @@ def upload_code():
         user = session['username']
         id = IdFromUser(user)
         uploadCode(id, code)
-        logger.debug("\nUser " + session['username'] + " has updated their code.\n")
+        logger.debug("User " + session['username'] + " has updated their code.")
         return jsonify({"ok":True}), 200 # a-ok
     else:
         return jsonify({"ok":False, "error":str(error_details)}), 400 # Bad request
@@ -174,7 +174,7 @@ def download_code():
         return jsonify({"code": ""}), 200
     id = IdFromUser(session['username'])
     code = downloadCode(id)
-    logger.debug("\nCode succesfully loaded for user " + session['username'] + ".\n")
+    logger.debug("Code succesfully loaded for user " + session['username'] + ".")
     return jsonify({"code": code}), 200
 
 @app.route('/download_user_info', methods=['GET'])
@@ -183,7 +183,7 @@ def download_user_info():
     user_info = downloadInfo(id)
     if not user_info:
         return '', 400
-    logger.debug("\nUser info succesfully loaded for user " + session['username'] + ".\n")
+    logger.debug("User info succesfully loaded for user " + session['username'] + ".")
     
     return jsonify({"position": user_info[0], "date": user_info[1]}), 200
 
@@ -193,7 +193,7 @@ def download_error_log():
     error_log = downloadError(id)
     if not error_log:
         return '', 400
-    logger.debug("\nError log succesfully loaded for user " + session['username'] + ".\n")
+    logger.debug("Error log succesfully loaded for user " + session['username'] + ".")
     
     return jsonify({"error_log": error_log}), 200
 
@@ -292,7 +292,7 @@ def validate_login(route):
         return login()
 
 
-""" HTML pages and routes: Login, main menu, update code, bot config, player info, replays, highscores, logout
+""" HTML pages and routes: Login, main menu, update code, bot config, player info, replays, highscores, help, logout
 ----------------------------------------------------------------------------------------------------------
 """
 @app.route('/')
@@ -323,9 +323,13 @@ def replays():
 def highscores():
     return validate_login(render_template('highscores.html'))
 
+@app.route('/help')
+def help():
+    return validate_login(render_template('help.html'))
+
 @app.route('/logout')
 def logout():
-    logger.debug("\nUser " + session['username'] + " has logged off.")
+    logger.debug("User " + session['username'] + " has logged off.")
     session.clear()
     return login()
 
