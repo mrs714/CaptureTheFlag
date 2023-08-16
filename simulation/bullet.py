@@ -1,6 +1,7 @@
 from simulation.entity import Entity
 from math import sqrt
 from simulation.simulation_consts import *
+from simulation.player_context.bullet_info import BulletInfo
 
 class Bullet(Entity):
     def __init__(self, sim_id, x, y, dx, dy, damage, owner_id):
@@ -28,3 +29,6 @@ class Bullet(Entity):
         #Move the bullet
         self.__x__ += dx
         self.__y__ += dy
+    
+    def get_info(self):
+        return BulletInfo(self.id(), self.__x__, self.__y__, self.__dx, self.__dy, self.__damage, self.__owner_id)

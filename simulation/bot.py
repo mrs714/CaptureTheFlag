@@ -2,6 +2,7 @@ from simulation.entity import Entity
 from simulation.bullet import Bullet
 from math import sqrt
 from simulation.simulation_consts import *
+from simulation.player_context.bot_info import BotInfo
 
 class Bot(Entity):
     def __init__(self, sim_id, db_id, name, x, y, code, health, shield, attack):
@@ -61,3 +62,5 @@ class Bot(Entity):
     def code(self):
         return self.__code
 
+    def get_info(self):
+        return BotInfo(self.id(), self.__x__, self.__y__, self.__health, self.__shield, self.__attack)

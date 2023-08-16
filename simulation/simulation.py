@@ -8,10 +8,13 @@ import database.db_access as db #import db_access (for accessing the database)
 from simulation.bot import Bot #import Bot
 from simulation.bullet import Bullet #import Bullet
 import json #import json (for parsing the bot config)
-from RestrictedPython import safe_builtins, compile_restricted_exec #import safe_builtins (for executing the bot code)
+from RestrictedPython import compile_restricted_exec, safe_globals #import safe_builtins (for executing the bot code)
+from RestrictedPython.Eval import default_guarded_getiter, default_guarded_getitem #import default_guarded_getiter (for executing the bot code)
+from RestrictedPython.Guards import guarded_iter_unpack_sequence, safer_getattr, full_write_guard
 from io import StringIO #import StringIO (for capturing the bot output)
 import sys #import sys
 import traceback #import traceback (for printing the bot errors)
+from simulation.player_context.game import Game
 
 class Simulation:
 
@@ -106,26 +109,30 @@ class Simulation:
                                                             dy, 
                                                             BULLET_DAMAGE,
                                                             bot.id())
-        def debug(msg):
-            print(msg, end="")
-
-        return move, shoot, debug
+        
+        return move, shoot
 
     def __execute_bot_code(self, bot, bots_to_remove):
 
-        move, shoot, debug = self.__generate_actions(bot) #for the context enviroment
-        context = {
-            "__builtins__": safe_builtins,
-            "move": move,
-            "shoot": shoot,
-            "debug": debug
-        }
+        game = Game(bot, self.__entities, self.__generate_actions(bot), self.__current_tick)
+        
+        player_globals = safe_globals.copy()
+        player_globals["game"] = game
+        player_globals["__metaclass__"] = type
+        player_globals["__name__"] = "simulation_sandbox"
+        player_globals["_getiter_"] = default_guarded_getiter
+        player_globals["_getitem_"] = default_guarded_getitem
+        player_globals["_iter_unpack_sequence_"] = guarded_iter_unpack_sequence
+        player_globals["_write_"] = full_write_guard
+        #player_globals["_getattr_"] = safer_getattr
 
         temp_out = StringIO()
         sys.stdout = temp_out
         sys.stderr = temp_out
 
-        bot_code_compiled = compile_restricted_exec(bot.code())
+        filename = "<user_string>"
+
+        bot_code_compiled = compile_restricted_exec(bot.code(), filename=filename)
 
         try:
             if bot_code_compiled.errors:
@@ -133,12 +140,15 @@ class Simulation:
                     temp_out.write(error)
                 self.__logger.warning(f"Error while compiling the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {bot_code_compiled.errors}")
             else:
-                exec(bot_code_compiled.code, context, {}) #execute the bot code
+                exec(bot_code_compiled.code, player_globals, {}) #execute the bot code
         except:
             self.__logger.warning(f"Error while executing the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {traceback.format_exc()}")
-            cl, exc, tb = sys.exc_info()
+            cl, exc, tb = sys.exc_info() #cl: class, exc: exception, tb: traceback
             tb2 = traceback.extract_tb(tb)
-            temp_out.write(f"Line {tb2[-1].lineno}: {cl.__name__}: {exc}")
+            for i in range(len(tb2)-1, -1, -1): #iterate through the traceback in reverse order
+                if tb2[i].filename == filename: #get the last traceback frame that is in the user code
+                    break
+            temp_out.write(f"Line {tb2[i].lineno}: {cl.__name__}: {exc}")
             
             bot.set_last_position(-1)
             bots_to_remove.append(bot.id())
@@ -156,7 +166,8 @@ class Simulation:
 ##########################################################################################
 
 
-
+    def get_entities(self):
+        return self.__entities
 
 
 
