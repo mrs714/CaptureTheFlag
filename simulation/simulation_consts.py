@@ -19,3 +19,4 @@ BULLET_COLOR = RED
 BULLET_DAMAGE = 10 # change this in the future
 BOT_SHOOT_COOLDOWN = 10 # ticks
 BOT_MOVE_COOLDOWN = 1 # ticks
+BOT_MELEE_COOLDOWN = 20

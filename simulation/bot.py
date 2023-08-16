@@ -15,13 +15,32 @@ class Bot(Entity):
         self.__name = name
         self.__exec_events = [] #List of strings captured from stdout and stderr
         self.__last_position = None #Last position of the bot (-1 if the bot code raised an exception)
-        self.__last_actions = {"shoot": 0, "move": 0} #Last time the bot shot a bullet in ticks
+        self.__last_actions = {"shoot": 0, "move": 0, "melee": 0} #Last time the bot shot a bullet in ticks
 
     def shoot(self, actual_tick):
         if actual_tick - self.__last_actions["shoot"] >= BOT_SHOOT_COOLDOWN:
             self.__last_actions["shoot"] = actual_tick
             return True
         return False
+    
+    def melee(self, actual_tick):
+        if actual_tick - self.__last_actions["melee"] >= BOT_MELEE_COOLDOWN:
+            self.__last_actions["melee"] = actual_tick
+            return True
+        return False
+    
+    def receive_life_damage(self, damage):
+        self.__health -= damage
+        if self.__health <= 0:
+            self.__health = 0
+        return self.__health
+    
+    def receive_shield_damage(self, damage):
+        self.__shield -= damage
+        if self.__shield <= 0:
+            self.receive_life_damage(-self.__shield)
+            self.__shield = 0
+        return self.__health
     
     def set_last_position(self, pos):
         self.__last_position = pos

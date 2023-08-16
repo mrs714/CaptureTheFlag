@@ -17,7 +17,7 @@ def setup_logger(name, path):
 
     formatter = logging.Formatter(fmt = '[%(levelname)s][%(asctime)s.%(msecs)03d][%(name)s]: %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
 
-    day_file_handler = TimedRotatingFileHandler(filename=log_filename, when="midnight", interval=1, backupCount=30)
+    day_file_handler = TimedRotatingFileHandler(filename=log_filename, when="midnight", interval=1, backupCount=LOG_MAX_FILES)
     day_file_handler.setFormatter(formatter)
     logger.addHandler(day_file_handler)
 

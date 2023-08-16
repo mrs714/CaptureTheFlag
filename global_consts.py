@@ -5,3 +5,4 @@ LOG_BASE_PATH = 'logs'
 LOG_WEBAPP_PATH = 'webapp'
 LOG_SIMULATION_PATH = 'simulation'
 LOG_FILE_NAME = 'log'
+LOG_MAX_FILES = 5
