@@ -15,7 +15,7 @@ class Bot(Entity):
         self.__name = name
         self.__exec_events = [] #List of strings captured from stdout and stderr
         self.__last_position = None #Last position of the bot (-1 if the bot code raised an exception)
-        self.__last_actions = {"shoot": 0, "move": 0, "melee": 0} #Last time the bot shot a bullet in ticks
+        self.__last_actions = {"shoot": 0, "move": 0, "melee": 0, "dash": 0, "super_shot": 0, "super_melee": 0} #Last time the bot took an action
 
     def shoot(self, actual_tick):
         if actual_tick - self.__last_actions["shoot"] >= BOT_SHOOT_COOLDOWN:
@@ -26,6 +26,24 @@ class Bot(Entity):
     def melee(self, actual_tick):
         if actual_tick - self.__last_actions["melee"] >= BOT_MELEE_COOLDOWN:
             self.__last_actions["melee"] = actual_tick
+            return True
+        return False
+    
+    def dash(self, actual_tick):
+        if actual_tick - self.__last_actions["dash"] >= BOT_DASH_COOLDOWN:
+            self.__last_actions["dash"] = actual_tick
+            return True
+        return False
+
+    def super_shot(self, actual_tick):
+        if actual_tick - self.__last_actions["super_shot"] >= BOT_SUPER_SHOT_COOLDOWN:
+            self.__last_actions["super_shot"] = actual_tick
+            return True
+        return False
+    
+    def super_melee(self, actual_tick):
+        if actual_tick - self.__last_actions["super_melee"] >= BOT_SUPER_MELEE_COOLDOWN:
+            self.__last_actions["super_melee"] = actual_tick
             return True
         return False
     
