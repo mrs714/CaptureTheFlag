@@ -126,7 +126,7 @@ class Simulation:
         def super_melee():
             pass
         
-        return move, shoot, melee
+        return move, shoot, melee, dash, super_shot, super_melee
 
     def __execute_bot_code(self, bot, bots_to_remove):
 
