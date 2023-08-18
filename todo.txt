@@ -9,9 +9,9 @@ MIQUEL:
     - Fer que els jugadors no puguin sortir del mapa
         - Fer que les bales que surten del mapa es destrueixin
     - Arreglar totes les coses que implica el padding
-  
+    - Els jugadors ja no surten de la pantalla
 
 
     A fer: 
     les bales es dibuixen fora abans de morir ??
-    Els jugadors surten de la pantalla
+  

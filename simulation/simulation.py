@@ -219,7 +219,7 @@ class Simulation:
             self.__logger.debug(f"Bot with db_id = {db_bot} removed")
 
         for bullet in self.__entities["bullets"].values():
-            if bullet.check_map_bounds():
+            if bullet.remove_from_game():
                 self.__entities["bullets_to_remove"][bullet.id()] = self.__entities["bullets"][bullet.id()]
                 continue
             bullet.move()
