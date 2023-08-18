@@ -2,8 +2,8 @@ welcome_text = document.getElementById('welcome_text');
 welcome_text.innerHTML = 'Welcome to the Game, ' + username + '!';
 
 // Function to redirect to the "Update Code" page
-function update_code() {
-  window.location.href = '/update_code';
+function upload_code() {
+  window.location.href = '/upload_code';
 }
 
 // Function to redirect to the "Bot Config" page
