@@ -102,6 +102,9 @@ class Simulation:
     def __generate_actions(self, bot):
         def move(dx, dy):
             bot.move(dx, dy, self.__current_tick)
+
+        def dash(dx, dy):
+            bot.dash(dx, dy, self.__current_tick)
         
         def shoot(dx, dy):
             if bot.shoot(self.__current_tick):
@@ -114,7 +117,13 @@ class Simulation:
                                                             BULLET_DAMAGE,
                                                             bot.id())
         
+        def super_shot(dx, dy):
+            pass
+
         def melee():
+            pass
+
+        def super_melee():
             pass
         
         return move, shoot, melee
