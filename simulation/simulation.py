@@ -1,6 +1,7 @@
 from simulation.simulation_consts import * #import all the constants
 from simulation.bot import Bot
 from simulation.bullet import Bullet
+from simulation.drop import Drop
 from simulation.player_context.game import Game #import Game (for giving information to the bot code)
 
 import pygame
@@ -48,7 +49,10 @@ class Simulation:
             "dead_bots": {},
             "bullets": {},
             "bullets_to_remove": {},
-            "drops": {}
+            "drops_points": {},
+            "drops_health": {},
+            "drops_shield": {},
+            "drops_to_remove": {}
         }
         self.__logger.debug("Simulation object variables initialized")
     
@@ -227,6 +231,30 @@ class Simulation:
         for bullet_id in self.__entities["bullets_to_remove"].keys():
             self.__entities["bullets"].pop(bullet_id)
         self.__entities["bullets_to_remove"].clear() # Clear the list of bullets to remove
+
+        self.__spawn_drops()
+
+    def __spawn_drops(self):
+
+
+        def spawn(drop):
+            sim_id = self.get_id()
+            self.__entities["drops_" + drop][sim_id] = Drop(sim_id, 
+                                                            rnd.randint(MAP_PADDING + DROP_RADIUS, MAP_WIDTH + MAP_PADDING - DROP_RADIUS), 
+                                                            rnd.randint(MAP_PADDING + DROP_RADIUS, MAP_HEIGHT + MAP_PADDING - DROP_RADIUS), 
+                                                            drop)
+
+        # If empty, replenish health and shield drops:
+        if len(self.__entities["drops_health"]) < NUMBER_OF_HEALTH_DROPS:
+            spawn("health")
+        
+        if len(self.__entities["drops_shield"]) < NUMBER_OF_SHIELD_DROPS:
+            spawn("shield")
+        
+        # Point drops: Minimum ammount: ceil(players/4); Maximum ammount: max((players-1), 1);
+        # To implement with timing
+        """if len(self.__entities["drops_points"]) < max((len(self.__entities["bots"]) - 1), 1):
+            spawn("points")"""
     
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
@@ -235,6 +263,12 @@ class Simulation:
             pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
         for bullet in self.__entities["bullets"].values():
             pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
+        for drop in self.__entities["drops_points"].values():
+            pygame.draw.circle(self.__screen, DROP_COLOR_POINTS, drop.pos(), DROP_RADIUS)
+        for drop in self.__entities["drops_health"].values():
+            pygame.draw.circle(self.__screen, DROP_COLOR_HEALTH, drop.pos(), DROP_RADIUS)
+        for drop in self.__entities["drops_shield"].values():
+            pygame.draw.circle(self.__screen, DROP_COLOR_SHIELD, drop.pos(), DROP_RADIUS)
     
     def __save_frame(self):
         frame = pygame.surfarray.array3d(self.__screen)
