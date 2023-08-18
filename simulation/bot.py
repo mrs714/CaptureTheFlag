@@ -115,14 +115,14 @@ class Bot(Entity):
         self.keep_bot_within_map()
 
     def keep_bot_within_map(self):
-        if self.__x__ < MAP_PADDING:
-            self.__x__ = MAP_PADDING
-        elif self.__x__ > MAP_WIDTH + MAP_PADDING:
-            self.__x__ = MAP_WIDTH + MAP_PADDING
-        if self.__y__ < MAP_PADDING:
-            self.__y__ = MAP_PADDING
-        elif self.__y__ > MAP_HEIGHT + MAP_PADDING:
-            self.__y__ = MAP_HEIGHT + MAP_PADDING
+        if self.__x__ < MAP_PADDING + BOT_RADIUS:
+            self.__x__ = MAP_PADDING + BOT_RADIUS
+        elif self.__x__ > MAP_WIDTH + MAP_PADDING - BOT_RADIUS:
+            self.__x__ = MAP_WIDTH + MAP_PADDING - BOT_RADIUS
+        if self.__y__ < MAP_PADDING + BOT_RADIUS:
+            self.__y__ = MAP_PADDING + BOT_RADIUS
+        elif self.__y__ > MAP_HEIGHT + MAP_PADDING - BOT_RADIUS:
+            self.__y__ = MAP_HEIGHT + MAP_PADDING - BOT_RADIUS
          
     def code(self):
         return self.__code

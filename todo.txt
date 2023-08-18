@@ -7,9 +7,11 @@ MIQUEL:
     afegir habilitats a la llista d'accions
     Posar padding al mapa
     - Fer que els jugadors no puguin sortir del mapa
+        - Fer que les bales que surten del mapa es destrueixin
+    - Arreglar totes les coses que implica el padding
+  
 
 
     A fer: 
-    - Fer que les bales que surten del mapa es destrueixin
-    - Arreglar totes les coses que implica el padding
-  
+    les bales es dibuixen fora abans de morir ??
+    Els jugadors surten de la pantalla
