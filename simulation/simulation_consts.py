@@ -1,4 +1,5 @@
-MAP_WIDTH, MAP_HEIGHT = 1000, 1000 # pixels
+MAP_WIDTH, MAP_HEIGHT = 500, 500 # pixels, actual playing zone
+MAP_PADDING = 50 # padding at each side of the map
 BULLET_RADIUS = 4 # pixels
 BOT_RADIUS = 4 * BULLET_RADIUS # pixels
 BOT_SPEED = 3 # pixels per frame
@@ -12,6 +13,8 @@ SIM_INFO_NAME = "replays/simulation_info.txt"
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
+WHITE = (255, 255, 255)
+DARK_GRAY = (40, 40, 40) 
 BOT_COLOR = BLUE
 BACKGROUND_COLOR = BLACK
 BULLET_COLOR = RED

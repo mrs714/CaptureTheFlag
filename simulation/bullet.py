@@ -29,6 +29,13 @@ class Bullet(Entity):
         #Move the bullet
         self.__x__ += dx
         self.__y__ += dy
+
+    def check_map_bounds(self):
+        if self.__x__ < MAP_PADDING or self.__x__ > MAP_WIDTH + MAP_PADDING:
+            return True
+        if self.__y__ < MAP_PADDING or self.__y__ > MAP_HEIGHT + MAP_PADDING:
+            return True
+        return False
     
     def get_info(self):
         return BulletInfo(self.id(), self.__x__, self.__y__, self.__dx, self.__dy, self.__damage, self.__owner_id)

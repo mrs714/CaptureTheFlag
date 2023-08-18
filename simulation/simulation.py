@@ -35,7 +35,7 @@ class Simulation:
         self.__logger.debug("Pygame initialized")
         
         self.__logger.debug("Creating the screen...")
-        self.__screen = pygame.display.set_mode((MAP_WIDTH + 100, MAP_HEIGHT + 100), pygame.NOFRAME)
+        self.__screen = pygame.display.set_mode((MAP_WIDTH + MAP_PADDING * 2, MAP_HEIGHT + MAP_PADDING * 2), pygame.NOFRAME)
         self.__logger.debug("Screen created")
 
         self.__logger.debug("Initializing simulation object variables...")
@@ -46,7 +46,9 @@ class Simulation:
         self.__entities = {
             "bots": {},
             "dead_bots": {},
-            "bullets": {}
+            "bullets": {},
+            "bullets_to_remove": {},
+            "drops": {}
         }
         self.__logger.debug("Simulation object variables initialized")
     
@@ -64,8 +66,8 @@ class Simulation:
             self.__entities["bots"][sim_id] = Bot(sim_id, 
                                                   bot["id"], 
                                                   bot["username"], 
-                                                  rnd.randint(100, 900), 
-                                                  rnd.randint(100, 900), 
+                                                  rnd.randint(100, MAP_WIDTH - 100), # At least 50 inside the play-zone
+                                                  rnd.randint(100, MAP_HEIGHT - 100), 
                                                   bot["code"], 
                                                   config["health"], 
                                                   config["shield"], 
@@ -217,11 +219,18 @@ class Simulation:
             self.__logger.debug(f"Bot with db_id = {db_bot} removed")
 
         for bullet in self.__entities["bullets"].values():
+            if bullet.check_map_bounds():
+                self.__entities["bullets_to_remove"][bullet.id()] = self.__entities["bullets"][bullet.id()]
+                continue
             bullet.move()
+        
+        for bullet_id in self.__entities["bullets_to_remove"].keys():
+            self.__entities["bullets"].pop(bullet_id)
+        self.__entities["bullets_to_remove"].clear() # Clear the list of bullets to remove
     
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
-        pygame.draw.rect(self.__screen, (255, 255, 255), pygame.Rect(50, 50, MAP_WIDTH, MAP_HEIGHT))
+        pygame.draw.rect(self.__screen, DARK_GRAY, pygame.Rect(MAP_PADDING, MAP_PADDING, MAP_WIDTH, MAP_HEIGHT)) 
         for bot in self.__entities["bots"].values():
             pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
         for bullet in self.__entities["bullets"].values():

@@ -90,6 +90,9 @@ class Bot(Entity):
         self.__x__ += dx
         self.__y__ += dy
 
+        #Keep the bot inside the map
+        self.keep_bot_within_map()
+
     def dash(self, dx, dy, actual_tick):
         if actual_tick - self.__last_actions["dash"] < BOT_DASH_COOLDOWN:
             return
@@ -107,6 +110,19 @@ class Bot(Entity):
         #Move the bot
         self.__x__ += dx
         self.__y__ += dy
+
+        #Keep the bot inside the map 
+        self.keep_bot_within_map()
+
+    def keep_bot_within_map(self):
+        if self.__x__ < MAP_PADDING:
+            self.__x__ = MAP_PADDING
+        elif self.__x__ > MAP_WIDTH + MAP_PADDING:
+            self.__x__ = MAP_WIDTH + MAP_PADDING
+        if self.__y__ < MAP_PADDING:
+            self.__y__ = MAP_PADDING
+        elif self.__y__ > MAP_HEIGHT + MAP_PADDING:
+            self.__y__ = MAP_HEIGHT + MAP_PADDING
          
     def code(self):
         return self.__code
