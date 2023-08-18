@@ -28,12 +28,6 @@ class Bot(Entity):
             self.__last_actions["melee"] = actual_tick
             return True
         return False
-    
-    def dash(self, actual_tick):
-        if actual_tick - self.__last_actions["dash"] >= BOT_DASH_COOLDOWN:
-            self.__last_actions["dash"] = actual_tick
-            return True
-        return False
 
     def super_shot(self, actual_tick):
         if actual_tick - self.__last_actions["super_shot"] >= BOT_SUPER_SHOT_COOLDOWN:
@@ -95,7 +89,25 @@ class Bot(Entity):
         #Move the bot
         self.__x__ += dx
         self.__y__ += dy
-    
+
+    def dash(self, dx, dy, actual_tick):
+        if actual_tick - self.__last_actions["dash"] < BOT_DASH_COOLDOWN:
+            return
+        self.__last_actions["dash"] = actual_tick
+
+        #Normalize the vector
+        vec_norm = sqrt(dx**2 + dy**2)
+        dx /= vec_norm
+        dy /= vec_norm
+
+        #Escalate the vector (to simulate a teleport, the speed is multiplied by 100)
+        dx *= BOT_SPEED * 100
+        dy *= BOT_SPEED * 100
+
+        #Move the bot
+        self.__x__ += dx
+        self.__y__ += dy
+         
     def code(self):
         return self.__code
 
