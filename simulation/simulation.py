@@ -252,9 +252,9 @@ class Simulation:
             spawn("shield")
         
         # Point drops: Minimum ammount: ceil(players/4); Maximum ammount: max((players-1), 1);
-        # To implement with timing
-        """if len(self.__entities["drops_points"]) < max((len(self.__entities["bots"]) - 1), 1):
-            spawn("points")"""
+        if (len(self.__entities["drops_points"]) < math.ceil(len(self.__entities["bots"]))) or (self.__current_tick % TIME_BETWEEN_DROPS == 0):
+            if len(self.__entities["drops_points"]) < max((len(self.__entities["bots"]) - 1), 1):
+                spawn("points")
     
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
