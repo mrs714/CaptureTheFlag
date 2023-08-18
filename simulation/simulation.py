@@ -35,7 +35,7 @@ class Simulation:
         self.__logger.debug("Pygame initialized")
         
         self.__logger.debug("Creating the screen...")
-        self.__screen = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT), pygame.NOFRAME)
+        self.__screen = pygame.display.set_mode((MAP_WIDTH + 100, MAP_HEIGHT + 100), pygame.NOFRAME)
         self.__logger.debug("Screen created")
 
         self.__logger.debug("Initializing simulation object variables...")
@@ -221,6 +221,7 @@ class Simulation:
     
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
+        pygame.draw.rect(self.__screen, (255, 255, 255), pygame.Rect(50, 50, MAP_WIDTH, MAP_HEIGHT))
         for bot in self.__entities["bots"].values():
             pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
         for bullet in self.__entities["bullets"].values():
