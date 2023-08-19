@@ -32,11 +32,11 @@ class Bullet(Entity):
         self.__y__ += dy
 
         #If outside the map, mark it for removal
-        if self.keep_bullet_within_map():
+        if self.__keep_bullet_within_map():
             self.__to_remove = True
 
 
-    def keep_bullet_within_map(self):
+    def __keep_bullet_within_map(self):
         remove = False
         if self.__x__ < MAP_PADDING + BULLET_RADIUS:
             self.__x__ = MAP_PADDING + BULLET_RADIUS
