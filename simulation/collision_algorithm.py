@@ -62,8 +62,9 @@ class CollisionAlgorithm():
             for drop in drops.values():
                 if __bot_is_colliding_drop(bot, drop):
                     collisions.append((bot, drop))
-                    
-        return collisions
+
+        print(collisions) if len(collisions) > 0 else ""
+        return collisions if len(collisions) > 0 else None
 
     # Function called from the main simulation loop.
     # It updates the cells and checks for collisions.

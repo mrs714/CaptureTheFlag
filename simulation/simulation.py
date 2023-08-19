@@ -212,33 +212,39 @@ class Simulation:
             # Close the StringIO object
             temp_out.close()
 
-    def get_entities(self):
+    def get_entities(self): # Can the entities be modified? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return self.__entities
 
     def __perform_actions(self):
         bots_to_remove = []
+
+        # Move and spawn all entities
         for bot in self.__entities["bots"].values():
             self.__execute_bot_code(bot, bots_to_remove)
-        
-        for bot_id in bots_to_remove:
-            db_bot = self.__entities["bots"][bot_id].get_db_id()
-            self.__entities["dead_bots"][bot_id] = self.__entities["bots"].pop(bot_id)
-            self.__logger.debug(f"Bot with db_id = {db_bot} removed")
 
         for bullet in self.__entities["bullets"].values():
             if bullet.to_remove():
                 self.__entities["bullets_to_remove"][bullet.id()] = self.__entities["bullets"][bullet.id()]
                 continue
             bullet.move()
+
+        self.__spawn_drops()
+        
+        # Check for collisions
+        collisions = self.__collision_detector.check_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
+        self.__collision_handler(collisions)
+
+        # Remove the bots, bullets and drops that have to be removed
+        for bot_id in bots_to_remove:
+            db_bot = self.__entities["bots"][bot_id].get_db_id()
+            self.__entities["dead_bots"][bot_id] = self.__entities["bots"].pop(bot_id)
+            self.__logger.debug(f"Bot with db_id = {db_bot} removed")
         
         for bullet_id in self.__entities["bullets_to_remove"].keys():
             self.__entities["bullets"].pop(bullet_id)
         self.__entities["bullets_to_remove"].clear() # Clear the list of bullets to remove
 
-        self.__spawn_drops()
-
-        collisions = self.__collision_detector.check_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
-        self.__collision_handler(collisions)
+        
 
     def __spawn_drops(self):
 
@@ -263,9 +269,10 @@ class Simulation:
                 spawn("points")
     
     # Gets a list of the bots and the entities they are colliding with
-    def __collision_handler(collisions):
-        for bot, entity in collisions:
-            print("Bot {} is colliding with {}".format(bot.id(), entity.id()))
+    def __collision_handler(self, collisions):
+        if collisions:
+            for bot, entity in collisions:
+                print("Bot {} is colliding with {}".format(bot.id(), entity.id()))
 
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
