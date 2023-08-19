@@ -28,3 +28,14 @@ Joc:
    Cada y temps apareixen (ràndom o posició predeterminat?) rewards (agar.io) que donen z punts 
    independentment dels que hi ha en el mapa. (min (ceil(players/4)) y max max((players-1), 1)) (players va disminuyendo a medida que mueren)
    Quan mates algú, et dona 50% dels seus punts + u punts. (te los da directamente)
+
+Collision algorithm: 
+   Inicialització:
+      - Divide the map into m*m squares, where m is MAP_WIDTH / COLLISION_SQUARE_SIZE, m > 3.
+      - Per a cada quadrat, fer una llista que contingui els jugadors que hi són, una amb els drops, i una amb les bales.
+      
+   Actualització - cada tick:
+      - Col·locar cada element del mapa a la llista de la cel·la corresponent ( O(n) )
+      comprovar que no s'hagi tret el jugador
+      - Comprovar col·lisió de cada robot (r) amb cadascun dels altres elements (e),
+      de la seva cel·la i les veines en un radi COLLISION_SEARCH_RADIUS (e + r = n), (cost = e * (com a molt) r, cost << O(n^2))
