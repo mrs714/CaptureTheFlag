@@ -2,7 +2,7 @@ from simulation.simulation_consts import * #import all the constants
 from simulation.bot import Bot
 from simulation.bullet import Bullet
 from simulation.drop import Drop
-
+from simulation.collision_algorithm import CollisionAlgorithm
 from simulation.player_context.game import Game #import Game (for giving information to the bot code)
 
 import pygame
@@ -55,6 +55,7 @@ class Simulation:
             "drops_shield": {},
             "drops_to_remove": {}
         }
+        self.__collision_detector = CollisionAlgorithm()
         self.__logger.debug("Simulation object variables initialized")
     
     def get_id(self):
@@ -234,6 +235,8 @@ class Simulation:
         self.__entities["bullets_to_remove"].clear() # Clear the list of bullets to remove
 
         self.__spawn_drops()
+
+        self.__collision_detector.check_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
 
     def __spawn_drops(self):
 

@@ -42,8 +42,21 @@ class CollisionAlgorithm():
         return self.__cells[math.ceil(y/COLLISION_SQUARE_SIZE[1])][math.ceil(x/COLLISION_SQUARE_SIZE[0])]
 
     # Checks for collisions between bots and other entities
-    def __check_collisions(self):
-        pass
+    def __check_collisions(self, bots, bullets, drops):
+        
+        def __bot_is_colliding_bullet(bot, bullet):
+            return (bot.x - bullet.x) + (bot.y - bullet.y) < (BOT_RADIUS + BULLET_RADIUS) ** 2 
+        
+        def __bot_is_colliding_drop(bot, drop):
+            return (bot.x - drop.x) + (bot.y - drop.y) < (BOT_RADIUS + DROP_RADIUS) ** 2
+
+        for bot in bots.values():
+            for bullet in bullets.values():
+                if __bot_is_colliding_bullet(bot, bullet):
+                    pass
+            for drop in drops.values():
+                if __bot_is_colliding_drop(bot, drop):
+                    pass
 
     # Function called from the main simulation loop.
     # It updates the cells and checks for collisions.
