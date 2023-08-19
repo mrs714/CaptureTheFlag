@@ -1,3 +1,5 @@
+import math
+
 MAP_WIDTH, MAP_HEIGHT = 500, 500 # pixels, actual playing zone
 MAP_PADDING = 50 # padding at each side of the map
 BULLET_RADIUS = 4 # pixels
@@ -40,4 +42,7 @@ NUMBER_OF_SHIELD_DROPS = 2
 
 # Collisions grid
 COLLISIONS_CELL_NUMBER = 3 # >= 3, cells per row/column
-COLLISION_SQUARE_SIZE = (MAP_WIDTH/COLLISIONS_CELL_NUMBER, MAP_HEIGHT/COLLISIONS_CELL_NUMBER)       
+# Ceil is used to make sure that the grid is big enough to contain the whole map/overlaps rather than being too small.
+# It doesn't have much importance, but the best results will be obtained using a grid with a number of cells that is a multiple of the map size.
+COLLISION_SQUARE_SIZE = (math.ceil(MAP_WIDTH/COLLISIONS_CELL_NUMBER), math.ceil(MAP_HEIGHT/COLLISIONS_CELL_NUMBER))       
+
