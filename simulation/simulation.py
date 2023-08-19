@@ -78,6 +78,7 @@ class Simulation:
                                                   config["health"], 
                                                   config["shield"], 
                                                   config["attack"])
+        self.__logger.info("Bots participating: " + str([bot.get_name() for bot in self.__entities["bots"].values()]))
         self.__logger.debug("Simulation prepared")
 
         self.__logger.debug("Running the simulation loop...")
@@ -236,7 +237,8 @@ class Simulation:
 
         self.__spawn_drops()
 
-        self.__collision_detector.check_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
+        collisions = self.__collision_detector.check_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
+        self.__collision_handler(collisions)
 
     def __spawn_drops(self):
 
@@ -260,6 +262,11 @@ class Simulation:
             if len(self.__entities["drops_points"]) < max((len(self.__entities["bots"]) - 1), 1):
                 spawn("points")
     
+    # Gets a list of the bots and the entities they are colliding with
+    def __collision_handler(collisions):
+        for bot, entity in collisions:
+            print("Bot {} is colliding with {}".format(bot.id(), entity.id()))
+
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
         pygame.draw.rect(self.__screen, DARK_GRAY, pygame.Rect(MAP_PADDING, MAP_PADDING, MAP_WIDTH, MAP_HEIGHT)) 

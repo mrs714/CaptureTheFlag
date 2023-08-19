@@ -132,6 +132,7 @@ function help_button() {
 
 function reset_sliders() {
   set_sliders(100, 100, 100);
+  showMessage("Don't forget to save your configuration!", false);
 }
 
 // UPLOAD CONFIG --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
