@@ -31,7 +31,7 @@ Joc:
 
 Collision algorithm: 
    Inicialització:
-      - Divide the map into m*m squares, where m is MAP_WIDTH / COLLISION_SQUARE_SIZE, m > 3.
+      - Divide the map into COLLISION_CELL_NUMBER^2 >= 3 cells, and COLLISION_SQUARE_SIZE = (MAP_WIDTH/COLLISION_CELL_NUMBER, MAP_HEIGHT/COLLISION_CELL_NUMBER) .
       - Per a cada quadrat, fer una llista que contingui els jugadors que hi són, una amb els drops, i una amb les bales.
       
    Actualització - cada tick:

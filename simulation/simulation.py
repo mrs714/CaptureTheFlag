@@ -2,6 +2,7 @@ from simulation.simulation_consts import * #import all the constants
 from simulation.bot import Bot
 from simulation.bullet import Bullet
 from simulation.drop import Drop
+
 from simulation.player_context.game import Game #import Game (for giving information to the bot code)
 
 import pygame
