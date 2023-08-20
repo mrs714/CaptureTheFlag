@@ -272,7 +272,11 @@ class Simulation:
     def __collision_handler(self, collisions):
         if collisions:
             for bot, entity in collisions:
-                print("Bot {} is colliding with {}".format(bot.id(), entity.id()))
+                if type(entity) == Bullet:
+                    self.__entities["bullets_to_remove"][entity.id()] = entity
+                    print("Bot {} was hit by bullet {}".format(bot.id(), entity.id()))
+                if type(entity) == Drop:
+                    print("Bot {} picked up drop {}".format(bot.id(), entity.id()))
 
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
