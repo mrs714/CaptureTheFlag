@@ -4,18 +4,28 @@ from math import sqrt
 from simulation.simulation_consts import *
 from simulation.player_context.bot_info import BotInfo
 
+def clamp(self, value, min, max): # Used throughout the code
+    if value < min:
+        return min
+    elif value > max:
+        return max
+    return value
+
 class Bot(Entity):
     def __init__(self, sim_id, db_id, name, x, y, code, health, shield, attack):
         super().__init__(sim_id, x, y)
         self.__code = code
-        self.__health = health
-        self.__attack = attack
-        self.__shield = shield
+        self.__life = health # Bot attributes (changes)
+        self.__defense = shield
+        self.__health = health # Config (doesn't change)
+        self.__shield = shield # Config
+        self.__attack = attack # Config
         self.__db_id = db_id
         self.__name = name
         self.__exec_events = [] #List of strings captured from stdout and stderr
         self.__last_position = None #Last position of the bot (-1 if the bot code raised an exception)
         self.__last_actions = {"shoot": 0, "move": 0, "melee": 0, "dash": 0, "super_shot": 0, "super_melee": 0} #Last time the bot took an action
+        self.__points = 0 # Points earned by the bot
 
     def shoot(self, actual_tick):
         if actual_tick - self.__last_actions["shoot"] >= BOT_SHOOT_COOLDOWN:
@@ -42,17 +52,26 @@ class Bot(Entity):
         return False
     
     def receive_life_damage(self, damage):
-        self.__health -= damage
-        if self.__health <= 0:
-            self.__health = 0
-        return self.__health
+        self.__life = clamp(self.__life - damage, 0, self.__health)
+        return self.__life
     
-    def receive_shield_damage(self, damage):
-        self.__shield -= damage
-        if self.__shield <= 0:
-            self.receive_life_damage(-self.__shield)
-            self.__shield = 0
-        return self.__health
+    # To use on all attacks that might deal damage to shield, no matter if the shield is up or not
+    def receive_shield_damage(self, damage): 
+        self.__defense -= damage
+        if self.__defense <= 0:
+            self.receive_life_damage(-self.__defense)
+            self.__defense = 0
+        return self.__defense
+    
+    def get_drop(self, type):
+        if type == "health":
+            self.__defense = clamp(self.__defense + 50, 0, self.__health)
+        
+        elif type == "shield":
+            if self.__defense == 0:
+                self.__defense = 1
+            else: 
+                self.__defense = clamp(self.__defense + 50, 0, self.__shield)
     
     def set_last_position(self, pos):
         self.__last_position = pos
