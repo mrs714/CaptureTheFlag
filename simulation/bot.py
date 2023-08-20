@@ -72,6 +72,9 @@ class Bot(Entity):
                 self.__defense = 1
             else: 
                 self.__defense = clamp(self.__defense + 50, 0, self.__shield)
+            
+        elif type == "points":
+            self.__points += POINTS_PER_DROP
     
     def set_last_position(self, pos):
         self.__last_position = pos
@@ -87,6 +90,12 @@ class Bot(Entity):
     
     def get_name(self):
         return self.__name
+    
+    def get_points(self):
+        return self.__points
+    
+    def add_points(self, points):
+        self.__points += points
     
     def add_event(self, event):
         self.__exec_events.append(event)
