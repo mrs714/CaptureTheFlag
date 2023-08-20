@@ -49,11 +49,9 @@ class Simulation:
             "bots": {},
             "dead_bots": {},
             "bullets": {},
-            "bullets_to_remove": {},
             "drops_points": {},
             "drops_health": {},
-            "drops_shield": {},
-            "drops_to_remove": {}
+            "drops_shield": {}
         }
         self.__collision_detector = CollisionAlgorithm()
         self.__logger.debug("Simulation object variables initialized")
@@ -217,6 +215,8 @@ class Simulation:
 
     def __perform_actions(self):
         bots_to_remove = []
+        bullets_to_remove = []
+        drops_to_remove = []
 
         # Move and spawn all entities
         for bot in self.__entities["bots"].values():
@@ -224,7 +224,7 @@ class Simulation:
 
         for bullet in self.__entities["bullets"].values():
             if bullet.to_remove():
-                self.__entities["bullets_to_remove"][bullet.id()] = self.__entities["bullets"][bullet.id()]
+                bullets_to_remove.append(self.__entities["bullets"][bullet.id()].id())
                 continue
             bullet.move()
 
@@ -232,7 +232,7 @@ class Simulation:
         
         # Check for collisions
         collisions = self.__collision_detector.check_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
-        self.__collision_handler(collisions)
+        self.__collision_handler(collisions, bots_to_remove, bullets_to_remove, drops_to_remove)
 
         # Remove the bots, bullets and drops that have to be removed
         for bot_id in bots_to_remove:
@@ -240,9 +240,15 @@ class Simulation:
             self.__entities["dead_bots"][bot_id] = self.__entities["bots"].pop(bot_id)
             self.__logger.debug(f"Bot with db_id = {db_bot} removed")
         
-        for bullet_id in self.__entities["bullets_to_remove"].keys():
-            self.__entities["bullets"].pop(bullet_id)
-        self.__entities["bullets_to_remove"].clear() # Clear the list of bullets to remove    
+        # Check bullets aren't repeated
+        bullets_to_remove = list(set(bullets_to_remove))
+        for bullet_id in bullets_to_remove:
+            self.__entities["bullets"].pop(bullet_id)  
+
+        # Check drops aren't repeated
+        drops_to_remove = list(set(drops_to_remove))
+        for drop_id, drop_type in drops_to_remove:
+            self.__entities[str("drops_" + drop_type)].pop(drop_id, None)
 
     def __spawn_drops(self):
         def spawn(drop):
@@ -265,15 +271,19 @@ class Simulation:
                 spawn("points")
     
     # Gets a list of the bots and the entities they are colliding with
-    def __collision_handler(self, collisions):
+    def __collision_handler(self, collisions, bots_to_remove, bullets_to_remove, drops_to_remove):
         if collisions:
             for bot, entity in collisions:
                 if type(entity) == Bullet:
-                    self.__entities["bullets_to_remove"][entity.id()] = entity
+                    bullets_to_remove.append(entity.id())
                     if (bot.receive_shield_damage(BULLET_DAMAGE)):
                         self.__logger.debug("Bot {} was killed by bullet {}".format(bot.id(), entity.id()))
-                        !!!!!!!!!!!!!!!self.__bots_to_remove.append(bot.id())
+                        bots_to_remove.append(bot.id())
+                    print("Bot {} has {} remaining life and {} remaining defense".format(bot.id(), bot.get_life(), bot.get_defense()))
+                
                 if type(entity) == Drop:
+                    drops_to_remove.append((entity.id(), entity.type()))
+                    bot.get_drop(entity.type())
                     print("Bot {} picked up drop {}".format(bot.id(), entity.id()))
 
     def __update_frame(self):

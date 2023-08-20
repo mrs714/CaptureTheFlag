@@ -4,7 +4,7 @@ from math import sqrt
 from simulation.simulation_consts import *
 from simulation.player_context.bot_info import BotInfo
 
-def clamp(self, value, min, max): # Used throughout the code
+def clamp(value, min, max): # Used throughout the code
     if value < min:
         return min
     elif value > max:
@@ -98,6 +98,12 @@ class Bot(Entity):
     
     def add_points(self, points):
         self.__points += points
+
+    def get_life(self):
+        return self.__life
+    
+    def get_defense(self):
+        return self.__defense
     
     def add_event(self, event):
         self.__exec_events.append(event)
