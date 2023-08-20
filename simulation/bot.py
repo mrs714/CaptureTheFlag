@@ -51,17 +51,19 @@ class Bot(Entity):
             return True
         return False
     
-    def receive_life_damage(self, damage):
+    def receive_life_damage(self, damage): # Returns wether the player is dead
         self.__life = clamp(self.__life - damage, 0, self.__health)
-        return self.__life
+        return self.__life == 0
     
     # To use on all attacks that might deal damage to shield, no matter if the shield is up or not
+    # Returns wether the player is dead
     def receive_shield_damage(self, damage): 
         self.__defense -= damage
         if self.__defense <= 0:
-            self.receive_life_damage(-self.__defense)
+            damage = -self.__defense
             self.__defense = 0
-        return self.__defense
+            return self.receive_life_damage(damage)
+        return False
     
     def get_drop(self, type):
         if type == "health":

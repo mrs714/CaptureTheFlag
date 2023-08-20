@@ -242,13 +242,9 @@ class Simulation:
         
         for bullet_id in self.__entities["bullets_to_remove"].keys():
             self.__entities["bullets"].pop(bullet_id)
-        self.__entities["bullets_to_remove"].clear() # Clear the list of bullets to remove
-
-        
+        self.__entities["bullets_to_remove"].clear() # Clear the list of bullets to remove    
 
     def __spawn_drops(self):
-
-
         def spawn(drop):
             sim_id = self.get_id()
             self.__entities["drops_" + drop][sim_id] = Drop(sim_id, 
@@ -274,8 +270,9 @@ class Simulation:
             for bot, entity in collisions:
                 if type(entity) == Bullet:
                     self.__entities["bullets_to_remove"][entity.id()] = entity
-                    bot.receive_shield_damage(BULLET_DAMAGE)
-                    print("Bot {} was hit by bullet {}".format(bot.id(), entity.id()))
+                    if (bot.receive_shield_damage(BULLET_DAMAGE)):
+                        self.__logger.debug("Bot {} was killed by bullet {}".format(bot.id(), entity.id()))
+                        !!!!!!!!!!!!!!!self.__bots_to_remove.append(bot.id())
                 if type(entity) == Drop:
                     print("Bot {} picked up drop {}".format(bot.id(), entity.id()))
 
