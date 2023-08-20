@@ -54,6 +54,7 @@ class Simulation:
             "drops_shield": {}
         }
         self.__collision_detector = CollisionAlgorithm()
+        self.__text_font = pygame.font.SysFont(None, 24)
         self.__logger.debug("Simulation object variables initialized")
     
     def get_id(self):
@@ -277,7 +278,7 @@ class Simulation:
                 if type(entity) == Bullet:
                     bullets_to_remove.append(entity.id())
                     if (bot.receive_shield_damage(BULLET_DAMAGE)):
-                        self.__logger.debug("Bot {} was killed by bullet {}".format(bot.id(), entity.id()))
+                        self.__logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
                         bots_to_remove.append(bot.id())
                     print("Bot {} has {} remaining life and {} remaining defense".format(bot.id(), bot.get_life(), bot.get_defense()))
                 
@@ -291,6 +292,8 @@ class Simulation:
         pygame.draw.rect(self.__screen, DARK_GRAY, pygame.Rect(MAP_PADDING, MAP_PADDING, MAP_WIDTH, MAP_HEIGHT)) 
         for bot in self.__entities["bots"].values():
             pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
+            name = self.__text_font.render(str(bot.get_name()), True, WHITE)
+            self.__screen.blit(name, (bot.x() - BOT_RADIUS, bot.y() + 2 * BOT_RADIUS))
         for bullet in self.__entities["bullets"].values():
             pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
         for drop in self.__entities["drops_points"].values():
@@ -299,6 +302,7 @@ class Simulation:
             pygame.draw.circle(self.__screen, DROP_COLOR_HEALTH, drop.pos(), DROP_RADIUS)
         for drop in self.__entities["drops_shield"].values():
             pygame.draw.circle(self.__screen, DROP_COLOR_SHIELD, drop.pos(), DROP_RADIUS)
+        
     
     def __save_frame(self):
         frame = pygame.surfarray.array3d(self.__screen)
