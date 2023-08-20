@@ -274,6 +274,7 @@ class Simulation:
             for bot, entity in collisions:
                 if type(entity) == Bullet:
                     self.__entities["bullets_to_remove"][entity.id()] = entity
+                    bot.receive_shield_damage(BULLET_DAMAGE)
                     print("Bot {} was hit by bullet {}".format(bot.id(), entity.id()))
                 if type(entity) == Drop:
                     print("Bot {} picked up drop {}".format(bot.id(), entity.id()))

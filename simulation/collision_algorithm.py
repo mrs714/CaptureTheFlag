@@ -97,5 +97,7 @@ class CollisionAlgorithm():
 
                 # Finally we check for collisions between the bot and the other entities, and save them
                 collisions += self.__check_collisions(bots, bullets, drops)
-    
+
+        # Merge all collisions that are the same
+        collisions = list(set(collisions))
         return collisions if len(collisions) > 0 else None
