@@ -63,14 +63,16 @@ class CollisionAlgorithm():
                 if __bot_is_colliding_drop(bot, drop):
                     collisions.append((bot, drop))
 
-        print(collisions) if len(collisions) > 0 else ""
-        return collisions if len(collisions) > 0 else None
+        return collisions
 
     # Function called from the main simulation loop.
     # It updates the cells and checks for collisions.
     def check_collisions(self, bots, bullets, drops):
         # First of all, we check the cell of each entity and update the cells dictionaries
         self.__populate_cells(bots, bullets, drops)
+
+        # Store the collisions detected in each cell:
+        collisions = []
 
         for row in self.__cells:
             for cell in row:
@@ -93,5 +95,7 @@ class CollisionAlgorithm():
                     bullets = bullets | neighbouring_cell.bullets
                     drops = drops | neighbouring_cell.drops 
 
-                # Finally we check for collisions between the bot and the other entities
-                self.__check_collisions(bots, bullets, drops)
+                # Finally we check for collisions between the bot and the other entities, and save them
+                collisions += self.__check_collisions(bots, bullets, drops)
+    
+        return collisions if len(collisions) > 0 else None
