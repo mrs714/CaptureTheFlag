@@ -21,6 +21,14 @@ body {
   transition: 1.5s ease;
 }
 
+.container_fast_transition {
+  transition: 0s;
+}
+
+.container_slow_transition {
+  transition: 2s ease;
+}
+
 button {
   display: block;
   width: 100%;

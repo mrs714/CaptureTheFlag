@@ -52,6 +52,19 @@ function expand_form(width) {
   container.style.maxWidth != width ? container.style.maxWidth = width : container.style.maxWidth = '35%';
 }
 
+function toggle_fast_transition(boolean) {
+  container = document.getElementById("container");
+
+  if (boolean) {    
+    container.classList.remove("container_slow_transition");
+    container.classList.add("container_fast_transition");
+  }
+  else {
+    container.classList.remove("container_fast_transition");
+    container.classList.add("container_slow_transition");
+  }
+}
+
 // Call a certain python function (Functions: none for the moment)
 async function triggerPythonFunction(functionName) { 
   try {

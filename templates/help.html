@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container" id="container">
       <h1 class="text-center">The Game</h1>
       
       <div id="accordion">
@@ -16,7 +16,7 @@
           <div class="card-header" id="section1">
             <h5 class="mb-0">
               <button class="btn btn-link" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                Section 1: Rules
+                About the project
               </button>
             </h5>
           </div>
@@ -24,7 +24,14 @@
           <div id="collapse1" class="collapse show" aria-labelledby="section1" data-parent="#accordion">
             <div class="card-body">
               <!-- Content of Section 1 -->
-              Rules and instructions...
+              The aim of this project is to create both a python-based server and game.
+              <br><br>
+              The server, based on flask, can provide users different capabilities including login, and code and options saving for an arena-type competitive game, which will be periodically and asynchronously run, after which the needed data for improvement will be released.
+              <br><br>
+              As for the game, the intention is to create a game-frame from scratch using pygame, upon which we can add all the functionalities needed for the base game, and whatever updates we think of in the future.
+              <br><br>
+              All of the code used in the game is free for anyone to use, and the game will be run in a server, so that the players can compete against each other.
+              The files are available <a href="https://github.com/HalcoDraco/CompetitionBotUploader">here</a>.
             </div>
           </div>
         </div>
@@ -33,7 +40,7 @@
           <div class="card-header" id="section2">
             <h5 class="mb-0">
               <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                Section 2: Gameplay
+                Game mechanics and gameplay
               </button>
             </h5>
           </div>
@@ -41,10 +48,164 @@
           <div id="collapse2" class="collapse" aria-labelledby="section2" data-parent="#accordion">
             <div class="card-body">
               <!-- Content of Section 2 -->
-              Gameplay details...
+              <h3>Setting</h3>
+              The game, following a battle-royale-style, is based on a map in which each player bot is spawned in a random location.
+              We aim for the player to have as much information available about the map and its contents as possible, as well as full knowlegde about the constants which define the game, so that they can make the best decisions possible.
+              <br><br>
+              <h3>Objectives</h3>
+              The aim of the game is to get as many points as possible while staying alive. Points are awarded for killing other bots, and for staying alive for as long as possible.
+              <br><br>
+              <h3>How to win points</h3>
+              There are two main ways to win points:
+              <br>- Obtaining drops (more on this bellow), displayed as a green circle, which gives a fixed ammount of points;
+              <br>- Killing other bots, which gives you 50% of their points (but they lose any) plus a fixed reward.
+              <br><br>
+              <h3>The map: characteristics and drops</h3><br>
+              <h5>Characteristics</h5>
+              Conceptually, the map is a square with coordinates, not a discrete grid, in which positions and directions can be represented with vectors, being the origin ???
+              <br><br><h5>Drops</h5>
+              Randomly spawned around the map will be drops, which can be picked up by bots. There are three different kinds:
+              <br>- Health: restores a bot's health by 50 points;
+              <br>- Shield: restores a bot's broken shield, but with only one point;
+              <br>- Points: the basic drop, gives a bot 10 points;
+              <br><br>
+              The last one is the most common, its frequency of spawning and maximum/minimum number associated with the ammount of players remaining.
+              As bots die, less point drops will appear. The limits are the following:
+              <br>- Minimum ammount: ceil(players/4);
+              <br>- Maximum ammount: max((players-1), 1);
+              One points drop will spawn every 10 seconds following _______ distribution, with a starting ammount of ____ drops;
+              <br><br>
+              The spawning and ammount of special drops will be specified later on.
+              <br><br>
+              <h3>The bots</h3>
+              The bots have the following attributes:
+              <br>- Life: the ammount of damage a bot can take before dying;
+              <br>- Shield: a barrier that absorbs damage before it lowers the life of the bot, and regenerates when the bot hasn't been shot in some time. However, if the shield is broken, it won't regenerate;
+              <br>- Ranged attack: a projectile that can be fired, always dealing the same damage;
+              <br>- Melee attack: a close-range attack that deals more damage than the ranged one, and ignores the shield;
+              <br><br>
+              This configurations, which can be changed from 50 to 150 points and alter the bot's attributes:
+              <br>- Health: the amount of life a bot starts with;
+              <br>- Protection: the amount of shield points a bot has;
+              <br>- Damage: the percentage of the base melee damage a bot deals (e.g: 150 points of damage translates to 35*1.5 = 52.5 melee damage, 50 points to 35*0.5 = 17.5 melee damage);
+              <br><br>
+              Can take this actions: 
+              <br>- Move: the bot moves in the given direction;
+              <br>- Shoot: the bot shoots in the given direction;
+              <br>- Melee: the bot attacks in the given direction;
+              <br><br>
+              And have this habilities: 
+              <br>- Teleport: the bot teleports ___ x distance in the given direction;
+              <br>- Super-shot: the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;
+              <br><br>
+
             </div>
           </div>
         </div>
+        
+        <div class="card">
+          <div class="card-header" id="section3">
+            <h5 class="mb-0">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                Code: Functions and Constants
+              </button>
+            </h5>
+          </div>
+        
+          <div id="collapse3" class="collapse" aria-labelledby="section3" data-parent="#accordion">
+            <div class="card-body">
+              <!-- Content of Section 3 -->
+              <h3>Functions</h3>
+              Here be functions and their explanations in the future
+              please mind that for our safety, we have to run the code in a very limited version of python (you can check the specifics of the implementation in the file "simulation.py"). This limits things such as multiple assignations ("x,y = 0,0")
+        
+              <br><br><h3>Constants</h3>
+              Here be constants and their explanations in the future
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header" id="section4">
+            <h5 class="mb-0">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                The website
+              </button>
+            </h5>
+          </div>
+        
+          <div id="collapse4" class="collapse" aria-labelledby="section4" data-parent="#accordion">
+            <div class="card-body">
+              <!-- Content of Section 4 -->
+              <h3>Upload code</h3>
+              Here, you can upload your code to the server, which will be run in the next game.
+              <br><br>
+              <h3>Bot configuration</h3>
+              As explained in the game mechanics section, you can configure your bot's attributes, with slideres, that range from 50 to 150 points for each attribute, with a total of 300 points to spend.
+              Remember to save your configuration before exiting the page.
+              <br><br>
+              <h3>Player info</h3>
+              On this page is displayed the information about the player, including the bot's attributes saved in the server, the date and position of the last game played, wether there code used in that game threw errors, and finally the log of the game, including your prints.
+              <br><br>
+              <h3>Replays</h3>
+              Here you can see the replay of the last game, as the game is run asynchronously with some additional information.
+              <br><br>
+              <h3>Highscores</h3>
+              A leaderboard with the top 10 players, based on the number of points they have.
+              <br><br>
+              <h3>Help and info</h3>
+              Well... you're here, so you know what this page is about.
+              <h3>Logout</h3>
+              We'll let you figure this one out.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" id="section5">
+            <h5 class="mb-0">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                idk
+              </button>
+            </h5>
+          </div>
+        
+          <div id="collapse5" class="collapse" aria-labelledby="section5" data-parent="#accordion">
+            <div class="card-body">
+              <!-- Content of Section 5 -->
+              <h5>Objective</h5>
+              Describe the objective of the game and what players are trying to achieve.
+        
+              <h5>Gameplay</h5>
+              Explain the core gameplay mechanics, actions players can take, and the flow of the game.
+              
+              <h5>Winning Strategies</h5>
+              Share tips and strategies that players can use to improve their chances of winning.
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header" id="section6">
+            <h5 class="mb-0">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                About us/Support
+              </button>
+            </h5>
+          </div>
+        
+          <div id="collapse6" class="collapse" aria-labelledby="section6" data-parent="#accordion">
+            <div class="card-body">
+              <!-- Content of Section 6 -->
+              <h3>About us</h3>
+              Explain how users can register and log in to the platform.
+        
+              <br><br><h3>Support</h3>
+              If you have any issues with the website or the game, feel free to open an issue in <a href="https://github.com/HalcoDraco/CompetitionBotUploader/issues">github</a>.
+           </div>
+          </div>
+        </div>
+        
         
         <!-- Add more sections as needed -->
       </div>
@@ -54,7 +215,7 @@
     </div>
 
     <script src="./static/shared_script.js"></script>
-    <script src="./static/login_script.js"></script>
+    <script> expand_form("75%") </script>
 
     <!-- Include jQuery and Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

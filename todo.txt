@@ -3,16 +3,15 @@ PABLO:
 
 
 MIQUEL:
+    fet: 
+    afegir habilitats a la llista d'accions
+    Posar padding al mapa
+    - Fer que els jugadors no puguin sortir del mapa
+        - Fer que les bales que surten del mapa es destrueixin
+    - Arreglar totes les coses que implica el padding
+    - Els jugadors ja no surten de la pantalla
 
-    fer servir les funcions del pablo per aconseguir la informació per al player_info.html
 
-
-
-
-    yeye wathever
-    web: 
-        player info:
-            mostrar les dades del jugador ()
-
-    fer que es llegeixi el return del server quan es fa update_code()
-    comprovar que no siguin més de x caràcters
+    A fer: 
+    les bales es dibuixen fora abans de morir ??
+  

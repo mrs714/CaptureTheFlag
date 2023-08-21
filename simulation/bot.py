@@ -15,7 +15,7 @@ class Bot(Entity):
         self.__name = name
         self.__exec_events = [] #List of strings captured from stdout and stderr
         self.__last_position = None #Last position of the bot (-1 if the bot code raised an exception)
-        self.__last_actions = {"shoot": 0, "move": 0, "melee": 0} #Last time the bot shot a bullet in ticks
+        self.__last_actions = {"shoot": 0, "move": 0, "melee": 0, "dash": 0, "super_shot": 0, "super_melee": 0} #Last time the bot took an action
 
     def shoot(self, actual_tick):
         if actual_tick - self.__last_actions["shoot"] >= BOT_SHOOT_COOLDOWN:
@@ -26,6 +26,18 @@ class Bot(Entity):
     def melee(self, actual_tick):
         if actual_tick - self.__last_actions["melee"] >= BOT_MELEE_COOLDOWN:
             self.__last_actions["melee"] = actual_tick
+            return True
+        return False
+
+    def super_shot(self, actual_tick):
+        if actual_tick - self.__last_actions["super_shot"] >= BOT_SUPER_SHOT_COOLDOWN:
+            self.__last_actions["super_shot"] = actual_tick
+            return True
+        return False
+    
+    def super_melee(self, actual_tick):
+        if actual_tick - self.__last_actions["super_melee"] >= BOT_SUPER_MELEE_COOLDOWN:
+            self.__last_actions["super_melee"] = actual_tick
             return True
         return False
     
@@ -77,7 +89,41 @@ class Bot(Entity):
         #Move the bot
         self.__x__ += dx
         self.__y__ += dy
-    
+
+        #Keep the bot inside the map
+        self.keep_bot_within_map()
+
+    def dash(self, dx, dy, actual_tick):
+        if actual_tick - self.__last_actions["dash"] < BOT_DASH_COOLDOWN:
+            return
+        self.__last_actions["dash"] = actual_tick
+
+        #Normalize the vector
+        vec_norm = sqrt(dx**2 + dy**2)
+        dx /= vec_norm
+        dy /= vec_norm
+
+        #Escalate the vector (to simulate a teleport, the speed is multiplied by 100)
+        dx *= BOT_SPEED * 100
+        dy *= BOT_SPEED * 100
+
+        #Move the bot
+        self.__x__ += dx
+        self.__y__ += dy
+
+        #Keep the bot inside the map 
+        self.keep_bot_within_map()
+
+    def keep_bot_within_map(self):
+        if self.__x__ < MAP_PADDING + BOT_RADIUS:
+            self.__x__ = MAP_PADDING + BOT_RADIUS
+        elif self.__x__ > MAP_WIDTH + MAP_PADDING - BOT_RADIUS:
+            self.__x__ = MAP_WIDTH + MAP_PADDING - BOT_RADIUS
+        if self.__y__ < MAP_PADDING + BOT_RADIUS:
+            self.__y__ = MAP_PADDING + BOT_RADIUS
+        elif self.__y__ > MAP_HEIGHT + MAP_PADDING - BOT_RADIUS:
+            self.__y__ = MAP_HEIGHT + MAP_PADDING - BOT_RADIUS
+         
     def code(self):
         return self.__code
 
