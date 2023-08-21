@@ -116,9 +116,10 @@ class Simulation:
         return [bot.id() for bot in self.__entities["bots"].values() if (bot.x() - x)**2 + (bot.y() - y)**2 <= radius**2]
     
     def kill_bot(self, bot_id, bots_to_remove):
-        if bot_id in self.__entities["bots"]:
-            self.__entities["bots"][bot_id].set_last_position(len(self.__entities["bots"]) + 1)
-            bots_to_remove.append(bot_id)
+        #if bot_id in self.__entities["bots"]:
+         #   self.__entities["bots"][bot_id].set_last_position(len(self.__entities["bots"]) + 1)
+          # Pablo check, però la posició es determina en funció dels punts un cop acabada la partida no?
+        bots_to_remove.append(bot_id)
 
     def __generate_actions(self, bot, bots_to_remove):
         def move(dx, dy):
@@ -136,18 +137,28 @@ class Simulation:
                                                             dx, 
                                                             dy, 
                                                             BULLET_DAMAGE,
+                                                            "normal",
                                                             bot.id())
         
         def super_shot(dx, dy):
-            pass
+            if bot.super_shot(self.__current_tick):
+                sim_id = self.get_id()
+                self.__entities["bullets"][sim_id] = Bullet(sim_id, 
+                                                            bot.x(), 
+                                                            bot.y(), 
+                                                            dx, 
+                                                            dy, 
+                                                            BULLET_DAMAGE * 2,
+                                                            "super",
+                                                            bot.id())
 
         def melee():
             if bot.melee(self.__current_tick):
                 for bot_id in self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS):
                     if bot_id == bot.id():
                         continue
-                    final_health = self.__entities["bots"][bot_id].receive_life_damage(MELEE_DAMAGE)
-                    if final_health == 0:
+                    if self.__entities["bots"][bot_id].receive_life_damage(MELEE_DAMAGE): # True if dead
+                        self.__logger.debug("Bot {} was killed by melee from player {}".format(self.__entities["bots"][bot_id].get_name(), bot.get_name()))
                         self.kill_bot(bot_id, bots_to_remove)
 
         def super_melee():
@@ -293,9 +304,14 @@ class Simulation:
             for bot, entity in collisions:
                 if type(entity) == Bullet:
                     bullets_to_remove.append(entity.id())
-                    if (bot.receive_shield_damage(BULLET_DAMAGE)):
-                        self.__logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
-                        bots_to_remove.append(bot.id())
+                    if entity.get_type == "normal":
+                        if (bot.receive_life_damage(BULLET_DAMAGE)):
+                            self.__logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
+                            self.kill_bot(bot.id(), bots_to_remove)
+                    else: 
+                        if (bot.receive_life_damage(MELEE_DAMAGE)):
+                            self.__logger.debug("Bot {} was killed by a super bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
+                            self.kill_bot(bot.id(), bots_to_remove)
                    
                 if type(entity) == Drop:
                     drops_to_remove.append((entity.id(), entity.type()))
@@ -315,7 +331,10 @@ class Simulation:
             self.__screen.blit(shield, (bot.x() - BOT_RADIUS, bot.y() + 4 * BOT_RADIUS))
             self.__screen.blit(points, (bot.x() - BOT_RADIUS, bot.y() + 5 * BOT_RADIUS))
         for bullet in self.__entities["bullets"].values():
-            pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
+            if bullet.get_type() == "normal":
+                pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
+            else:
+                pygame.draw.circle(self.__screen, random_color(), bullet.pos(), BULLET_RADIUS)
         for drop in self.__entities["drops_points"].values():
             pygame.draw.circle(self.__screen, DROP_COLOR_POINTS, drop.pos(), DROP_RADIUS)
         for drop in self.__entities["drops_health"].values():

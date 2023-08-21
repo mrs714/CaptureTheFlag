@@ -1,4 +1,4 @@
-import math
+import math, random
 
 MAP_WIDTH, MAP_HEIGHT = 350, 350 # pixels, actual playing zone
 MAP_PADDING = 50 # padding at each side of the map
@@ -27,6 +27,8 @@ BULLET_COLOR = RED
 DROP_COLOR_POINTS = GREEN
 DROP_COLOR_HEALTH = ORANGE
 DROP_COLOR_SHIELD = CYAN
+def random_color():
+    return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
 BULLET_DAMAGE = 10 # change this in the future
 MELEE_DAMAGE = 30
@@ -38,8 +40,8 @@ BOT_SUPER_SHOT_COOLDOWN = 100
 BOT_SUPER_MELEE_COOLDOWN = 100
 BOT_MELEE_RADIUS = 2 * BOT_RADIUS
 
-TIME_BETWEEN_DROPS = 10 # ticks 
-NUMBER_OF_HEALTH_DROPS = 10
+TIME_BETWEEN_DROPS = 20 # ticks 
+NUMBER_OF_HEALTH_DROPS = 2
 NUMBER_OF_SHIELD_DROPS = 2
 POINTS_PER_DROP = 10
 

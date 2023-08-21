@@ -19,4 +19,10 @@ MIQUEL:
     A fer: 
     moviepy ram eater, cpu hoarder, memory leaker, disk space devourer, network bandwidth sucker, battery drainer, screen burner, and framerate killer.
     See that it doesn't.
+
+    Give players a way to store information between ticks.
+
+    Add special effects (picking up a powerup, dying, melee...)
+
+    Add a playerKilled event
         

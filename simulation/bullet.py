@@ -4,7 +4,7 @@ from simulation.simulation_consts import *
 from simulation.player_context.bullet_info import BulletInfo
 
 class Bullet(Entity):
-    def __init__(self, sim_id, x, y, dx, dy, damage, owner_id):
+    def __init__(self, sim_id, x, y, dx, dy, damage, type, owner_id):
         super().__init__(sim_id, x, y)
         self.__damage = damage
         self.__owner_id = owner_id
@@ -18,6 +18,8 @@ class Bullet(Entity):
         #Normalized direction
         self.__dx = dx
         self.__dy = dy
+
+        self.__type = type
     
     def get_owner_id(self):
         return self.__owner_id
@@ -57,3 +59,6 @@ class Bullet(Entity):
     
     def to_remove(self):
         return self.__to_remove
+    
+    def get_type(self):
+        return self.__type
