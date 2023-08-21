@@ -307,8 +307,8 @@ class Simulation:
         for bot in self.__entities["bots"].values():
             pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
             name = self.__text_font.render(str(bot.get_name()), True, WHITE)
-            life = self.__text_font.render(str(bot.get_health()), True, WHITE)
-            shield = self.__text_font.render(str(bot.get_shield()), True, WHITE)
+            life = self.__text_font.render(str(bot.get_life()), True, WHITE)
+            shield = self.__text_font.render(str(bot.get_defense()), True, WHITE)
             points = self.__text_font.render(str(bot.get_points()), True, WHITE)
             self.__screen.blit(name, (bot.x() - BOT_RADIUS, bot.y() + 2 * BOT_RADIUS))
             self.__screen.blit(life, (bot.x() - BOT_RADIUS, bot.y() + 3 * BOT_RADIUS))
