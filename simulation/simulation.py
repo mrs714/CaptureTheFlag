@@ -111,8 +111,6 @@ class Simulation:
         for bot in all_bots:
             db.update_info(bot.get_db_id(), -1 if bot.get_last_position() == -1 else bot_list.index((bot.get_name(), bot.get_points())) + 1, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
 
-        
-
         self.__logger.debug("Post-simulation tasks performed")
 
     def get_bots_in_range(self, x, y, radius):
@@ -299,12 +297,10 @@ class Simulation:
                     if (bot.receive_shield_damage(BULLET_DAMAGE)):
                         self.__logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
                         bots_to_remove.append(bot.id())
-                    print("Bot {} has {} remaining life and {} remaining defense".format(bot.id(), bot.get_life(), bot.get_defense()))
-                
+                   
                 if type(entity) == Drop:
                     drops_to_remove.append((entity.id(), entity.type()))
                     bot.get_drop(entity.type())
-                    print("Bot {} picked up drop {}".format(bot.id(), entity.id()))
 
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
