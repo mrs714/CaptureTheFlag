@@ -1,6 +1,6 @@
 import math, random
 
-MAP_WIDTH, MAP_HEIGHT = 450, 350 # pixels, actual playing zone
+MAP_WIDTH, MAP_HEIGHT = 350, 350 # pixels, actual playing zone
 MAP_PADDING = 50 # padding at each side of the map
 BULLET_RADIUS = 4 # pixels
 BOT_RADIUS = 4 * BULLET_RADIUS # pixels
