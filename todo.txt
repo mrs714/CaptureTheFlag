@@ -17,6 +17,8 @@ MIQUEL:
 
 
     A fer: 
+    fix start server script to pass along correct values
+
     moviepy ram eater, cpu hoarder, memory leaker, disk space devourer, network bandwidth sucker, battery drainer, screen burner, and framerate killer.
     See that it doesn't.
 
