@@ -162,7 +162,13 @@ class Simulation:
                         self.kill_bot(bot_id, bots_to_remove)
 
         def super_melee():
-            pass
+            if bot.super_melee(self.__current_tick):
+                for bot_id in self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS):
+                    if bot_id == bot.id():
+                        continue
+                    if self.__entities["bots"][bot_id].recieve_shield_damage_extra(MELEE_DAMAGE): # True if dead
+                        self.__logger.debug("Bot {} was killed by a super melee from player {}".format(self.__entities["bots"][bot_id].get_name(), bot.get_name()))
+                        self.kill_bot(bot_id, bots_to_remove)
         
         return move, shoot, melee, dash, super_shot, super_melee
 
@@ -334,7 +340,7 @@ class Simulation:
             if bullet.get_type() == "normal":
                 pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
             else:
-                pygame.draw.circle(self.__screen, random_color(), bullet.pos(), BULLET_RADIUS)
+                pygame.draw.circle(self.__screen, random_color(), bullet.pos(), BULLET_RADIUS * 1.5)
         for drop in self.__entities["drops_points"].values():
             pygame.draw.circle(self.__screen, DROP_COLOR_POINTS, drop.pos(), DROP_RADIUS)
         for drop in self.__entities["drops_health"].values():

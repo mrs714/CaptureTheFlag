@@ -65,6 +65,14 @@ class Bot(Entity):
             return self.receive_life_damage(damage)
         return False
     
+    def recieve_shield_damage_extra(self, damage):
+        self.__defense -= damage * 2
+        if self.__defense <= 0:
+            damage = -self.__defense // 2
+            self.__defense = 0
+            return self.receive_life_damage(damage)
+        return False
+    
     def get_drop(self, type):
         if type == "health":
             self.__life = clamp(self.__life + 50, 0, self.__health)
