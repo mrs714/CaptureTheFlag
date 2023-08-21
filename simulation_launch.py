@@ -3,9 +3,23 @@ from time import sleep
 from simulation.simulation_consts import *
 from log import setup_logger
 import atexit
+import argparse # Used to parse the arguments passed to the script
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Simulation Script")
+    parser.add_argument("--map-width", type=int, default=MAP_WIDTH, help="Width of the map")
+    parser.add_argument("--map-height", type=int, default=MAP_HEIGHT, help="Height of the map")
+    parser.add_argument("--duration", type=int, default=INTER_SIMULATION_TIME, help="Duration of the simulation")
+    return parser.parse_args()
 
 if __name__ == '__main__':
-    # Setup the logger
+    
+    args = parse_arguments()
+    # Set constants based on command-line arguments
+    MAP_WIDTH = args.map_width
+    MAP_HEIGHT = args.map_height
+    INTER_SIMULATION_TIME = args.duration
+
     logger, handlers = setup_logger("simulation", "logs/simulation")
 
     logger.info("Starting the simulation engine...")
