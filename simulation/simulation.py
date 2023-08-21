@@ -311,7 +311,7 @@ class Simulation:
                 if type(entity) == Bullet:
                     bullets_to_remove.append(entity.id())
                     if entity.get_type() == "normal":
-                        if (bot.receive_life_damage(BULLET_DAMAGE)):
+                        if (bot.receive_shield_damage(BULLET_DAMAGE)):
                             self.__logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
                             self.kill_bot(bot.id(), bots_to_remove)
                     else: 
