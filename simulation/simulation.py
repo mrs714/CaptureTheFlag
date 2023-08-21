@@ -1,6 +1,8 @@
 from simulation.simulation_consts import * #import all the constants
 from simulation.bot import Bot
 from simulation.bullet import Bullet
+from simulation.drop import Drop
+from simulation.collision_algorithm import CollisionAlgorithm
 from simulation.player_context.game import Game #import Game (for giving information to the bot code)
 
 import pygame
@@ -47,9 +49,12 @@ class Simulation:
             "bots": {},
             "dead_bots": {},
             "bullets": {},
-            "bullets_to_remove": {},
-            "drops": {}
+            "drops_points": {},
+            "drops_health": {},
+            "drops_shield": {}
         }
+        self.__collision_detector = CollisionAlgorithm()
+        self.__text_font = pygame.font.SysFont(None, 24)
         self.__logger.debug("Simulation object variables initialized")
     
     def get_id(self):
@@ -72,6 +77,7 @@ class Simulation:
                                                   config["health"], 
                                                   config["shield"], 
                                                   config["attack"])
+        self.__logger.info("Bots participating: " + str([bot.get_name() for bot in self.__entities["bots"].values()]))
         self.__logger.debug("Simulation prepared")
 
         self.__logger.debug("Running the simulation loop...")
@@ -216,36 +222,98 @@ class Simulation:
             # Close the StringIO object
             temp_out.close()
 
-    def get_entities(self):
+    def get_entities(self): # Can the entities be modified? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return self.__entities
 
     def __perform_actions(self):
         bots_to_remove = []
+        bullets_to_remove = []
+        drops_to_remove = []
+
+        # Move and spawn all entities
         for bot in self.__entities["bots"].values():
             self.__execute_bot_code(bot, bots_to_remove)
+
+        for bullet in self.__entities["bullets"].values():
+            if bullet.to_remove():
+                bullets_to_remove.append(self.__entities["bullets"][bullet.id()].id())
+                continue
+            bullet.move()
+
+        self.__spawn_drops()
         
+        # Check for collisions
+        collisions = self.__collision_detector.check_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
+        self.__collision_handler(collisions, bots_to_remove, bullets_to_remove, drops_to_remove)
+
+        # Remove the bots, bullets and drops that have to be removed
         for bot_id in bots_to_remove:
             db_bot = self.__entities["bots"][bot_id].get_db_id()
             self.__entities["dead_bots"][bot_id] = self.__entities["bots"].pop(bot_id)
             self.__logger.debug(f"Bot with db_id = {db_bot} removed")
-
-        for bullet in self.__entities["bullets"].values():
-            if bullet.remove_from_game():
-                self.__entities["bullets_to_remove"][bullet.id()] = self.__entities["bullets"][bullet.id()]
-                continue
-            bullet.move()
         
-        for bullet_id in self.__entities["bullets_to_remove"].keys():
-            self.__entities["bullets"].pop(bullet_id)
-        self.__entities["bullets_to_remove"].clear() # Clear the list of bullets to remove
+        # Check bullets aren't repeated
+        bullets_to_remove = list(set(bullets_to_remove))
+        for bullet_id in bullets_to_remove:
+            self.__entities["bullets"].pop(bullet_id)  
+
+        # Check drops aren't repeated
+        drops_to_remove = list(set(drops_to_remove))
+        for drop_id, drop_type in drops_to_remove:
+            self.__entities[str("drops_" + drop_type)].pop(drop_id, None)
+
+    def __spawn_drops(self):
+        def spawn(drop):
+            sim_id = self.get_id()
+            self.__entities["drops_" + drop][sim_id] = Drop(sim_id, 
+                                                            rnd.randint(MAP_PADDING + DROP_RADIUS, MAP_WIDTH + MAP_PADDING - DROP_RADIUS), 
+                                                            rnd.randint(MAP_PADDING + DROP_RADIUS, MAP_HEIGHT + MAP_PADDING - DROP_RADIUS), 
+                                                            drop)
+
+        # If empty, replenish health and shield drops:
+        if len(self.__entities["drops_health"]) < NUMBER_OF_HEALTH_DROPS:
+            spawn("health")
+        
+        if len(self.__entities["drops_shield"]) < NUMBER_OF_SHIELD_DROPS:
+            spawn("shield")
+        
+        # Point drops: Minimum ammount: ceil(players/4); Maximum ammount: max((players-1), 1);
+        if (len(self.__entities["drops_points"]) < math.ceil(len(self.__entities["bots"]))) or (self.__current_tick % TIME_BETWEEN_DROPS == 0):
+            if len(self.__entities["drops_points"]) < max((len(self.__entities["bots"]) - 1), 1):
+                spawn("points")
     
+    # Gets a list of the bots and the entities they are colliding with
+    def __collision_handler(self, collisions, bots_to_remove, bullets_to_remove, drops_to_remove):
+        if collisions:
+            for bot, entity in collisions:
+                if type(entity) == Bullet:
+                    bullets_to_remove.append(entity.id())
+                    if (bot.receive_shield_damage(BULLET_DAMAGE)):
+                        self.__logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
+                        bots_to_remove.append(bot.id())
+                    print("Bot {} has {} remaining life and {} remaining defense".format(bot.id(), bot.get_life(), bot.get_defense()))
+                
+                if type(entity) == Drop:
+                    drops_to_remove.append((entity.id(), entity.type()))
+                    bot.get_drop(entity.type())
+                    print("Bot {} picked up drop {}".format(bot.id(), entity.id()))
+
     def __update_frame(self):
         self.__screen.fill(BACKGROUND_COLOR)
         pygame.draw.rect(self.__screen, DARK_GRAY, pygame.Rect(MAP_PADDING, MAP_PADDING, MAP_WIDTH, MAP_HEIGHT)) 
         for bot in self.__entities["bots"].values():
             pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
+            name = self.__text_font.render(str(bot.get_name()), True, WHITE)
+            self.__screen.blit(name, (bot.x() - BOT_RADIUS, bot.y() + 2 * BOT_RADIUS))
         for bullet in self.__entities["bullets"].values():
             pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
+        for drop in self.__entities["drops_points"].values():
+            pygame.draw.circle(self.__screen, DROP_COLOR_POINTS, drop.pos(), DROP_RADIUS)
+        for drop in self.__entities["drops_health"].values():
+            pygame.draw.circle(self.__screen, DROP_COLOR_HEALTH, drop.pos(), DROP_RADIUS)
+        for drop in self.__entities["drops_shield"].values():
+            pygame.draw.circle(self.__screen, DROP_COLOR_SHIELD, drop.pos(), DROP_RADIUS)
+        
     
     def __save_frame(self):
         frame = pygame.surfarray.array3d(self.__screen)

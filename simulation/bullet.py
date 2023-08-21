@@ -8,7 +8,7 @@ class Bullet(Entity):
         super().__init__(sim_id, x, y)
         self.__damage = damage
         self.__owner_id = owner_id
-        self.__remove_from_game = False
+        self.__to_remove = False
 
         #Normalize the vector
         vec_norm = sqrt(dx**2 + dy**2)
@@ -31,29 +31,29 @@ class Bullet(Entity):
         self.__x__ += dx
         self.__y__ += dy
 
-        #Keep the bullet within the map, if outside, remove it
-        if(self.keep_bullet_within_map):
-            self.__remove_from_game = True
+        #If outside the map, mark it for removal
+        if self.__keep_bullet_within_map():
+            self.__to_remove = True
 
 
-    def keep_bullet_within_map(self):
-        if self.__x__ < MAP_PADDING:
-            self.__x__ = MAP_PADDING
-            return True
-        elif self.__x__ > MAP_WIDTH + MAP_PADDING:
-            self.__x__ = MAP_WIDTH + MAP_PADDING
-            return True
-        if self.__y__ < MAP_PADDING:
-            self.__y__ = MAP_PADDING
-            return True
-        elif self.__y__ > MAP_HEIGHT + MAP_PADDING:
-            self.__y__ = MAP_HEIGHT + MAP_PADDING
-            return True
-        return False
-     
+    def __keep_bullet_within_map(self):
+        remove = False
+        if self.__x__ < MAP_PADDING + BULLET_RADIUS:
+            self.__x__ = MAP_PADDING + BULLET_RADIUS
+            remove = True
+        elif self.__x__ > MAP_WIDTH + MAP_PADDING - BULLET_RADIUS:
+            self.__x__ = MAP_WIDTH + MAP_PADDING - BULLET_RADIUS
+            remove = True
+        if self.__y__ < MAP_PADDING + BULLET_RADIUS:
+            self.__y__ = MAP_PADDING + BULLET_RADIUS
+            remove = True
+        elif self.__y__ > MAP_HEIGHT + MAP_PADDING - BULLET_RADIUS:
+            self.__y__ = MAP_HEIGHT + MAP_PADDING - BULLET_RADIUS
+            remove = True
+        return remove
     
     def get_info(self):
         return BulletInfo(self.id(), self.__x__, self.__y__, self.__dx, self.__dy, self.__damage, self.__owner_id)
     
-    def remove_from_game(self):
-        return self.__remove_from_game
+    def to_remove(self):
+        return self.__to_remove

@@ -9,9 +9,10 @@ MIQUEL:
     - Fer que els jugadors no puguin sortir del mapa
         - Fer que les bales que surten del mapa es destrueixin
     - Arreglar totes les coses que implica el padding
-    - Els jugadors ja no surten de la pantalla
+    - Els jugadors i les bales es contenen dins del mapa
+  
 
 
     A fer: 
-    les bales es dibuixen fora abans de morir ??
-  
+        Arreglar el collision handler
+        Pensar que fer amb les colleccions, si fer que els bots per treure es guardin en un diccionari com la resta, o fer que les bales i coses per treure es guardin en una llista i passar la llista de robots morts com a argument per al __collision_handler
