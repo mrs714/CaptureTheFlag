@@ -101,9 +101,17 @@ class Simulation:
 
         self.__logger.debug("Performing post-simulation tasks...")
 
+        # Make a list of tuples, bots and their puntuations
+        bot_list = [(bot.get_name(), bot.get_points()) for bot in (self.__entities["bots"] | self.__entities["dead_bots"]).values()]
+        bot_list = sorted(bot_list, key=lambda bot: bot[1], reverse=True)
+        self.__logger.info("Bots sorted by points: " + str(bot_list))
+
+        # Update db info
         all_bots = [val for d in (self.__entities["bots"], self.__entities["dead_bots"]) for val in d.values()]
         for bot in all_bots:
-            db.update_info(bot.get_db_id(), bot.get_last_position(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
+            db.update_info(bot.get_db_id(), -1 if bot.get_last_position() == -1 else bot_list.index((bot.get_name(), bot.get_points())) + 1, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
+
+        
 
         self.__logger.debug("Post-simulation tasks performed")
 
