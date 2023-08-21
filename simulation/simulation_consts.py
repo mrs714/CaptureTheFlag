@@ -8,7 +8,7 @@ DROP_RADIUS = 2 * BULLET_RADIUS # pixels
 BOT_SPEED = 3 # pixels per frame
 BULLET_SPEED = BOT_SPEED * 4 # pixels per frame
 FPS = 20 # frames per second
-DURATION = 25 * FPS # In seconds (x FPS = 1 second)
+DURATION = 20 * FPS # In seconds (x FPS = 1 second)
 INTER_SIMULATION_TIME = 30 # seconds
 SIM_MP4_NAME = "replays/simulation.mp4"
 SIM_INFO_NAME = "replays/simulation_info.txt"
