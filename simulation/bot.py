@@ -67,7 +67,7 @@ class Bot(Entity):
     
     def get_drop(self, type):
         if type == "health":
-            self.__defense = clamp(self.__defense + 50, 0, self.__health)
+            self.__life = clamp(self.__life + 50, 0, self.__health)
         
         elif type == "shield":
             if self.__defense == 0:
