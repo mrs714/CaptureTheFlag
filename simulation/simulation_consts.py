@@ -1,6 +1,6 @@
 import math
 
-MAP_WIDTH, MAP_HEIGHT = 500, 500 # pixels, actual playing zone
+MAP_WIDTH, MAP_HEIGHT = 400, 400 # pixels, actual playing zone
 MAP_PADDING = 50 # padding at each side of the map
 BULLET_RADIUS = 4 # pixels
 BOT_RADIUS = 4 * BULLET_RADIUS # pixels
@@ -8,7 +8,7 @@ DROP_RADIUS = 2 * BULLET_RADIUS # pixels
 BOT_SPEED = 3 # pixels per frame
 BULLET_SPEED = BOT_SPEED * 4 # pixels per frame
 FPS = 20 # frames per second
-DURATION = 40 * FPS # In seconds (x FPS = 1 second)
+DURATION = 25 * FPS # In seconds (x FPS = 1 second)
 INTER_SIMULATION_TIME = 30 # seconds
 SIM_MP4_NAME = "replays/simulation.mp4"
 SIM_INFO_NAME = "replays/simulation_info.txt"
