@@ -10,9 +10,13 @@ MIQUEL:
         - Fer que les bales que surten del mapa es destrueixin
     - Arreglar totes les coses que implica el padding
     - Els jugadors i les bales es contenen dins del mapa
+    Arreglar el collision handler
+        Pensar que fer amb les colleccions, si fer que els bots per treure es guardin en un diccionari com la resta, o fer que les bales i coses per treure es guardin en una llista i passar la llista de robots morts com a argument per al __collision_handler
+        al final tot està fet com a llistes
   
 
 
     A fer: 
-        Arreglar el collision handler
-        Pensar que fer amb les colleccions, si fer que els bots per treure es guardin en un diccionari com la resta, o fer que les bales i coses per treure es guardin en una llista i passar la llista de robots morts com a argument per al __collision_handler
+    moviepy ram eater, cpu hoarder, memory leaker, disk space devourer, network bandwidth sucker, battery drainer, screen burner, and framerate killer.
+    See that it doesn't.
+        
