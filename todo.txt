@@ -13,7 +13,7 @@ MIQUEL:
     Arreglar el collision handler
         Pensar que fer amb les colleccions, si fer que els bots per treure es guardin en un diccionari com la resta, o fer que les bales i coses per treure es guardin en una llista i passar la llista de robots morts com a argument per al __collision_handler
         al final tot està fet com a llistes
-  
+    Afegits super melee, super shot
 
 
     A fer: 
