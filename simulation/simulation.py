@@ -110,7 +110,6 @@ class Simulation:
         all_bots = [val for d in (self.__entities["bots"], self.__entities["dead_bots"]) for val in d.values()]
         for bot in all_bots:
             db.update_info(bot.get_db_id(), -1 if bot.get_last_position() == -1 else bot_list.index((bot.get_name(), bot.get_points())) + 1, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), bot.get_events(), 0 if bot.get_last_position() == -1 else 1)
-
         self.__logger.debug("Post-simulation tasks performed")
 
     def get_bots_in_range(self, x, y, radius):
@@ -308,7 +307,13 @@ class Simulation:
         for bot in self.__entities["bots"].values():
             pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
             name = self.__text_font.render(str(bot.get_name()), True, WHITE)
+            life = self.__text_font.render(str(bot.get_health()), True, WHITE)
+            shield = self.__text_font.render(str(bot.get_shield()), True, WHITE)
+            points = self.__text_font.render(str(bot.get_points()), True, WHITE)
             self.__screen.blit(name, (bot.x() - BOT_RADIUS, bot.y() + 2 * BOT_RADIUS))
+            self.__screen.blit(life, (bot.x() - BOT_RADIUS, bot.y() + 3 * BOT_RADIUS))
+            self.__screen.blit(shield, (bot.x() - BOT_RADIUS, bot.y() + 4 * BOT_RADIUS))
+            self.__screen.blit(points, (bot.x() - BOT_RADIUS, bot.y() + 5 * BOT_RADIUS))
         for bullet in self.__entities["bullets"].values():
             pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
         for drop in self.__entities["drops_points"].values():
