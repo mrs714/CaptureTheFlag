@@ -64,8 +64,8 @@ class Simulation:
             self.__entities["bots"][sim_id] = Bot(sim_id, 
                                                   bot["id"], 
                                                   bot["username"], 
-                                                  rnd.randint(100, 900), 
-                                                  rnd.randint(100, 900), 
+                                                  rnd.randint(490, 500), 
+                                                  rnd.randint(490, 500), 
                                                   bot["code"], 
                                                   config["health"], 
                                                   config["shield"], 
@@ -99,7 +99,15 @@ class Simulation:
 
         self.__logger.debug("Post-simulation tasks performed")
 
-    def __generate_actions(self, bot):
+    def get_bots_in_range(self, x, y, radius):
+        return [bot.id() for bot in self.__entities["bots"].values() if (bot.x() - x)**2 + (bot.y() - y)**2 <= radius**2]
+    
+    def kill_bot(self, bot_id, bots_to_remove):
+        if bot_id in self.__entities["bots"]:
+            self.__entities["bots"][bot_id].set_last_position(len(self.__entities["bots"]) + 1)
+            bots_to_remove.append(bot_id)
+
+    def __generate_actions(self, bot, bots_to_remove):
         def move(dx, dy):
             bot.move(dx, dy, self.__current_tick)
         
@@ -115,14 +123,20 @@ class Simulation:
                                                             bot.id())
         
         def melee():
-            pass
+            if bot.melee(self.__current_tick):
+                for bot_id in self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS):
+                    if bot_id == bot.id():
+                        continue
+                    final_health = self.__entities["bots"][bot_id].receive_life_damage(MELEE_DAMAGE)
+                    if final_health == 0:
+                        self.kill_bot(bot_id, bots_to_remove)
         
         return move, shoot, melee
 
     def __execute_bot_code(self, bot, bots_to_remove):
 
         # Create an object to give information about the state of the game to the bot code
-        game = Game(bot, self.__entities, self.__generate_actions(bot), self.__current_tick)
+        game = Game(bot, self.__entities, self.__generate_actions(bot, bots_to_remove), self.__current_tick)
 
         # Create a dictionary with the names that the user code has access to
         player_globals = safe_globals.copy()
@@ -153,10 +167,7 @@ class Simulation:
         bot_code_compiled = compile_restricted_exec(bot.code(), filename=filename)
 
         try:
-            # Log any warnings while compiling the bot code
-            if bot_code_compiled.warnings:
-                self.__logger.warning(f"Warning while compiling the bot code with db_id = {bot.get_db_id()} and name = {bot.get_name()}: {bot_code_compiled.warnings}")
-            
+           
             # Check for errors while compiling the bot code
             if bot_code_compiled.errors:
                 # Print and log the errors
