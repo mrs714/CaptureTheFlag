@@ -32,7 +32,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Call the Python script with the provided arguments
-python simulation.py --map-width "$MAP_WIDTH" --map-height "$MAP_HEIGHT" --duration "$DURATION"
+screen -dms flask_screen bash -c 'python simulation.py --map-width "$MAP_WIDTH" --map-height "$MAP_HEIGHT" --duration "$DURATION"'
 
 echo ""
 echo "Launching simulation."

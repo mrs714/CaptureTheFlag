@@ -18,10 +18,13 @@ MIQUEL:
     replays dona tota la info necessària per la web, amb el format correcte
     replays.html mostra correctament la info
     codi d'exemple afegit
+    fix start server script to pass along correct values - ara es pot cridar el launcher amb arguments des de start server
+
 
 
     A fer: 
-    fix start server script to pass along correct values
+
+    comprovar que el codi de mostra funcioni
 
     moviepy ram eater, cpu hoarder, memory leaker, disk space devourer, network bandwidth sucker, battery drainer, screen burner, and framerate killer.
     See that it doesn't.
@@ -36,3 +39,5 @@ MIQUEL:
     has used a super melee, etc
 
     donar accés a totes les constants
+
+    fer fitxer de dependencies
