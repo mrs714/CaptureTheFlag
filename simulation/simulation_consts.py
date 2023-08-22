@@ -1,6 +1,6 @@
 import math, random
 
-MAP_WIDTH, MAP_HEIGHT = 3000, 3000 # pixels, actual playing zone
+MAP_WIDTH, MAP_HEIGHT = 2000, 2000 # pixels, actual playing zone
 MAP_PADDING = 50 # padding at each side of the map
 BULLET_RADIUS = 4 # pixels
 BOT_RADIUS = 4 * BULLET_RADIUS # pixels
@@ -10,7 +10,7 @@ BULLET_SPEED = BOT_SPEED * 4 # pixels per frame
 FPS = 20 # frames per second
 DURATION = 20 * FPS # In seconds (x FPS = 1 second)
 INTER_SIMULATION_TIME = 60 # seconds
-MAX_FRAMES_ON_RAM = 10000000 / (MAP_HEIGHT * MAP_WIDTH) # Maximum ammount of frames on RAM. e.g.: 350x350pixels = 81 frames stored, 1000*1000pixels = 10 frames stored
+MAX_FRAMES_ON_RAM = 50000000 / (MAP_HEIGHT * MAP_WIDTH) # Maximum ammount of frames on RAM. e.g.: 350x350pixels = 81 frames stored, 1000*1000pixels = 10 frames stored
 SIM_MP4_NAME = "replays/simulation.mp4"
 SIM_INFO_NAME = "replays/simulation_info.txt"
 SIM_FRAMES_PATH = "replays/frames/"
