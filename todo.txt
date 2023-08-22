@@ -15,7 +15,8 @@ MIQUEL:
         al final tot està fet com a llistes
     Afegits super melee, super shot
     la info de la simulació inclou quantes se n'han fet
-    replays dona tota la info necessària per la web
+    replays dona tota la info necessària per la web, amb el format correcte
+    replays.html mostra correctament la info
 
 
     A fer: 
