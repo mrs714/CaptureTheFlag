@@ -1,5 +1,5 @@
 PABLO:
-    
+    fer que si els usuaris fan print es redirigeixi al log de la partida
 
 
 MIQUEL:
