@@ -56,6 +56,7 @@ class Simulation:
         self.__collision_detector = CollisionAlgorithm()
         self.__text_font = pygame.font.SysFont(None, 24)
         self.__logger.debug("Simulation object variables initialized")
+        self.__bot_scores = [] # List of tuples (bot_name, score)
     
     def get_id(self):
         self.__id_counter += 1
@@ -103,8 +104,8 @@ class Simulation:
 
         # Make a list of tuples, bots and their puntuations
         bot_list = [(bot.get_name(), bot.get_points()) for bot in (self.__entities["bots"] | self.__entities["dead_bots"]).values()]
-        bot_list = sorted(bot_list, key=lambda bot: bot[1], reverse=True)
-        self.__logger.info("Bots sorted by points: " + str(bot_list))
+        self.__bot_scores = sorted(bot_list, key=lambda bot: bot[1], reverse=True)
+        self.__logger.info("Bots sorted by points: " + str(self.__bot_scores))
 
         # Update db info
         all_bots = [val for d in (self.__entities["bots"], self.__entities["dead_bots"]) for val in d.values()]
@@ -358,7 +359,7 @@ class Simulation:
 
         self.__frames.append(frame)
     
-    def save_replay(self):
+    def save_replay(self, duration):
 
         self.__logger.debug("Saving the mp4 file...")
         video_clip = ImageSequenceClip(self.__frames, fps=FPS)
@@ -367,5 +368,5 @@ class Simulation:
 
         self.__logger.debug("Saving the simulation info file...")
         with open(SIM_INFO_NAME, "w") as f:
-            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {duration.strftime('%d/%m/%Y %H:%M:%S')} Winner: {self.__bot_scores[1][0]} Score: {self.__bot_scores[1][1]}") 
         self.__logger.debug("Simulation info file saved")

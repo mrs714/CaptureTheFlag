@@ -4,6 +4,7 @@ from simulation.simulation_consts import *
 from log import setup_logger
 import atexit
 import argparse # Used to parse the arguments passed to the script
+from datetime import datetime #import datetime (to get the current date and time)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Simulation Script")
@@ -25,6 +26,7 @@ if __name__ == '__main__':
     logger.info("Starting the simulation engine...")
 
     while True:
+        start_time = datetime.now() 
         logger.info("Creating the simulation object...")
         # Create an empty simulation
         sim = Simulation(logger)
@@ -36,8 +38,10 @@ if __name__ == '__main__':
         logger.info("The simulation has run successfully")
 
         logger.info("Saving the animation...")
+
         # Save the animation
-        sim.save_replay()
+        end_time = datetime.now()
+        sim.save_replay(end_time - start_time)
         logger.info("Simulation saved")
 
         logger.info("Sleeping...")
