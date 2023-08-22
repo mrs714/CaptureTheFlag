@@ -64,7 +64,7 @@
           <br>- bots: health (bot's remaining life), shield (bot's remaining defense), attack (damage dealt (config value/100 * BASE_MELEE))
           <br>- bullets: dx (component x of the direction vector), dy (component y of the direction vector), damage, type ("normal" or "super"), owner_id
           <br>- drops: type (by which they are already separated)
-          <br><br>
+          <br>
             One could then get the health of all the bots in the game by doing:
             for bot_id, bot_info in game.entities["bots"].items():
               print(bot_info.health) # You can check the output of the prints on the "Player info" page.
@@ -79,6 +79,9 @@
           <br>- Teleport: the bot teleports ___ x distance in the given direction;
           <br>- Super-shot: the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;
           <br>- Super-melee: the bot makes a melee attack which deals double damage to the defense, base damage to the life.
+          <br>
+            So, to move, you would do:
+            game.actions.move(dx, dy)
           <br><br>
           <b>Ticks</b><br>
           Returns the number of ticks that have passed since the beginning of the game.
