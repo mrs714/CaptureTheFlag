@@ -28,14 +28,15 @@
     <button class="btn btn-primary mt-3" type="button" data-toggle="collapse" onclick="video_button()" id="video_button" data-target="#videoCollapse">Show last video</button>
 
     <!-- Collapsible video iframe -->
-    <div id="videoCollapse" class="collapse">
+    <div id="videoCollapse" class="collapse text-center">
       <div class="d-flex justify-content-center align-items-center" style="height: 75vh;">
-        Info: if you can't see the information or the video, you might have caught the server in the middle of rewritting the video.<br>
-        This will be addressed in the future, but for now, just try again in a few seconds, or logout and login again.
         <video width="50%" controls="controls">
           <source src="/simulation_video" type="video/mp4" />
         </video>
       </div>
+      Info: if you can't see the information or the video, you might have caught the server in the middle of rewritting the video.<br>
+      This will be addressed in the future, but for now, just try again in a few seconds, or logout and login again.
+      <br><br>
     </div>
 
     <button class="btn btn-secondary mt-3" type="button" onclick="goBack()">Go Back</button>
