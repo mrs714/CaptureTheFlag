@@ -42,8 +42,6 @@ async function download_simulation_info() {
     score = responseData.score;
     number = responseData.number;
     
-    console.log(time, duration, winner, score, number);
-    
     replays_data = [{number: number,  highscore: winner + ": " + score + " points", time_start: time, time_elapsed: duration}]
     return true;
 

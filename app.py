@@ -213,7 +213,7 @@ def download_simulation_info():
         score = "".join(text.split(" ")[9])
         number = "".join(text.split(" ")[13]) #Number of simulations
 
-    print(date)
+    logger.debug("Simulation info succesfully loaded for user " + session['username'] + ".")
     return jsonify({"time": date, "duration": duration, "winner": winner, "score": score, "number": number}), 200
 
 """
