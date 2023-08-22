@@ -26,6 +26,8 @@ if __name__ == '__main__':
     logger.info("Starting the simulation engine...")
 
     number_of_simulations = 1
+    end_time = None
+    start_time = None
 
     while True:
         expected_time = end_time - start_time if end_time else "?"
