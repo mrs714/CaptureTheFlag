@@ -1,6 +1,6 @@
 from simulation.player_context.actions import Actions
 
-entity_keys = ["bots", "bullets", "drops"]
+entity_keys = ["bots", "bullets", "drops_points", "drops_health", "drops_shield"]
 
 class Game:
     def __init__(self, bot, entities, actions, tick):
