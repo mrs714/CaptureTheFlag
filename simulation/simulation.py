@@ -24,6 +24,7 @@ from RestrictedPython.Guards import guarded_iter_unpack_sequence, full_write_gua
 
 from io import StringIO #import StringIO (for capturing the bot output)
 import sys
+import os # Create folders if needed
 import traceback
 
 class Simulation:
@@ -352,12 +353,21 @@ class Simulation:
         
     
     def __save_frame(self):
+        # Take a frame, rotate it and flip it, and append it to the list of frames
         frame = pygame.surfarray.array3d(self.__screen)
         
         frame = np.rot90(frame, k=-1)
         frame = np.fliplr(frame)
 
         self.__frames.append(frame)
+
+        # This eats memory, as *every* frame is stored at once on RAM
+        if len(self.__frames) > int(MAX_FRAMES_ON_RAM):
+            os.makedirs(SIM_FRAMES_PATH, exist_ok=True)
+            for frame in self.__frames:
+                
+
+
     
     def save_replay(self, start_time, number_of_simulations):
 
