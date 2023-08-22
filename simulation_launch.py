@@ -22,7 +22,7 @@ if __name__ == '__main__':
     INTER_SIMULATION_TIME = args.duration
 
     logger, handlers = setup_logger("simulation", "logs/simulation")
-
+    
     logger.info("Starting the simulation engine...")
 
     number_of_simulations = 1
