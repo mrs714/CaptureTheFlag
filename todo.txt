@@ -20,6 +20,9 @@ MIQUEL:
     codi d'exemple afegit
     fix start server script to pass along correct values - ara es pot cridar el launcher amb arguments des de start server
 
+        moviepy ram eater, cpu hoarder, memory leaker, disk space devourer, network bandwidth sucker, battery drainer, screen burner, and framerate killer.
+    See that it doesn't.
+    Els frames es guarden a disc cada x frames, i després s'esborra tot
 
 
     A fer: 
@@ -30,8 +33,7 @@ MIQUEL:
 
     comprovar que el codi de mostra funcioni
 
-    moviepy ram eater, cpu hoarder, memory leaker, disk space devourer, network bandwidth sucker, battery drainer, screen burner, and framerate killer.
-    See that it doesn't.
+
 
     Give players a way to store information between ticks.
 
