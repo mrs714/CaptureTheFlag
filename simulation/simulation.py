@@ -359,7 +359,7 @@ class Simulation:
 
         self.__frames.append(frame)
     
-    def save_replay(self, start_time):
+    def save_replay(self, start_time, number_of_simulations):
 
         self.__logger.debug("Saving the mp4 file...")
         video_clip = ImageSequenceClip(self.__frames, fps=FPS)
@@ -369,5 +369,6 @@ class Simulation:
         self.__logger.debug("Saving the simulation info file...")
         with open(SIM_INFO_NAME, "w") as f:
             time_elapsed = datetime.now() - start_time
-            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {self.__bot_scores[1][0]} Score: {self.__bot_scores[1][1]}") 
+            # IF THE FORMAT IS CHANGED, REPLAYS() IN APP.PY MUST BE CHANGED TOO
+            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {self.__bot_scores[1][0]} Score: {self.__bot_scores[1][1]} Number of simulations: {number_of_simulations}") 
         self.__logger.debug("Simulation info file saved")

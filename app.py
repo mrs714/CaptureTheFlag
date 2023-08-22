@@ -197,14 +197,20 @@ def download_error_log():
     
     return jsonify({"error_log": error_log}), 200
 
-@app.route('/download_simulation_info', methods=['GET'])
+@app.route('/download_simulation_info', methods=['POST'])
 def download_simulation_info():
     path = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(path, "replays\simulation_info.txt")
+    # format: "Last simulation: 22/08/2023 14:17:25 Duration: 0:00:25.311462 Winner: emmagil Score: 20 Number of simulations: 1"
     with open(file_path, "r") as file:
     # Read the content of the file
-        file_content = "".join(file.read().split(" ")[3]).join(" ").join(file.read().split(" ")[4]) #Day and time
-    return jsonify({"simulation_info": file_content}), 200
+        date = "".join(file.read().split(" ")[3]).join(" ").join(file.read().split(" ")[4]) #Day and time
+        duration = "".join(file.read().split(" ")[6])
+        winner = "".join(file.read().split(" ")[8])
+        score = "".join(file.read().split(" ")[10])
+        number = "".join(file.read().split(" ")[14]) #Number of simulations
+
+    return jsonify({"date": date, "duration": duration, "winner": winner, "score": score, "number": number}), 200
 
 """
 OTHER SERVER FETCH FUNCTIONS: User exists, login function, create user

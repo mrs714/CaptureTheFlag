@@ -2,8 +2,7 @@
 replays_data = [{number: 0,  highscore: "NoOne: 0 points", time_start: "00/00/0000 00:00:00", time_elapsed: "00:00:00"}] // Only one replay for now, might be more in the future (placeholder)
 
 //download_simulation_info();
-populate_replays_table();
-
+download_config().then(() => { populate_replays_table(); });
 
 
 // BUTTONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -31,25 +30,31 @@ function populate_replays_table() {
 // DOWNLOAD CONFIG AND INFO --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 async function download_config() {
 
-  const response = await fetch('/download_config').then(response => response);
+  const response = await fetch('/download_config', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(""),
+  }).then(response => response);
+
   const responseData = await response.json();
       
   if (response.ok) {
-
-    health = responseData.health;
-    shield = responseData.shield;
-    attack = responseData.attack;
     
-    update_config(true);
-  
+    showMessage('Information downloaded successfully!', false);
+    time = responseData.time;
+    duration = responseData.duration;
+    winner = responseData.winner;
+    score = responseData.score;
+    number = responseData.number;
+    
+    replays_data = {number: number,  highscore: winner + ": " + score + " points", time_start: time, time_elapsed: duration}
     return true;
 
   }
   else {
-
-    update_config(false);
-
+    showMessage("Couldn't download the configuration file. Please try again.", true);
     return false;
-
   }
 }
