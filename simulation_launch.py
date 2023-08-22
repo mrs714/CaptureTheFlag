@@ -25,27 +25,30 @@ if __name__ == '__main__':
 
     logger.info("Starting the simulation engine...")
 
+    number_of_simulations = 1
+
     while True:
         start_time = datetime.now() 
-        logger.info("Creating the simulation object...")
+        logger.info(f"Creating the simulation {number_of_simulations} object...")
         # Create an empty simulation
         sim = Simulation(logger)
-        logger.info("Simulation created")
+        logger.info(f"Simulation {number_of_simulations} created")
 
-        logger.info("Running the simulation...")
+        logger.info(f"Running the simulation {number_of_simulations}...")
         # Run the simulation
         sim.run()
-        logger.info("The simulation has run successfully")
+        logger.info(f"The simulation {number_of_simulations} has run successfully")
 
-        logger.info("Saving the animation...")
+        logger.info(f"Saving the animation {number_of_simulations}...")
 
         # Save the animation
         end_time = datetime.now()
         sim.save_replay(end_time - start_time)
-        logger.info("Simulation saved")
+        logger.info(f"Simulation {number_of_simulations} saved")
 
-        logger.info("Sleeping...")
+        logger.info(f"Sleeping...")
         # Wait x seconds before running the simulation again
+        print(f"{number_of_simulations} simulations done. Waiting {INTER_SIMULATION_TIME} seconds before running the next simulation...")
         sleep(INTER_SIMULATION_TIME)
 
 @atexit.register
