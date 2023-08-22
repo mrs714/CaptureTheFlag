@@ -1,6 +1,6 @@
 __pycache__/
 replays/*
-
+database/*
 simulation.mp4
 simulation_info.txt
 logs/*
