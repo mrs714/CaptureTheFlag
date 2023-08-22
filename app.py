@@ -200,7 +200,7 @@ def download_error_log():
 @app.route('/download_simulation_info', methods=['GET'])
 def download_simulation_info():
     path = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(path, "replays\simulation_info.txt")
+    file_path = os.path.join(path, "replays/simulation_info.txt")
     # format: "Last simulation: 22/08/2023 14:17:25 Duration: 0:00:25.311462 Winner: emmagil Score: 20 Number of simulations: 1"
     with open(file_path, "r") as file:
     # Read the content of the file
