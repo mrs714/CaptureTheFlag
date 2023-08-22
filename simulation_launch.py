@@ -51,6 +51,8 @@ if __name__ == '__main__':
         print(f"{number_of_simulations} simulations done. Waiting {INTER_SIMULATION_TIME} seconds before running the next simulation...")
         sleep(INTER_SIMULATION_TIME)
 
+        number_of_simulations += 1
+
 @atexit.register
 def clean_up():
     global handlers
