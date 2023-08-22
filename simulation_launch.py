@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     while True:
 
-        if os.exists(SIM_FRAMES_PATH):
+        if os.path.exists(SIM_FRAMES_PATH):
             shutil.rmtree(SIM_FRAMES_PATH) # Clean previous data
         expected_time = end_time - start_time if end_time else "?"
         start_time = datetime.now() 
