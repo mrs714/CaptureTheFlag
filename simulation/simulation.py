@@ -370,5 +370,5 @@ class Simulation:
         with open(SIM_INFO_NAME, "w") as f:
             time_elapsed = datetime.now() - start_time
             # IF THE FORMAT IS CHANGED, REPLAYS() IN APP.PY MUST BE CHANGED TOO
-            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {self.__bot_scores[1][0]} Score: {self.__bot_scores[1][1]} Number of simulations: {number_of_simulations}") 
+            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {self.__bot_scores[1][0] if self.__bot_scores != [] else 'None'} Score: {self.__bot_scores[1][1] if self.__bot_scores != [] else 0} Number of simulations: {number_of_simulations}") 
         self.__logger.debug("Simulation info file saved")
