@@ -34,3 +34,5 @@ MIQUEL:
         
     for the bot class, create a variable state, which contains wether it has been hit recently
     has used a super melee, etc
+
+    donar accés a totes les constants

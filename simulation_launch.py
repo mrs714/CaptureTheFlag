@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     while True:
         start_time = datetime.now() 
-        print(f"Starting simulation {number_of_simulations} at {start_time}")
+        print(f"\n\nStarting simulation {number_of_simulations} at {start_time}")
         logger.info(f"Creating the simulation {number_of_simulations} object...")
         # Create an empty simulation
         sim = Simulation(logger)
@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
         logger.info(f"Sleeping...")
         # Wait x seconds before running the simulation again
-        print(f"{number_of_simulations} simulations done. Waiting {INTER_SIMULATION_TIME} seconds before running the next simulation...")
+        print(f"{number_of_simulations} simulations done. Waiting {INTER_SIMULATION_TIME} seconds before running the next simulation...\n\n")
         sleep(INTER_SIMULATION_TIME)
 
         number_of_simulations += 1
