@@ -25,6 +25,7 @@ from RestrictedPython.Guards import guarded_iter_unpack_sequence, full_write_gua
 from io import StringIO #import StringIO (for capturing the bot output)
 import sys
 import os # Create folders if needed
+import shutil # Remove full directories
 import traceback
 
 class Simulation:
@@ -380,7 +381,7 @@ class Simulation:
             os.makedirs(SIM_MP4_NAME, exist_ok=True)
         video_clip.write_videofile(SIM_MP4_NAME, fps=FPS)
         self.__logger.debug("Mp4 file saved")
-        os.removedirs(SIM_FRAMES_PATH)
+        shutil.rmtree(SIM_FRAMES_PATH)
 
         self.__logger.debug("Saving the simulation info file...")
         if not os.path.exists(SIM_INFO_NAME):
