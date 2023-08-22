@@ -29,6 +29,7 @@ if __name__ == '__main__':
 
     while True:
         start_time = datetime.now() 
+        print(f"Starting simulation {number_of_simulations} at {start_time}")
         logger.info(f"Creating the simulation {number_of_simulations} object...")
         # Create an empty simulation
         sim = Simulation(logger)
@@ -42,7 +43,6 @@ if __name__ == '__main__':
         logger.info(f"Saving the animation {number_of_simulations}...")
 
         # Save the animation
-        end_time = datetime.now()
         sim.save_replay(start_time, number_of_simulations)
         logger.info(f"Simulation {number_of_simulations} saved")
 
