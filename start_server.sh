@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo ""
 echo "Looking for updates on the code..."
 git pull
@@ -7,6 +8,31 @@ echo ""
 echo "Launching server."
 # Start Flask in a detached screen session
 screen -dmS flask_screen bash -c 'flask run --host=0.0.0.0 --port=80'
+
+# Parse command-line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --map-width)
+            MAP_WIDTH="$2"
+            shift 2
+            ;;
+        --map-height)
+            MAP_HEIGHT="$2"
+            shift 2
+            ;;
+        --duration)
+            DURATION="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown option: $1"
+            exit 1
+            ;;
+    esac
+done
+
+# Call the Python script with the provided arguments
+python simulation.py --map-width "$MAP_WIDTH" --map-height "$MAP_HEIGHT" --duration "$DURATION"
 
 echo ""
 echo "Launching simulation."
