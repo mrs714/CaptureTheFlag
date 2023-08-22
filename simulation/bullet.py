@@ -55,7 +55,7 @@ class Bullet(Entity):
         return remove
     
     def get_info(self):
-        return BulletInfo(self.id(), self.__x__, self.__y__, self.__dx, self.__dy, self.__damage, self.__type, self.__owner_id)
+        return BulletInfo(self.id(), self.__relative_x__, self.__relative_y__, self.__dx, self.__dy, self.__damage, self.__type, self.__owner_id)
     
     def to_remove(self):
         return self.__to_remove

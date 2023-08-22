@@ -11,4 +11,4 @@ class Drop(Entity):
         return self.__type
   
     def get_info(self):
-        return DropInfo(self.id(), self.__x__, self.__y__, self.__type)
+        return DropInfo(self.id(), self.__relative_x__, self.__relative_y__, self.__type)
