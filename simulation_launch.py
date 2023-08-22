@@ -41,7 +41,7 @@ if __name__ == '__main__':
         logger.info("Simulation saved")
 
         logger.info("Sleeping...")
-        # Wait x minutes before running the simulation again
+        # Wait x seconds before running the simulation again
         sleep(INTER_SIMULATION_TIME)
 
 @atexit.register

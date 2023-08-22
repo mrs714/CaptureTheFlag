@@ -269,6 +269,7 @@ class Simulation:
         self.__collision_handler(collisions, bots_to_remove, bullets_to_remove, drops_to_remove)
 
         # Remove the bots, bullets and drops that have to be removed
+        bots_to_remove = list(set(bots_to_remove))
         for bot_id in bots_to_remove:
             db_bot = self.__entities["bots"][bot_id].get_db_id()
             self.__entities["dead_bots"][bot_id] = self.__entities["bots"].pop(bot_id)
