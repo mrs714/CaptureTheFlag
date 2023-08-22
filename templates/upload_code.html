@@ -30,7 +30,7 @@
       <div class="collapse" id="explanationCollapse">
         <p>
           <b>Basics</b><br>
-          To run the code safely, we use pythonRestricted, a restricted version of python, which only allows a few functions and statements, together with these which we have implemented ourselves, and the names allowed by the module safe_globals.
+          To run the code safely, we use pythonRestricted, a restricted version of python, which only allows a few functions and statements, together with those which we have implemented ourselves, and the names allowed by the module safe_globals.
           As such, there are some python features that aren't available, such as double assignation (x, y = 0, 0).
           
           <br><br>
@@ -70,15 +70,15 @@
               print(bot_info.health) # You can check the output of the prints on the "Player info" page.
           <br><br>
           <b>Actions</b><br>
-          From here, you can access all actions allowed to your bot.
-          <br>- Move: the bot moves in the given direction;
-          <br>- Shoot: the bot shoots in the given direction;
-          <br>- Melee: the bot attacks in the given direction;
+          From here, you can access all actions allowed to your bot (all of them have cooldowns except for move).
+          <br>- move(dx, dy): the bot moves in the given direction;
+          <br>- shoot(dx, dy): the bot shoots in the given direction;
+          <br>- melee(): the bot attacks in the given direction;
           <br><br>
           And have this habilities: 
-          <br>- Teleport: the bot teleports ___ x distance in the given direction;
-          <br>- Super-shot: the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;
-          <br>- Super-melee: the bot makes a melee attack which deals double damage to the defense, base damage to the life.
+          <br>- teleport(dx, dy): the bot teleports ___ x distance in the given direction;
+          <br>- super_shot(dx,dy): the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;
+          <br>- super_melee(): the bot makes a melee attack which deals double damage to the defense, base damage to the life.
           <br>
             So, to move, you would do:
             game.actions.move(dx, dy)
