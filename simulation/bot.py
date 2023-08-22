@@ -19,7 +19,7 @@ class Bot(Entity):
         self.__defense = shield
         self.__health = health # Config (doesn't change)
         self.__shield = shield # Config
-        self.__attack = attack # Config
+        self.__attack = MELEE_DAMAGE * attack / 100 # Percentage applied
         self.__db_id = db_id
         self.__name = name
         self.__exec_events = [] #List of strings captured from stdout and stderr
