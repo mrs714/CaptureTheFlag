@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
         # Save the animation
         end_time = datetime.now()
-        sim.save_replay(end_time - start_time)
+        sim.save_replay(start_time)
         logger.info(f"Simulation {number_of_simulations} saved")
 
         logger.info(f"Sleeping...")
