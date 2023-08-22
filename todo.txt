@@ -17,6 +17,7 @@ MIQUEL:
     la info de la simulació inclou quantes se n'han fet
     replays dona tota la info necessària per la web, amb el format correcte
     replays.html mostra correctament la info
+    codi d'exemple afegit
 
 
     A fer: 
