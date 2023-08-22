@@ -45,6 +45,7 @@ class Simulation:
         self.__clock = pygame.time.Clock()
         self.__current_tick = 0
         self.__frames = []
+        self.__frames_number = 1 # Used to give name to the frames
         self.__id_counter = 0
         self.__entities = {
             "bots": {},
@@ -358,25 +359,32 @@ class Simulation:
         
         frame = np.rot90(frame, k=-1)
         frame = np.fliplr(frame)
+        frame = pygame.surfarray.make_surface(frame)
 
         self.__frames.append(frame)
 
         # This eats memory, as *every* frame is stored at once on RAM
-        if len(self.__frames) > int(MAX_FRAMES_ON_RAM):
-            os.makedirs(SIM_FRAMES_PATH, exist_ok=True)
+        if len(self.__frames) > math.ceil(MAX_FRAMES_ON_RAM): # At least one frame in RAM
+            if not os.path.exists(SIM_FRAMES_PATH):
+                os.makedirs(SIM_FRAMES_PATH, exist_ok=True)
             for frame in self.__frames:
-                
-
-
+                pygame.image.save(frame, os.path.join(SIM_FRAMES_PATH, str(self.__frames_number) + ".png"))
+                self.__frames_number += 1
+            self.__frames = []
     
     def save_replay(self, start_time, number_of_simulations):
 
         self.__logger.debug("Saving the mp4 file...")
-        video_clip = ImageSequenceClip(self.__frames, fps=FPS)
+        video_clip = ImageSequenceClip(SIM_FRAMES_PATH, fps=FPS)
+        if not os.path.exists(SIM_MP4_NAME):
+            os.makedirs(SIM_MP4_NAME, exist_ok=True)
         video_clip.write_videofile(SIM_MP4_NAME, fps=FPS)
         self.__logger.debug("Mp4 file saved")
+        os.removedirs(SIM_FRAMES_PATH)
 
         self.__logger.debug("Saving the simulation info file...")
+        if not os.path.exists(SIM_INFO_NAME):
+            os.makedirs(SIM_INFO_NAME, exist_ok=True)
         with open(SIM_INFO_NAME, "w") as f:
             time_elapsed = datetime.now() - start_time
             # IF THE FORMAT IS CHANGED, REPLAYS() IN APP.PY MUST BE CHANGED TOO

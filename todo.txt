@@ -24,6 +24,10 @@ MIQUEL:
 
     A fer: 
 
+    FER QUE EL VIDEO ES GUARDI EN UNA ALTRA CARPETA FINS QUE ESTIGUI ESCRIT
+
+    FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
+
     comprovar que el codi de mostra funcioni
 
     moviepy ram eater, cpu hoarder, memory leaker, disk space devourer, network bandwidth sucker, battery drainer, screen burner, and framerate killer.
