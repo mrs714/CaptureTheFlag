@@ -5,6 +5,7 @@ from log import setup_logger
 import atexit
 import argparse # Used to parse the arguments passed to the script
 from datetime import datetime #import datetime (to get the current date and time)
+import os
 import shutil # Used to delete the frames folder before running the simulation again
 
 def parse_arguments():
@@ -32,8 +33,8 @@ if __name__ == '__main__':
 
     while True:
 
-        
-        shutil.rmtree(SIM_FRAMES_PATH) # Clean previous data
+        if os.exists(SIM_FRAMES_PATH):
+            shutil.rmtree(SIM_FRAMES_PATH) # Clean previous data
         expected_time = end_time - start_time if end_time else "?"
         start_time = datetime.now() 
         print(f"\n\nStarting simulation {number_of_simulations} at {start_time}. \n Expected time for the simulation: {expected_time}\n\n")
