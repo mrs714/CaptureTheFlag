@@ -179,11 +179,14 @@ class Simulation:
         return move, shoot, melee, dash, super_shot, super_melee
     
     def __generate_functions(self, bot): # Functions for the user
+        
+        bot_id = bot.get_db_id()
+        
         def save_data(name, value): 
-            self.__storage[bot.get_db_id()][name] = value
+            self.__storage[bot_id][name] = value
         
         def get_data(name):
-            return self.__storage[bot.get_db_id()][name]
+            return self.__storage.get(bot_id, {}).get(name, "Nothing stored here...")
         
         def get_bots_in_range(radius):
             return self.get_bots_in_range(bot.x(), bot.y(), radius)
