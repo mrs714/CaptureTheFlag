@@ -365,7 +365,7 @@ class Simulation:
         self.__frames.append(frame)
 
         # This eats memory, as *every* frame is stored at once on RAM
-        if len(self.__frames) > math.ceil(MAX_FRAMES_ON_RAM): # At least one frame in RAM
+        if len(self.__frames) > math.ceil(MAX_FRAMES_ON_RAM) or self.__current_tick == FPS * DURATION: # At least one frame in RAM
             if not os.path.exists(SIM_FRAMES_PATH):
                 os.makedirs(SIM_FRAMES_PATH, exist_ok=True)
             for frame in self.__frames:
