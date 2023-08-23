@@ -358,9 +358,9 @@ class Simulation:
         # Take a frame, rotate it and flip it, and append it to the list of frames
         frame = pygame.surfarray.array3d(self.__screen)
         
-        frame = np.rot90(frame, k=-1)
-        frame = np.fliplr(frame)
-        frame = pygame.surfarray.make_surface(frame)
+        #frame = np.rot90(frame, k=-1)
+        #frame = np.fliplr(frame)
+        #frame = pygame.surfarray.make_surface(frame)
 
         self.__frames.append(frame)
 
