@@ -179,19 +179,25 @@ class Simulation:
         return move, shoot, melee, dash, super_shot, super_melee
     
     def __generate_functions(self, bot): # Functions for the user
-        def save_information(name, value): 
+        def save_data(name, value): 
             self.__storage[bot.get_db_id()][name] = value
         
-        def get_information(name):
+        def get_data(name):
             return self.__storage[bot.get_db_id()][name]
         
-        return save_information, get_information
+        def get_bots_in_range(radius):
+            return self.get_bots_in_range(bot.x(), bot.y(), radius)
+        
+        def print(string):
+            pass
+        
+        return save_data, get_data, get_bots_in_range, print
 
 
     def __execute_bot_code(self, bot, bots_to_remove):
 
         # Create an object to give information about the state of the game to the bot code
-        game = Game(bot, self.__entities, self.__generate_actions(bot, bots_to_remove), self.__current_tick)
+        game = Game(bot, self.__entities, self.__generate_actions(bot, bots_to_remove), self.__current_tick, self.__generate_functions(bot))
 
         # Create a dictionary with the names that the user code has access to
         player_globals = safe_globals.copy()

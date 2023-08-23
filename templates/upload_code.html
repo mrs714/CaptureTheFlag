@@ -42,7 +42,7 @@
           <br><br>
           <b>The "game" object:</b><br>
           All of our functions can be accessed through an object called "game".
-          This objects has four attributes: entities, actions, and tick.
+          This objects has five attributes: entities, actions, functions, and tick.
           <br><br>
           <b>Entities:</b><br>
           A dictionary which contains another dictionary for each type of entities in the game. This includes bots, bullets, and drops separated by type (drops_points, drops_health, drops_shield).
@@ -83,6 +83,16 @@
           <br><br>
             So, to move, you would do:
             <br>game.actions.move(dx, dy)
+          <br><br>
+          <b>Functions</b><br>
+          To make the programming more versatile, we offer a few functions that you can use.
+          First of all, to save information between ticks, you can use a dictionary:
+          <br>- game.functions.save_data(name, data): Saves the object "data" in the dictionary, with the key "name";
+          <br>- game.functions.get_data(name): Returns the object saved in the dictionary with the key "name";
+          <br><br>
+          Then, you have other more general functions:
+          <br>- game.functions.get_bots_in_range(radius): Returns a list with the ids of all the bots in a radius of "radius" from your bot;
+          <br>- game.functions.print(string): Prints the string on the log shown in the "Player info" page;
           <br><br>
           <b>Ticks</b><br>
           Returns the number of ticks that have passed since the beginning of the game.

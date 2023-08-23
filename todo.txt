@@ -29,15 +29,18 @@ MIQUEL:
     el video i la info es guarden en una altre carpeta fins que estan completament escrits
     creada la funció generate_functions
 
+    Creada classe functions, que dona funcions al jugador com per exemple guardar dades, bots pròxims, print...
+
+
     A fer: 
 
-    passar a game la funció generate_functions
+    implementar acció print
+
+    limit cpu with cpulimit
 
     FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
 
     comprovar que el codi de mostra funcioni
-
-    Give players a way to store information between ticks.
 
     Add special effects (picking up a powerup, dying, melee...)
 
@@ -45,7 +48,5 @@ MIQUEL:
         
     for the bot class, create a variable state, which contains wether it has been hit recently
     has used a super melee, etc
-
-
 
     fer fitxer de dependencies
