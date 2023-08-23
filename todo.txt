@@ -50,3 +50,12 @@ MIQUEL:
     has used a super melee, etc
 
     fer fitxer de dependencies
+
+
+
+    test this:
+      
+number = rnd.randint(0,1)
+game.functions.save_data("data", number)
+if game.functions.get_data("data") != None:
+  game.actions.dash(0, 1)
