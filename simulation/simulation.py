@@ -375,20 +375,42 @@ class Simulation:
             self.__frames = []
     
     def save_replay(self, start_time, number_of_simulations):
-
+        # We want to save the files apart so that they are available for download while they are being generated
+        
+        # Create video
         self.__logger.debug("Saving the mp4 file...")
         video_clip = ImageSequenceClip(SIM_FRAMES_PATH, fps=FPS)
+
+        # Prepare directories
+        if not os.path.exists(SIM_VIDEO_PLACEHOLDER_PATH):
+            os.makedirs(SIM_VIDEO_PLACEHOLDER_PATH, exist_ok=True)
         if not os.path.exists(SIM_MP4_NAME):
             os.makedirs(SIM_MP4_NAME, exist_ok=True)
-        video_clip.write_videofile(SIM_MP4_NAME, fps=FPS)
-        self.__logger.debug("Mp4 file saved")
-        shutil.rmtree(SIM_FRAMES_PATH)
 
+        # Save the video to the placeholder folder
+        video_clip.write_videofile(SIM_VIDEO_PLACEHOLDER_PATH, fps=FPS)
+        self.__logger.debug("Mp4 file saved")
+        
+        # Save the simulation info file
         self.__logger.debug("Saving the simulation info file...")
+        
+        # Prepare directory
+        if not os.path.exists(SIM_INFO_PLACEHOLDER_PATH):
+            os.makedirs(SIM_INFO_PLACEHOLDER_PATH, exist_ok=True)
         if not os.path.exists(SIM_INFO_NAME):
             os.makedirs(SIM_INFO_NAME, exist_ok=True)
-        with open(SIM_INFO_NAME, "w") as f:
+
+        # Save the file to the placeholder folder
+        with open(SIM_INFO_PLACEHOLDER_PATH, "w") as f:
             time_elapsed = datetime.now() - start_time
             # IF THE FORMAT IS CHANGED, REPLAYS() IN APP.PY MUST BE CHANGED TOO
             f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {self.__bot_scores[0][0] if self.__bot_scores != [] else 'None'} Score: {self.__bot_scores[0][1] if self.__bot_scores != [] else 0} Number of simulations: {number_of_simulations}") 
         self.__logger.debug("Simulation info file saved")
+
+        # Move everything to the correct folder (overwrite if needed)
+        shutil.move(SIM_VIDEO_PLACEHOLDER_PATH, SIM_MP4_NAME, overwrite=True)
+        shutil.move(SIM_INFO_PLACEHOLDER_PATH, SIM_INFO_NAME, overwrite=True)
+
+        # Wrap everything up
+        shutil.rmtree(SIM_FRAMES_PATH)
+        shutil.rmtree(SIM_PLACEHOLDER_FOLDER)

@@ -14,6 +14,9 @@ MAX_FRAMES_ON_RAM = 100000000 / (MAP_HEIGHT * MAP_WIDTH) # Maximum ammount of fr
 SIM_MP4_NAME = "replays/simulation.mp4"
 SIM_INFO_NAME = "replays/simulation_info.txt"
 SIM_FRAMES_PATH = "replays/frames/"
+SIM_PLACEHOLDER_FOLDER = "replays/placeholder/"
+SIM_VIDEO_PLACEHOLDER_PATH = "replays/placeholder/simulation.mp4" # Used to save the video without users getting errors trying to access it while it's being written
+SIM_INFO_PLACEHOLDER_PATH = "replays/placeholder/simulation_info.txt" # Used to save the video without users getting errors trying to access it while it's being written
 
 BLUE = (0, 0, 255) # Players
 BLACK = (0, 0, 0) # Background
