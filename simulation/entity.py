@@ -5,8 +5,6 @@ class Entity:
         self.__sim_id = sim_id
         self.__x__ = x
         self.__y__ = y
-        self.__relative_x__ = self.relative_x()
-        self.__relative_y__ = self.relative_y()
     
     def id(self):
         return self.__sim_id

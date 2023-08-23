@@ -173,4 +173,4 @@ class Bot(Entity):
 
     def get_info(self):
         print(self.__relative_x__, self.__relative_y__)
-        return BotInfo(self.id(), self.__relative_x__, self.__relative_y__, self.__health, self.__shield, self.__attack)
+        return BotInfo(self.id(), super().relative_x(), super().relative_y(), self.__health, self.__shield, self.__attack)
