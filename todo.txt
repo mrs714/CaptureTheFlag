@@ -1,6 +1,8 @@
 PABLO:
     fer que si els usuaris fan print es redirigeixi al log de la partida
 
+    mirar la funció kill_bot en simulation
+
 
 MIQUEL:
     fet: 
@@ -25,9 +27,12 @@ MIQUEL:
     Els frames es guarden a disc cada x frames, i després s'esborra tot
     el nom dels frames començen per 10000 perquè no hi hagi errors d'ordre
     el video i la info es guarden en una altre carpeta fins que estan completament escrits
-
+    creada la funció generate_functions
 
     A fer: 
+
+    passar a game la funció generate_functions
+
     FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
 
     comprovar que el codi de mostra funcioni
@@ -41,6 +46,6 @@ MIQUEL:
     for the bot class, create a variable state, which contains wether it has been hit recently
     has used a super melee, etc
 
-    donar accés a totes les constants
+
 
     fer fitxer de dependencies
