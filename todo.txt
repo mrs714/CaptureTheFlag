@@ -24,17 +24,13 @@ MIQUEL:
     See that it doesn't.
     Els frames es guarden a disc cada x frames, i després s'esborra tot
     el nom dels frames començen per 10000 perquè no hi hagi errors d'ordre
+    el video i la info es guarden en una altre carpeta fins que estan completament escrits
 
 
     A fer: 
-
-    FER QUE EL VIDEO ES GUARDI EN UNA ALTRA CARPETA FINS QUE ESTIGUI ESCRIT
-
     FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
 
     comprovar que el codi de mostra funcioni
-
-
 
     Give players a way to store information between ticks.
 
