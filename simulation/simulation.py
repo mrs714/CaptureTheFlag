@@ -82,8 +82,7 @@ class Simulation:
                                                   config["health"], 
                                                   config["shield"], 
                                                   config["attack"])
-        self.__storage[bot["id"]] = {} # A dictionary for each player, to store the information they want
-        self.__logger.info("Storage: " + str(self.__storage))
+            self.__storage[bot["id"]] = {} # A dictionary for each player, to store the information they want
         self.__logger.info("Bots participating: " + str([bot.get_name() for bot in self.__entities["bots"].values()]))
         self.__logger.debug("Simulation prepared")
 
