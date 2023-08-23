@@ -17,11 +17,11 @@ def parse_arguments():
 
 if __name__ == '__main__':
     
-    args = parse_arguments()
+    """args = parse_arguments()
     # Set constants based on command-line arguments
     MAP_WIDTH = args.map_width
     MAP_HEIGHT = args.map_height
-    INTER_SIMULATION_TIME = args.duration
+    INTER_SIMULATION_TIME = args.duration"""
 
     logger, handlers = setup_logger("simulation", "logs/simulation")
     
