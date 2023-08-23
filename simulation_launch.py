@@ -39,7 +39,7 @@ if __name__ == '__main__':
         start_time = datetime.now() 
         print(f"""\n\nStarting simulation {number_of_simulations} at {start_time}.
         Map size: {MAP_WIDTH}x{MAP_HEIGHT}
-        Duration: {DURATION} seconds
+        Duration: {DURATION/FPS} seconds
         FPS: {FPS}
         Expected time for the simulation: {expected_time}\n\n""")
 
