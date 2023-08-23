@@ -29,7 +29,6 @@ MIQUEL:
     A fer: 
 
     FER QUE EL VIDEO ES GUARDI EN UNA ALTRA CARPETA FINS QUE ESTIGUI ESCRIT
-    duration doesnt match the video lenght
 
     FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
 
