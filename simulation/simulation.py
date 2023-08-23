@@ -366,8 +366,13 @@ class Simulation:
 
         # This eats memory, as *every* frame is stored at once on RAM. To solve this:
         if len(self.__frames) > math.ceil(MAX_FRAMES_ON_RAM) or self.__current_tick == DURATION - 1:
+            
+            # Create the folders if they don't exist
             if not os.path.exists(SIM_FRAMES_PATH):
+                if not os.path.exists(SIM_FOLDER):
+                    os.makedirs(SIM_FOLDER, exist_ok=True)
                 os.makedirs(SIM_FRAMES_PATH, exist_ok=True)
+            
             for frame in self.__frames:
                 pygame.image.save(frame, os.path.join(SIM_FRAMES_PATH, str(self.__frames_number) + ".png"))
                 self.__frames_number += 1
@@ -381,10 +386,8 @@ class Simulation:
         video_clip = ImageSequenceClip(SIM_FRAMES_PATH, fps=FPS)
 
         # Prepare directories
-        if not os.path.exists(SIM_VIDEO_PLACEHOLDER_PATH):
-            os.makedirs(SIM_VIDEO_PLACEHOLDER_PATH, exist_ok=True)
-        if not os.path.exists(SIM_MP4_NAME):
-            os.makedirs(SIM_MP4_NAME, exist_ok=True)
+        if not os.path.exists(SIM_PLACEHOLDER_FOLDER):
+            os.makedirs(SIM_PLACEHOLDER_FOLDER, exist_ok=True)
 
         # Save the video to the placeholder folder
         video_clip.write_videofile(SIM_VIDEO_PLACEHOLDER_PATH, fps=FPS)
@@ -394,10 +397,6 @@ class Simulation:
         self.__logger.debug("Saving the simulation info file...")
         
         # Prepare directory
-        if not os.path.exists(SIM_INFO_PLACEHOLDER_PATH):
-            os.makedirs(SIM_INFO_PLACEHOLDER_PATH, exist_ok=True)
-        if not os.path.exists(SIM_INFO_NAME):
-            os.makedirs(SIM_INFO_NAME, exist_ok=True)
 
         # Save the file to the placeholder folder
         with open(SIM_INFO_PLACEHOLDER_PATH, "w") as f:
@@ -407,8 +406,8 @@ class Simulation:
         self.__logger.debug("Simulation info file saved")
 
         # Move everything to the correct folder (overwrite if needed)
-        shutil.move(SIM_VIDEO_PLACEHOLDER_PATH, SIM_MP4_NAME, overwrite=True)
-        shutil.move(SIM_INFO_PLACEHOLDER_PATH, SIM_INFO_NAME, overwrite=True)
+        shutil.move(SIM_VIDEO_PLACEHOLDER_PATH, SIM_MP4_NAME)
+        shutil.move(SIM_INFO_PLACEHOLDER_PATH, SIM_INFO_NAME)
 
         # Wrap everything up
         shutil.rmtree(SIM_FRAMES_PATH)
