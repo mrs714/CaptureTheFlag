@@ -189,7 +189,7 @@ class Simulation:
             return self.get_bots_in_range(bot.x(), bot.y(), radius)
         
         def print(string):
-            pass
+            bot.add_event("Print: " + str(string))
         
         return save_data, get_data, get_bots_in_range, print
 
