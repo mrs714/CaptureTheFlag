@@ -370,7 +370,6 @@ class Simulation:
                 os.makedirs(SIM_FRAMES_PATH, exist_ok=True)
             for frame in self.__frames:
                 pygame.image.save(frame, os.path.join(SIM_FRAMES_PATH, str(self.__frames_number) + ".png"))
-                print("Frame saved: " + str(self.__frames_number) + ".png")
                 self.__frames_number += 1
             self.__frames = []
     
