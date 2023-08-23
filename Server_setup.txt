@@ -10,7 +10,7 @@ apt install cpulimit (optional)
 # Clone the repo
 git clone "https://github.com/HalcoDraco/CompetitionBotUploader.git"
 
-# Python dependencies
+# Python dependencies (all at once with: pip install --upgrade -r requirements.txt)
 pip install flask
 pip install pygame
 pip install moviepy
