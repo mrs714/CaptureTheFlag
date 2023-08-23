@@ -46,7 +46,7 @@ class Simulation:
         self.__clock = pygame.time.Clock()
         self.__current_tick = 0
         self.__frames = []
-        self.__frames_number = 1 # Used to give name to the frames
+        self.__frames_number = 10000 # Used to give name to the frames, it has to start high enough to avoid sorting errors (1, 10, 2, 3...)
         self.__id_counter = 0
         self.__entities = {
             "bots": {},
