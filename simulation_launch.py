@@ -38,10 +38,10 @@ if __name__ == '__main__':
         expected_time = end_time - start_time if end_time else "?"
         start_time = datetime.now() 
         print(f"""\n\nStarting simulation {number_of_simulations} at {start_time}.
-        \nMap size: {MAP_WIDTH}x{MAP_HEIGHT}
-        \nDuration: {DURATION} seconds
-        \nFPS: {FPS}
-        \nExpected time for the simulation: {expected_time}\n\n""")
+        Map size: {MAP_WIDTH}x{MAP_HEIGHT}
+        Duration: {DURATION} seconds
+        FPS: {FPS}
+        Expected time for the simulation: {expected_time}\n\n""")
 
         logger.info(f"Creating the simulation {number_of_simulations} object...")
         # Create an empty simulation
