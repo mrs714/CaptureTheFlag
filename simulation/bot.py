@@ -172,4 +172,5 @@ class Bot(Entity):
         return self.__code
 
     def get_info(self):
-        return BotInfo(self.id(), self.__x__, self.__y__, self.__health, self.__shield, self.__attack)
+        print(self.__relative_x__, self.__relative_y__)
+        return BotInfo(self.id(), self.__relative_x__, self.__relative_y__, self.__health, self.__shield, self.__attack)
