@@ -37,7 +37,11 @@ if __name__ == '__main__':
             shutil.rmtree(SIM_FRAMES_PATH) # Clean previous data
         expected_time = end_time - start_time if end_time else "?"
         start_time = datetime.now() 
-        print(f"\n\nStarting simulation {number_of_simulations} at {start_time}. \n Expected time for the simulation: {expected_time}\n\n")
+        print(f"""\n\nStarting simulation {number_of_simulations} at {start_time}.
+        \n\nMap size: {MAP_WIDTH}x{MAP_HEIGHT}
+        \n\nDuration: {DURATION} seconds
+        \n\nFPS: {FPS}
+        \n\n Expected time for the simulation: {expected_time}\n\n""")
 
         logger.info(f"Creating the simulation {number_of_simulations} object...")
         # Create an empty simulation
