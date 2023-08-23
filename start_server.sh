@@ -36,12 +36,12 @@ if [[ $# -gt 0 ]]; then
     echo ""
     echo "Launching simulation."
     # Call the Python script with the provided arguments
-    screen -dmS flask_screen bash -c 'cpulimit -l 90 -e python simulation.py --map-width "$MAP_WIDTH" --map-height "$MAP_HEIGHT" --duration "$DURATION"'
+    screen -dmS flask_screen bash -c 'python simulation.py --map-width "$MAP_WIDTH" --map-height "$MAP_HEIGHT" --duration "$DURATION"'
     echo ""
 fi
 
 echo ""
 echo "Launching simulation."
 # Run the simulation_launch.py script
-screen -dmS simulation_screen bash -c 'cpulimit -l 90 -e python3 simulation_launch.py'
+screen -dmS simulation_screen bash -c 'python3 simulation_launch.py'
 echo ""
