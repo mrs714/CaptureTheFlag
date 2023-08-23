@@ -56,6 +56,7 @@ class Simulation:
             "drops_health": {},
             "drops_shield": {}
         }
+        self.__storage = {} # Storage for the players, associated to the db id
         self.__collision_detector = CollisionAlgorithm()
         self.__text_font = pygame.font.SysFont(None, 24)
         self.__logger.debug("Simulation object variables initialized")
@@ -81,6 +82,7 @@ class Simulation:
                                                   config["health"], 
                                                   config["shield"], 
                                                   config["attack"])
+        self.__storage[bot.get_db_id()] = {} # A dictionary for each player, to store the information they want
         self.__logger.info("Bots participating: " + str([bot.get_name() for bot in self.__entities["bots"].values()]))
         self.__logger.debug("Simulation prepared")
 
@@ -175,6 +177,16 @@ class Simulation:
                         self.kill_bot(bot_id, bots_to_remove)
         
         return move, shoot, melee, dash, super_shot, super_melee
+    
+    def __generate_functions(self, bot): # Functions for the user
+        def save_information(name, value): 
+            self.__storage[bot.get_db_id()][name] = value
+        
+        def get_information(name):
+            return self.__storage[bot.get_db_id()][name]
+        
+        return save_information, get_information
+
 
     def __execute_bot_code(self, bot, bots_to_remove):
 
