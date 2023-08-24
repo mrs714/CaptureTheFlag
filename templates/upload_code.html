@@ -103,12 +103,18 @@
           To make the programming more versatile, we offer a few functions that you can use. First of all, to save information between ticks, you can use a dictionary:
           <ul>
             <li><code>game.functions.save_data(name, data)</code>: Saves the object <em>data</em> in the dictionary, with the key <em>name</em>;</li>
-            <li><code>game.functions.get_data(name)</code>: Returns the object saved in the dictionary with the key <em>name</em>;</li>
+            <li><code>game.functions.get_data(name) -> {}</code>: Returns the object saved in the dictionary with the key <em>name</em>;</li>
           </ul>
           Then, you have other more general functions:
           <ul>
-            <li><code>game.functions.get_bots_in_range(radius)</code>: Returns a list with the IDs of all the bots in a radius of <em>radius</em> from your bot;</li>
             <li><code>game.functions.print(string)</code>: Prints the string on the log shown in the "Player info" page;</li>
+            <li><code>game.functions.vector_to(x, y) -> (dx, dy)</code>: Returns a vector (tuple) from the bot to the given coordinates;</li>
+          </ul>
+          And functions to make distances easier:
+          <ul>
+            <li><code>get_bots_in_range_melee() -> (bool, [id's])</code>: Returns a tuple, where the first element is a boolean indicating if there are bots in range, and the second element is a list of the IDs of the bots in range;</li>
+            <li><code>nearest_object(type = ["bot", "bullet", "points", "health", "shield"]) -> [id's]</code>: Returns the ID of the nearest object of the given type (the last three are drops);</li>
+            <li><code>get_objects_in_range(type = [^^^^], radius = (MAP_HEIGHT/10))</code>: Returns a list of the IDs of the objects of the given type in range of the bot, with the given radius (default is 1/10 of the map height);</li>
           </ul>
         </p>
         

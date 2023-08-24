@@ -182,19 +182,47 @@ class Simulation:
         
         bot_id = bot.get_db_id()
         
-        def save_data(name, value): 
+        def save_data(name, value): # Saves data in the storage - persistent storage
             self.__storage[bot_id][name] = value
         
         def get_data(name):
             return self.__storage.get(bot_id, {}).get(name, "Nothing stored here...")
         
-        def get_bots_in_range(radius):
-            return self.get_bots_in_range(bot.x(), bot.y(), radius)
-        
         def print(string):
             bot.add_event("\nPrint: " + str(string) + "\n")
+
+        def vector_to(x, y): # Returns vector to go to map coordinates
+            return (x - bot.x(), y - bot.y())
         
-        return save_data, get_data, get_bots_in_range, print
+        def get_bots_in_range_melee(): # Tuple: (is there a bot in melee range, list with the ids of the bots in melee range)
+            return self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS) != [], self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS)
+        
+        def nearest_object(type = "bot"): # Returns the id of the nearest enemy
+            if type == "bot":
+                return min([bot.id() for bot in self.__entities["bots"].values() if bot.id() != bot_id], key=lambda bot_id: (self.__entities["bots"][bot_id].x() - bot.x())**2 + (self.__entities["bots"][bot_id].y() - bot.y())**2)
+            elif type == "bullet":
+                return min([bullet.id() for bullet in self.__entities["bullets"].values()], key=lambda bullet_id: (self.__entities["bullets"][bullet_id].x() - bot.x())**2 + (self.__entities["bullets"][bullet_id].y() - bot.y())**2)
+            elif type == "points":
+                return min([drop.id() for drop in self.__entities["drops_points"].values()], key=lambda drop_id: (self.__entities["drops_points"][drop_id].x() - bot.x())**2 + (self.__entities["drops_points"][drop_id].y() - bot.y())**2)
+            elif type == "health":
+                return min([drop.id() for drop in self.__entities["drops_health"].values()], key=lambda drop_id: (self.__entities["drops_health"][drop_id].x() - bot.x())**2 + (self.__entities["drops_health"][drop_id].y() - bot.y())**2)
+            elif type == "shield":
+                return min([drop.id() for drop in self.__entities["drops_shield"].values()], key=lambda drop_id: (self.__entities["drops_shield"][drop_id].x() - bot.x())**2 + (self.__entities["drops_shield"][drop_id].y() - bot.y())**2)
+
+        def get_objects_in_range(type = "bot", radius = MAP_HEIGHT / 10):
+            if type == "bot":
+                return [bot.id() for bot in self.__entities["bots"].values() if bot.id() != bot_id and (bot.x() - bot.x())**2 + (bot.y() - bot.y())**2 <= radius**2]
+            elif type == "bullet":
+                return [bullet.id() for bullet in self.__entities["bullets"].values() if (bullet.x() - bot.x())**2 + (bullet.y() - bot.y())**2 <= radius**2]
+            elif type == "points":
+                return [drop.id() for drop in self.__entities["drops_points"].values() if (drop.x() - bot.x())**2 + (drop.y() - bot.y())**2 <= radius**2]
+            elif type == "health":
+                return [drop.id() for drop in self.__entities["drops_health"].values() if (drop.x() - bot.x())**2 + (drop.y() - bot.y())**2 <= radius**2]
+            elif type == "shield":
+                return [drop.id() for drop in self.__entities["drops_shield"].values() if (drop.x() - bot.x())**2 + (drop.y() - bot.y())**2 <= radius**2]
+                
+
+        return save_data, get_data, print, vector_to, get_bots_in_range_melee, nearest_object, get_objects_in_range
 
 
     def __execute_bot_code(self, bot, bots_to_remove):
