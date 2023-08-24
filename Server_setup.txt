@@ -1,4 +1,4 @@
-# Install essentials
+# Install essentials (copy and paste all together into terminal)
 apt update
 apt install python3
 apt install pip
@@ -15,9 +15,7 @@ pip install flask
 pip install pygame
 pip install moviepy
 pip install pysqlite
-
-# db
-download the database and put it into /database
+pip install restrictedpython
 
 # Power up
 There are two files that need to be run. The first one is the app itself, with flask for the moment.
