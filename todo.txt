@@ -35,16 +35,17 @@ MIQUEL:
 
     millorat el format a les ajudes de upload code i configuration, per que no quedi un bloc de text infumable
 
-
-    A fer: 
-
-
-    tremenda liada més gran, els objectes informació no apareixen en el diccionari d'entitats, és com si no existisin, sospito que perquè
+     tremenda liada més gran, els objectes informació no apareixen en el diccionari d'entitats, és com si no existisin, sospito que perquè
     el codi no hi té accés a les classes
     dins de la classe game si que hi apareixen un cop generat el diccionari, just abans de fer el exec
     la resta de funcions es duen a terme fora del codi, en canvi, si un vol treballar amb les entitats, ho ha de fer des del codi restringit, cosa impossible perquè no té accés a les classes.
     S'ha de donar funcions que treballin amb el que l'usuari pugui voler fer amb les entitats
+    Ara mateix, enganxat amb celo està una funció que es diu get_attr(id, type, attribute), la obté l'atribut que vols de la cosa amb id i del tipus indicat
+    lo més fàcil seria eliminar per complet tota la branca game.entities
 
+
+
+    A fer: 
 
     limit cpu with cpulimit
 

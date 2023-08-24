@@ -214,45 +214,16 @@ class Simulation:
         def get_bots_in_range_melee(): # Tuple: (is there a bot in melee range, list with the ids of the bots in melee range)
             return self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS) != [], self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS)
         
-        def nearest_object(type = "bot"): # Returns the id of the nearest enemy
-            if type == "bot":
-                return min([bot.id() for bot in self.__entities["bots"].values() if bot.id() != bot_id], key=lambda bot_id: (self.__entities["bots"][bot_id].x() - bot.x())**2 + (self.__entities["bots"][bot_id].y() - bot.y())**2)
-            elif type == "bullet":
-                return min([bullet.id() for bullet in self.__entities["bullets"].values()], key=lambda bullet_id: (self.__entities["bullets"][bullet_id].x() - bot.x())**2 + (self.__entities["bullets"][bullet_id].y() - bot.y())**2)
-            elif type == "points":
-                return min([drop.id() for drop in self.__entities["drops_points"].values()], key=lambda drop_id: (self.__entities["drops_points"][drop_id].x() - bot.x())**2 + (self.__entities["drops_points"][drop_id].y() - bot.y())**2)
-            elif type == "health":
-                return min([drop.id() for drop in self.__entities["drops_health"].values()], key=lambda drop_id: (self.__entities["drops_health"][drop_id].x() - bot.x())**2 + (self.__entities["drops_health"][drop_id].y() - bot.y())**2)
-            elif type == "shield":
-                return min([drop.id() for drop in self.__entities["drops_shield"].values()], key=lambda drop_id: (self.__entities["drops_shield"][drop_id].x() - bot.x())**2 + (self.__entities["drops_shield"][drop_id].y() - bot.y())**2)
-
-        def get_objects_in_range(type = "bot", radius = MAP_HEIGHT / 10):
-            if type == "bot":
-                return [bot.id() for bot in self.__entities["bots"].values() if bot.id() != bot_id and (bot.x() - bot.x())**2 + (bot.y() - bot.y())**2 <= radius**2]
-            elif type == "bullet":
-                return [bullet.id() for bullet in self.__entities["bullets"].values() if (bullet.x() - bot.x())**2 + (bullet.y() - bot.y())**2 <= radius**2]
-            elif type == "points":
-                return [drop.id() for drop in self.__entities["drops_points"].values() if (drop.x() - bot.x())**2 + (drop.y() - bot.y())**2 <= radius**2]
-            elif type == "health":
-                return [drop.id() for drop in self.__entities["drops_health"].values() if (drop.x() - bot.x())**2 + (drop.y() - bot.y())**2 <= radius**2]
-            elif type == "shield":
-                return [drop.id() for drop in self.__entities["drops_shield"].values() if (drop.x() - bot.x())**2 + (drop.y() - bot.y())**2 <= radius**2]
-                
-        def get_attr(entity_id, type, attribute):
-            if type == "bot":
-                return getattr(self.__entities["bots"][entity_id].get_info(), attribute)
-            elif type == "bullet":
-                return self.__entities["bullets"][entity_id].get_info().attribute
-            elif type == "points":
-                return getattr(self.__entities["drops_points"][entity_id].get_info(), attribute)
-                return self.__entities["drops_points"][entity_id].get_info().attribute
-            elif type == "health":
-                return self.__entities["drops_health"][entity_id].get_info().attribute
-            elif type == "shield":
-                return self.__entities["drops_shield"][entity_id].get_info().attribute
+        def nearest_object(type = "bots"): # Returns the id of the nearest enemy
+            return min([element.id() for element in self.__entities[type].values() if element.id != bot_id], key = lambda element_id: (self.__entities["type"][element_id].x() - bot.x())**2 + (self.__entities[type][element_id].y() - bot.y())**2)
+           
+        def get_objects_in_range(type = "bots", radius = MAP_HEIGHT / 10):
+            return [element.id() for element in self.__entities[type].values() if element.id() != bot_id and (element.x() - bot.x())**2 + (element.y() - bot.y())**2 <= radius**2]
+             
+        def get_attribute(entity_id, type, attribute):
+            return getattr(self.__entities[type][entity_id].get_info(), attribute)
         
-
-        return save_data, get_data, print, vector_to, vector_from_to, unit_vector, vector_length, get_bots_in_range_melee, nearest_object, get_objects_in_range, get_attr
+        return save_data, get_data, print, vector_to, vector_from_to, unit_vector, vector_length, get_bots_in_range_melee, nearest_object, get_objects_in_range, get_attribute
 
 
     def __execute_bot_code(self, bot, bots_to_remove):
