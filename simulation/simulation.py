@@ -5,6 +5,11 @@ from simulation.drop import Drop
 from simulation.collision_algorithm import CollisionAlgorithm
 from simulation.player_context.game import Game #import Game (for giving information to the bot code)
 
+# Give the classes to the users
+from simulation.player_context.bot_info import BotInfo
+from simulation.player_context.drop_info import DropInfo
+from simulation.player_context.bullet_info import BulletInfo
+
 import pygame
 from datetime import datetime #import datetime (to get the current date and time)
 from moviepy.editor import ImageSequenceClip #import ImageSequenceClip (for saving the mp4 file)
@@ -180,7 +185,7 @@ class Simulation:
     
     def __generate_functions(self, bot): # Functions for the user
         
-        bot_id = bot.get_db_id()
+        bot_id = bot.id()
         
         def save_data(name, value): # Saves data in the storage - persistent storage
             self.__storage[bot_id][name] = value
@@ -233,8 +238,21 @@ class Simulation:
             elif type == "shield":
                 return [drop.id() for drop in self.__entities["drops_shield"].values() if (drop.x() - bot.x())**2 + (drop.y() - bot.y())**2 <= radius**2]
                 
+        def get_attr(entity_id, type, attribute):
+            if type == "bot":
+                return getattr(self.__entities["bots"][entity_id].get_info(), attribute)
+            elif type == "bullet":
+                return self.__entities["bullets"][entity_id].get_info().attribute
+            elif type == "points":
+                return getattr(self.__entities["drops_points"][entity_id].get_info(), attribute)
+                return self.__entities["drops_points"][entity_id].get_info().attribute
+            elif type == "health":
+                return self.__entities["drops_health"][entity_id].get_info().attribute
+            elif type == "shield":
+                return self.__entities["drops_shield"][entity_id].get_info().attribute
+        
 
-        return save_data, get_data, print, vector_to, vector_from_to, unit_vector, vector_length, get_bots_in_range_melee, nearest_object, get_objects_in_range
+        return save_data, get_data, print, vector_to, vector_from_to, unit_vector, vector_length, get_bots_in_range_melee, nearest_object, get_objects_in_range, get_attr
 
 
     def __execute_bot_code(self, bot, bots_to_remove):
@@ -395,9 +413,9 @@ class Simulation:
         for bot in self.__entities["bots"].values():
             pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
             name = self.__text_font.render(str(bot.get_name()), True, WHITE)
-            life = self.__text_font.render(str(bot.get_life()), True, WHITE)
-            shield = self.__text_font.render(str(bot.get_defense()), True, WHITE)
-            points = self.__text_font.render(str(bot.get_points()), True, WHITE)
+            life = self.__text_font.render(str(bot.get_life()), True, ORANGE)
+            shield = self.__text_font.render(str(bot.get_defense()), True, CYAN)
+            points = self.__text_font.render(str(bot.get_points()), True, GREEN)
             self.__screen.blit(name, (bot.x() - BOT_RADIUS, bot.y() + 2 * BOT_RADIUS))
             self.__screen.blit(life, (bot.x() - BOT_RADIUS, bot.y() + 3 * BOT_RADIUS))
             self.__screen.blit(shield, (bot.x() - BOT_RADIUS, bot.y() + 4 * BOT_RADIUS))
