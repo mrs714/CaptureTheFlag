@@ -31,8 +31,11 @@ MIQUEL:
 
     Creada classe functions, que dona funcions al jugador com per exemple guardar dades, bots pròxims, print...
 
+    millorat el format a les ajudes de upload code i configuration, per que no quedi un bloc de text infumable
+
 
     A fer: 
+
 
     limit cpu with cpulimit
 

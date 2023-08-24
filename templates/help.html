@@ -14,11 +14,11 @@
       <div id="accordion">
         <div class="card">
           <div class="card-header" id="section1">
-            <h5 class="mb-0">
+            <h4 class="mb-0">
               <button class="btn btn-link" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
                 About the project
               </button>
-            </h5>
+            </h4>
           </div>
   
           <div id="collapse1" class="collapse show" aria-labelledby="section1" data-parent="#accordion">
@@ -38,79 +38,109 @@
   
         <div class="card">
           <div class="card-header" id="section2">
-            <h5 class="mb-0">
+            <h4 class="mb-0">
               <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                 Game mechanics and gameplay
               </button>
-            </h5>
+            </h4>
           </div>
           
           <div id="collapse2" class="collapse" aria-labelledby="section2" data-parent="#accordion">
             <div class="card-body">
               <!-- Content of Section 2 -->
               <h3>Setting</h3>
-              The game, following a battle-royale-style, is based on a map in which each player bot is spawned in a random location.
-              We aim for the player to have as much information available about the map and its contents as possible, as well as full knowlegde about the constants which define the game, so that they can make the best decisions possible.
-              <br><br>
-              <h3>Objectives</h3>
-              The aim of the game is to get as many points as possible while staying alive. Points are awarded for killing other bots, and for staying alive for as long as possible.
-              <br><br>
-              <h3>How to win points</h3>
-              There are two main ways to win points:
-              <br>- Obtaining drops (more on this bellow), displayed as a green circle, which gives a fixed ammount of points;
-              <br>- Killing other bots, which gives you 50% of their points (but they lose any) plus a fixed reward.
-              <br><br>
-              <h3>The map: characteristics and drops</h3><br>
-              <h5>Characteristics</h5>
-              Conceptually, the map is a square with coordinates, not a discrete grid, in which positions and directions can be represented with vectors, being the origin ???
-              <br><br><h5>Drops</h5>
-              Randomly spawned around the map will be drops, which can be picked up by bots. There are three different kinds:
-              <br>- Health: restores a bot's health by 50 points;
-              <br>- Shield: restores a bot's broken shield, but with only one point;
-              <br>- Points: the basic drop, gives a bot 10 points;
-              <br><br>
-              The last one is the most common, its frequency of spawning and maximum/minimum number associated with the ammount of players remaining.
-              As bots die, less point drops will appear. The limits are the following:
-              <br>- Minimum ammount: ceil(players/4);
-              <br>- Maximum ammount: max((players-1), 1);
-              One points drop will spawn every 10 seconds following _______ distribution, with a starting ammount of ____ drops;
-              <br><br>
-              The spawning and ammount of special drops will be specified later on.
-              <br><br>
-              <h3>The bots</h3>
-              The bots have the following attributes:
-              <br>- Life: the ammount of damage a bot can take before dying;
-              <br>- Shield: a barrier that absorbs damage before it lowers the life of the bot, and regenerates when the bot hasn't been shot in some time. However, if the shield is broken, it won't regenerate;
-              <br>- Ranged attack: a projectile that can be fired, always dealing the same damage;
-              <br>- Melee attack: a close-range attack that deals more damage than the ranged one, and ignores the shield;
-              <br><br>
-              This configurations, which can be changed from 50 to 150 points and alter the bot's attributes:
-              <br>- Health: the amount of life a bot starts with;
-              <br>- Protection: the amount of shield points a bot has;
-              <br>- Damage: the percentage of the base melee damage a bot deals (e.g: 150 points of damage translates to 35*1.5 = 52.5 melee damage, 50 points to 35*0.5 = 17.5 melee damage);
-              <br><br>
-              Can take this actions: 
-              <br>- Move: the bot moves in the given direction;
-              <br>- Shoot: the bot shoots in the given direction;
-              <br>- Melee: the bot attacks in the given direction;
-              <br><br>
-              And have this habilities: 
-              <br>- Teleport: the bot teleports ___ x distance in the given direction;
-              <br>- Super-shot: the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;
-              <br>- Super-melee: the bot makes a melee attack which deals double damage to the defense, base damage to the life.
-              <br><br>
+                <p>
+                  The game, following a battle-royale-style, is based on a map in which each player bot is spawned in a random location.
+                  We aim for the player to have as much information available about the map and its contents as possible, as well as full knowledge about the constants which define the game, so that they can make the best decisions possible.
+                </p>
 
-            </div>
+                <h3>Objectives</h3>
+                <p>
+                  The aim of the game is to get as many points as possible while staying alive. Points are awarded for killing other bots, and for staying alive for as long as possible.
+                </p>
+
+                <h3>How to win points</h3>
+                <p>
+                  There are two main ways to win points:
+                  <ul>
+                    <li>Obtaining drops (more on this below), displayed as a green circle, which gives a fixed amount of points;</li>
+                    <li>Killing other bots, which gives you 50% of their points (but they lose any) plus a fixed reward.</li>
+                  </ul>
+                </p>
+
+                <h3>The map: characteristics and drops</h3>
+                <h4>Characteristics</h4>
+                <p>
+                  Conceptually, the map is a square with coordinates, not a discrete grid, in which positions and directions can be represented with vectors, being the origin ???
+                </p>
+
+                <h4>Drops</h4>
+                <p>
+                  Randomly spawned around the map will be drops, which can be picked up by bots. There are three different kinds:
+                  <ul>
+                    <li>Health: restores a bot's health by 50 points;</li>
+                    <li>Shield: restores a bot's broken shield, but with only one point;</li>
+                    <li>Points: the basic drop, gives a bot 10 points.</li>
+                  </ul>
+                </p>
+                <p>
+                  The last one is the most common, its frequency of spawning and maximum/minimum number associated with the amount of players remaining.
+                  As bots die, fewer point drops will appear. The limits are the following:
+                  <ul>
+                    <li>Minimum amount: ceil(players/4);</li>
+                    <li>Maximum amount: max((players-1), 1);</li>
+                  </ul>
+                  One points drop will spawn every 10 seconds following _______ distribution, with a starting amount of ____ drops.
+                </p>
+                <p>
+                  The spawning and amount of special drops will be specified later on.
+                </p>
+
+                <h3>The bots</h3>
+                <p>
+                  The bots have the following attributes:
+                  <ul>
+                    <li>Life: the amount of damage a bot can take before dying;</li>
+                    <li>Shield: a barrier that absorbs damage before it lowers the life of the bot, and regenerates when the bot hasn't been shot in some time. However, if the shield is broken, it won't regenerate;</li>
+                    <li>Ranged attack: a projectile that can be fired, always dealing the same damage;</li>
+                    <li>Melee attack: a close-range attack that deals more damage than the ranged one, and ignores the shield.</li>
+                  </ul>
+                </p>
+                <p>
+                  This configurations, which can be changed from 50 to 150 points and alter the bot's attributes:
+                  <ul>
+                    <li>Health: the amount of life a bot starts with;</li>
+                    <li>Protection: the amount of shield points a bot has;</li>
+                    <li>Damage: the percentage of the base melee damage a bot deals (e.g: 150 points of damage translates to 35*1.5 = 52.5 melee damage, 50 points to 35*0.5 = 17.5 melee damage).</li>
+                  </ul>
+                </p>
+                <p>
+                  Can take these actions:
+                  <ul>
+                    <li>Move: the bot moves in the given direction;</li>
+                    <li>Shoot: the bot shoots in the given direction;</li>
+                    <li>Melee: the bot attacks in the given direction.</li>
+                  </ul>
+                </p>
+                <p>
+                  And have these abilities:
+                  <ul>
+                    <li>Teleport: the bot teleports ___ x distance in the given direction;</li>
+                    <li>Super-shot: the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;</li>
+                    <li>Super-melee: the bot makes a melee attack which deals double damage to the defense, base damage to the life.</li>
+                  </ul>
+                </p>
+              </div>
           </div>
         </div>
         
         <div class="card">
           <div class="card-header" id="section3">
-            <h5 class="mb-0">
+            <h4 class="mb-0">
               <button class="btn btn-link" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
                 Code: Functions and Constants
               </button>
-            </h5>
+            </h4>
           </div>
         
           <div id="collapse3" class="collapse" aria-labelledby="section3" data-parent="#accordion">
@@ -128,11 +158,11 @@
         
         <div class="card">
           <div class="card-header" id="section4">
-            <h5 class="mb-0">
+            <h4 class="mb-0">
               <button class="btn btn-link" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
                 The website
               </button>
-            </h5>
+            </h4>
           </div>
         
           <div id="collapse4" class="collapse" aria-labelledby="section4" data-parent="#accordion">
@@ -164,23 +194,23 @@
 
         <div class="card">
           <div class="card-header" id="section5">
-            <h5 class="mb-0">
+            <h4 class="mb-0">
               <button class="btn btn-link" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
                 idk
               </button>
-            </h5>
+            </h4>
           </div>
         
           <div id="collapse5" class="collapse" aria-labelledby="section5" data-parent="#accordion">
             <div class="card-body">
               <!-- Content of Section 5 -->
-              <h5>Objective</h5>
+              <h4>Objective</h4>
               Describe the objective of the game and what players are trying to achieve.
         
-              <h5>Gameplay</h5>
+              <h4>Gameplay</h4>
               Explain the core gameplay mechanics, actions players can take, and the flow of the game.
               
-              <h5>Winning Strategies</h5>
+              <h4>Winning Strategies</h4>
               Share tips and strategies that players can use to improve their chances of winning.
             </div>
           </div>
@@ -188,11 +218,11 @@
         
         <div class="card">
           <div class="card-header" id="section6">
-            <h5 class="mb-0">
+            <h4 class="mb-0">
               <button class="btn btn-link" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
                 About us/Support
               </button>
-            </h5>
+            </h4>
           </div>
         
           <div id="collapse6" class="collapse" aria-labelledby="section6" data-parent="#accordion">

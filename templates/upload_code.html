@@ -28,75 +28,96 @@
         </button>
       </div>
       <div class="collapse" id="explanationCollapse">
+        <h2>Basics</h2>
         <p>
-          <b>Basics</b><br>
-          To run the code safely, we use pythonRestricted, a restricted version of python, which only allows a few functions and statements, together with those which we have implemented ourselves, and the names allowed by the module safe_globals.
-          As such, there are some python features that aren't available, such as double assignation (x, y = 0, 0).
-          
-          <br><br>
-          <b>Libraries:</b><br>
+          To run the code safely, we use <code>pythonRestricted</code>, a restricted version of Python, which only allows a few functions and statements, together with those which we have implemented ourselves, and the names allowed by the module <code>safe_globals</code>. As such, there are some Python features that aren't available, such as double assignment (<code>x, y = 0, 0</code>).
+        </p>
+        
+        <h3>Libraries</h3>
+        <p>
           The following libraries are available for use:
-          <br>- Random as rnd
-          <br>- Math as math
-          <br>- Numpy as np
-          <br><br>
-          <b>The "game" object:</b><br>
-          All of our functions can be accessed through an object called "game".
-          This objects has five attributes: entities, actions, functions, and tick.
-          <br><br>
-          <b>Entities:</b><br>
-          A dictionary which contains another dictionary for each type of entities in the game. This includes bots, bullets, and drops separated by type (drops_points, drops_health, drops_shield).
-          On those dictionaries, you have all the entities of that type, with their id as key, and an object "type_info".
-          To sum it up, you have: 
-          <br>- game.entities["me"]: your bot info.
-          <br>- game.entities["bots"]: dictionary {id: bot_info} with all the bots in the game, excluding yours.
-          <br>- game.entities["bullets"]: dictionary {id: bullet_info} with all the bullets in the game.
-          <br>- game.entities["drops_points"]: dictionary {id: drop_info} with all the drops that give points.
-          <br>- game.entities["drops_health"]: dictionary {id: drop_info} with all the drops that give health.
-          <br>- game.entities["drops_shield"]: dictionary {id: drop_info} with all the drops that give shield.
-          <br><br>
-            So, if you want to get the info of all of the bots in the game, you would do:
-            <br>for bot_id, bot_info in game.entities["bots"].items():
-              <br>&nbsp;&nbsp;#Do something with bot_info
-              <br><br>
-          You can check each info object in "simulation/player_context", but here are the methods summed up:
-          <br>- general: id (unique, static), x (x coordinate), y (y coordinate)
-          <br>- bots: health (bot's remaining life), shield (bot's remaining defense), attack (damage dealt (config value/100 * BASE_MELEE))
-          <br>- bullets: dx (component x of the direction vector), dy (component y of the direction vector), damage, type ("normal" or "super"), owner_id
-          <br>- drops: type (by which they are already separated)
-          <br><br>
-            One could then get the health of all the bots in the game by doing:
-            <br>
-            for bot_id, bot_info in game.entities["bots"].items():
-            <br>&nbsp;&nbsp;print(bot_info.health) # You can check the output of the prints on the "Player info" page.
-          <br><br>
-          <b>Actions</b><br>
-          From here, you can access all actions allowed to your bot (all of them have cooldowns except for move).
-          <br>- move(dx, dy): the bot moves in the given direction;
-          <br>- shoot(dx, dy): the bot shoots in the given direction;
-          <br>- melee(): the bot attacks in the given direction;
-          <br><br>
-          And have this habilities: 
-          <br>- teleport(dx, dy): the bot teleports ___ x distance in the given direction;
-          <br>- super_shot(dx,dy): the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;
-          <br>- super_melee(): the bot makes a melee attack which deals double damage to the defense, base damage to the life.
-          <br><br>
-            So, to move, you would do:
-            <br>game.actions.move(dx, dy)
-          <br><br>
-          <b>Functions</b><br>
-          To make the programming more versatile, we offer a few functions that you can use.
-          First of all, to save information between ticks, you can use a dictionary:
-          <br>- game.functions.save_data(name, data): Saves the object "data" in the dictionary, with the key "name";
-          <br>- game.functions.get_data(name): Returns the object saved in the dictionary with the key "name";
-          <br><br>
+          <ul>
+            <li>Random as rnd</li>
+            <li>Math as math</li>
+            <li>Numpy as np</li>
+          </ul>
+        </p>
+        
+        <h3>The "game" Object</h3>
+        <p>
+          All of our functions can be accessed through an object called <code>game</code>. This object has five attributes: <code>entities</code>, <code>actions</code>, <code>functions</code>, and <code>tick</code>.
+        </p>
+        
+        <h3>Entities</h3>
+        <p>
+          A dictionary which contains another dictionary for each type of entity in the game. This includes bots, bullets, and drops separated by type (<code>drops_points</code>, <code>drops_health</code>, <code>drops_shield</code>).
+          On those dictionaries, you have all the entities of that type, with their ID as key, and an object <em>type_info</em>.
+          To sum it up:
+          <ul>
+            <li><code>game.entities["me"]</code>: your bot info.</li>
+            <li><code>game.entities["bots"]</code>: dictionary <code>{id: bot_info}</code> with all the bots in the game, excluding yours.</li>
+            <li><code>game.entities["bullets"]</code>: dictionary <code>{id: bullet_info}</code> with all the bullets in the game.</li>
+            <li><code>game.entities["drops_points"]</code>: dictionary <code>{id: drop_info}</code> with all the drops that give points.</li>
+            <li><code>game.entities["drops_health"]</code>: dictionary <code>{id: drop_info}</code> with all the drops that give health.</li>
+            <li><code>game.entities["drops_shield"]</code>: dictionary <code>{id: drop_info}</code> with all the drops that give shield.</li>
+          </ul>
+          So, if you want to get the info of all the bots in the game, you would do:<br>
+          
+            <code>for bot_id, bot_info in game.entities["bots"].items():
+          # Do something with bot_info</code>
+          
+          You can check each info object in <em>simulation/player_context</em>, but here are the methods summed up:
+          <ul>
+            <li>general: <code>id</code> (unique, static), <code>x</code> (x coordinate), <code>y</code> (y coordinate)</li>
+            <li>bots: <code>health</code> (bot's remaining life), <code>shield</code> (bot's remaining defense), <code>attack</code> (damage dealt (config value/100 * BASE_MELEE))</li>
+            <li>bullets: <code>dx</code> (component x of the direction vector), <code>dy</code> (component y of the direction vector), <code>damage</code>, <code>type</code> ("normal" or "super"), <code>owner_id</code></li>
+            <li>drops: <code>type</code> (by which they are already separated)</li>
+          </ul>
+          One could then get the health of all the bots in the game by doing:<br>
+          
+            <code>for bot_id, bot_info in game.entities["bots"].items():
+            print(bot_info.health) <!-- You can check the output of the prints on the "Player info" page. --></code>
+          
+        </p>
+        
+        <h3>Actions</h3>
+        <p>
+          From here, you can access all actions allowed to your bot (all of them have cooldowns except for <em>move</em>).
+          <ul>
+            <li><code>move(dx, dy)</code>: the bot moves in the given direction;</li>
+            <li><code>shoot(dx, dy)</code>: the bot shoots in the given direction;</li>
+            <li><code>melee()</code>: the bot attacks in the given direction;</li>
+          </ul>
+          And have these abilities:
+          <ul>
+            <li><code>teleport(dx, dy)</code>: the bot teleports ___ x distance in the given direction;</li>
+            <li><code>super_shot(dx, dy)</code>: the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;</li>
+            <li><code>super_melee()</code>: the bot makes a melee attack which deals double damage to the defense, base damage to the life.</li>
+          </ul>
+          So, to move, you would do:<br>
+            <code>game.actions.move(dx, dy)</code>
+        </p>
+        
+        <h3>Functions</h3>
+        <p>
+          To make the programming more versatile, we offer a few functions that you can use. First of all, to save information between ticks, you can use a dictionary:
+          <ul>
+            <li><code>game.functions.save_data(name, data)</code>: Saves the object <em>data</em> in the dictionary, with the key <em>name</em>;</li>
+            <li><code>game.functions.get_data(name)</code>: Returns the object saved in the dictionary with the key <em>name</em>;</li>
+          </ul>
           Then, you have other more general functions:
-          <br>- game.functions.get_bots_in_range(radius): Returns a list with the ids of all the bots in a radius of "radius" from your bot;
-          <br>- game.functions.print(string): Prints the string on the log shown in the "Player info" page;
-          <br><br>
-          <b>Ticks</b><br>
+          <ul>
+            <li><code>game.functions.get_bots_in_range(radius)</code>: Returns a list with the IDs of all the bots in a radius of <em>radius</em> from your bot;</li>
+            <li><code>game.functions.print(string)</code>: Prints the string on the log shown in the "Player info" page;</li>
+          </ul>
+        </p>
+        
+        <h3>Ticks</h3>
+        <p>
           Returns the number of ticks that have passed since the beginning of the game.
-          At the moment, the ticks per second (FPS in pygame) is set at 20, but you can check the "global_consts" file.        </p>
+          At the moment, the ticks per second (FPS in pygame) is set at 20, but you can check the <em>global_consts</em> file.
+        </p>
+        
       </div>
       <button class="btn btn-primary" type="button" onclick="upload_code()">Upload Code</button>
     </form>
