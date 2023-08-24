@@ -45,7 +45,7 @@
         
         <h3>The "game" Object</h3>
         <p>
-          All of our functions can be accessed through an object called <code>game</code>. This object has five attributes: <code>entities</code>, <code>actions</code>, <code>functions</code>, and <code>tick</code>.
+          All of our functions can be accessed through an object called <code>game</code>. This object has four attributes: <code>entities</code>, <code>actions</code>, <code>functions</code>, and <code>tick</code>.
         </p>
         
         <h3>Entities</h3>
@@ -65,18 +65,18 @@
           
             <code>for bot_id, bot_info in game.entities["bots"].items():
           # Do something with bot_info</code>
-          
-          You can check each info object in <em>simulation/player_context</em>, but here are the methods summed up:
+          <br>
+          You can check each info object in <em>simulation/player_context</em>, but here are the attributes (accessed without () ) summed up:
           <ul>
-            <li>general: <code>id</code> (unique, static), <code>x</code> (x coordinate), <code>y</code> (y coordinate)</li>
-            <li>bots: <code>health</code> (bot's remaining life), <code>shield</code> (bot's remaining defense), <code>attack</code> (damage dealt (config value/100 * BASE_MELEE))</li>
-            <li>bullets: <code>dx</code> (component x of the direction vector), <code>dy</code> (component y of the direction vector), <code>damage</code>, <code>type</code> ("normal" or "super"), <code>owner_id</code></li>
-            <li>drops: <code>type</code> (by which they are already separated)</li>
+            <li>general: <code>.id</code> (unique, static), <code>.x</code> (x coordinate), <code>.y</code> (y coordinate)</li>
+            <li>bots: <code>.health</code> (bot's remaining life), <code>.shield</code> (bot's remaining defense), <code>.attack</code> (damage dealt (config value/100 * BASE_MELEE))</li>
+            <li>bullets: <code>.dx</code> (component x of the direction vector), <code>.dy</code> (component y of the direction vector), <code>.damage</code>, <code>.type</code> ("normal" or "super"), <code>.owner_id</code></li>
+            <li>drops: <code>.type</code> (by which they are already separated)</li>
           </ul>
           One could then get the health of all the bots in the game by doing:<br>
           
-            <code>for bot_id, bot_info in game.entities["bots"].items():
-            print(bot_info.health) <!-- You can check the output of the prints on the "Player info" page. --></code>
+            <code>for bot_id, bot_info in game.entities["bots"].items():<br>
+                print(bot_info.health) #You can check the output of the prints on the "Player info" page.</code>
           
         </p>
         
@@ -84,17 +84,17 @@
         <p>
           From here, you can access all actions allowed to your bot (all of them have cooldowns except for <em>move</em>).
           <ul>
-            <li><code>move(dx, dy)</code>: the bot moves in the given direction;</li>
-            <li><code>shoot(dx, dy)</code>: the bot shoots in the given direction;</li>
-            <li><code>melee()</code>: the bot attacks in the given direction;</li>
+            <li><code>game.actions.move(dx, dy)</code>: the bot moves in the given direction;</li>
+            <li><code>game.actions.shoot(dx, dy)</code>: the bot shoots in the given direction;</li>
+            <li><code>game.actions.melee()</code>: the bot attacks in the given direction;</li>
           </ul>
           And have these abilities:
           <ul>
-            <li><code>teleport(dx, dy)</code>: the bot teleports ___ x distance in the given direction;</li>
-            <li><code>super_shot(dx, dy)</code>: the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;</li>
-            <li><code>super_melee()</code>: the bot makes a melee attack which deals double damage to the defense, base damage to the life.</li>
+            <li><code>game.actions.teleport(dx, dy)</code>: the bot teleports ___ x distance in the given direction;</li>
+            <li><code>game.actions.super_shot(dx, dy)</code>: the bot shoots a projectile that ignores the shield and deals the base damage for a melee attack;</li>
+            <li><code>game.actions.super_melee()</code>: the bot makes a melee attack which deals double damage to the defense, base damage to the life.</li>
           </ul>
-          So, to move, you would do:<br>
+          So, to move, you would just do:<br>
             <code>game.actions.move(dx, dy)</code>
         </p>
         
@@ -108,13 +108,19 @@
           Then, you have other more general functions:
           <ul>
             <li><code>game.functions.print(string)</code>: Prints the string on the log shown in the "Player info" page;</li>
+          </ul>
+          To deal with vectors...:
+          <ul>
             <li><code>game.functions.vector_to(x, y) -> (dx, dy)</code>: Returns a vector (tuple) from the bot to the given coordinates;</li>
+            <li><code>game.functions.vector_from_to(x, y, x2, y2) -> (dx, dy)</code>: Returns the vector from a point to another;</li>
+            <li><code>game.functions.unit_vector(vector) -> vector</code>: Returns the unit vector (a tuple);</li>
+            <li><code>game.functions.vector_length(vector) -> length</code>: Returns the length of a vector (which should be, again, a tuple);</li>
           </ul>
           And functions to make distances easier:
           <ul>
-            <li><code>get_bots_in_range_melee() -> (bool, [id's])</code>: Returns a tuple, where the first element is a boolean indicating if there are bots in range, and the second element is a list of the IDs of the bots in range;</li>
-            <li><code>nearest_object(type = ["bot", "bullet", "points", "health", "shield"]) -> [id's]</code>: Returns the ID of the nearest object of the given type (the last three are drops);</li>
-            <li><code>get_objects_in_range(type = [^^^^], radius = (MAP_HEIGHT/10))</code>: Returns a list of the IDs of the objects of the given type in range of the bot, with the given radius (default is 1/10 of the map height);</li>
+            <li><code>game.functions.get_bots_in_range_melee() -> (bool, [id's])</code>: Returns a tuple, where the first element is a boolean indicating if there are bots in range, and the second element is a list of the IDs of the bots in range;</li>
+            <li><code>game.functions.nearest_object(type = ["bot", "bullet", "points", "health", "shield"]) -> [id's]</code>: Returns the ID of the nearest object of the given type (the last three are drops);</li>
+            <li><code>game.functions.get_objects_in_range(type = [^^^^], radius = (MAP_HEIGHT/10))</code>: Returns a list of the IDs of the objects of the given type in range of the bot, with the given radius (default is 1/10 of the map height);</li>
           </ul>
         </p>
         

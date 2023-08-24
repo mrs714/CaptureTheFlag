@@ -9,7 +9,7 @@ class Game:
         self.entities["me"] = bot.get_info()
         self.actions = Actions(*actions)
         self.tick = tick
-        self.functions = Functions(*functions) # get_data, save_data, print, vector_to, get_bots_in_range_melee, nearest_object, get_objects_in_range
+        self.functions = Functions(*functions) # get_data, save_data, print, vector_to, vector_from_to, unit_vector, vector_length, get_bots_in_range_melee, nearest_object, get_objects_in_range
     
     def debug(self, *args):
         print(*args)  

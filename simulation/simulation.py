@@ -194,6 +194,18 @@ class Simulation:
         def vector_to(x, y): # Returns vector to go to map coordinates
             return (x - bot.x(), y - bot.y())
         
+        def vector_from_to(x, y, x2, y2):
+            return (x2 - x, y2 - y)
+        
+        def unit_vector(vector):
+            # Normalize the vector: 
+            assert(vector[0] != 0 and vector[1] != 0)
+            norm = np.linalg.norm(vector)
+            return (vector[0]/norm, vector[1]/norm)
+        
+        def vector_length(vector):
+            return np.linalg.norm(vector)
+        
         def get_bots_in_range_melee(): # Tuple: (is there a bot in melee range, list with the ids of the bots in melee range)
             return self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS) != [], self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS)
         
@@ -222,7 +234,7 @@ class Simulation:
                 return [drop.id() for drop in self.__entities["drops_shield"].values() if (drop.x() - bot.x())**2 + (drop.y() - bot.y())**2 <= radius**2]
                 
 
-        return save_data, get_data, print, vector_to, get_bots_in_range_melee, nearest_object, get_objects_in_range
+        return save_data, get_data, print, vector_to, vector_from_to, unit_vector, vector_length, get_bots_in_range_melee, nearest_object, get_objects_in_range
 
 
     def __execute_bot_code(self, bot, bots_to_remove):
