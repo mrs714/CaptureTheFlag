@@ -62,3 +62,6 @@ class Bullet(Entity):
     
     def get_type(self):
         return self.__type
+    
+    def get_vector_direction(self):
+        return self.__dx, self.__dy

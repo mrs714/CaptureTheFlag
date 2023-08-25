@@ -52,11 +52,13 @@ MIQUEL:
 
     Els bots guanyen punts quan maten altres
 
+    les bales tenen traça
+
 
 
     A fer: 
 
-
+    fer una classe effect
 
     limit cpu with cpulimit
 

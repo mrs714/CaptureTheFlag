@@ -8,7 +8,7 @@ DROP_RADIUS = 2 * BULLET_RADIUS # pixels
 BOT_SPEED = 3 # pixels per frame
 BULLET_SPEED = BOT_SPEED * 4 # pixels per frame
 FPS = 20 # frames per second
-DURATION = 60 * FPS # In seconds (x FPS = 1 second)
+DURATION = 10 * FPS # In seconds (x FPS = 1 second)
 INTER_SIMULATION_TIME = 60 # seconds
 MAX_FRAMES_ON_RAM = 100000000 / (MAP_HEIGHT * MAP_WIDTH) # Maximum ammount of frames on RAM. e.g.: 350x350pixels = 81 frames stored, 1000*1000pixels = 10 frames stored
 SIM_FOLDER = "replays/"
@@ -22,17 +22,23 @@ SIM_INFO_PLACEHOLDER_PATH = "replays/placeholder/simulation_info.txt" # Used to 
 BLUE = (0, 0, 255) # Players
 BLACK = (0, 0, 0) # Background
 RED = (255, 0, 0) # Bullets
-GREEN = (0, 255, 0) # Drops
+GREEN = (0, 255, 0) 
+DARK_GREEN = (0, 100, 0) # Point drops
 ORANGE = (255, 165, 0) # Drops
+DARK_ORANGE = (200, 100, 0) # Drops
 CYAN = (0, 255, 255) # Drops
+DARK_CYAN = (0, 100, 100) # Drops
 WHITE = (255, 255, 255)
 DARK_GRAY = (40, 40, 40) # Playground
 BOT_COLOR = BLUE
 BACKGROUND_COLOR = BLACK
 BULLET_COLOR = RED
-DROP_COLOR_POINTS = GREEN
-DROP_COLOR_HEALTH = ORANGE
-DROP_COLOR_SHIELD = CYAN
+DROP_COLOR_POINTS_MIN = DARK_GREEN
+DROP_COLOR_HEALTH_MIN = DARK_ORANGE
+DROP_COLOR_SHIELD_MIN = DARK_CYAN
+DROP_COLOR_POINTS_MAX = GREEN
+DROP_COLOR_HEALTH_MAX = ORANGE
+DROP_COLOR_SHIELD_MAX = CYAN
 
 BULLET_DAMAGE = 10 # change this in the future
 MELEE_DAMAGE = 30
