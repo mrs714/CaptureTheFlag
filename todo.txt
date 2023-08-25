@@ -43,23 +43,27 @@ MIQUEL:
     Ara mateix, enganxat amb celo està una funció que es diu get_attr(id, type, attribute), la obté l'atribut que vols de la cosa amb id i del tipus indicat
     lo més fàcil seria eliminar per complet tota la branca game.entities
 
+    implementades un munt de funcions útils per a l'usuari - funció per a obtenir un vector per anar a un punt del mapa, posició/id enemic més pròxim, posició/id del drop més proxim
+    bales en un rang, ...
+
+    codi de prova escrit, va perfecte
+
 
 
     A fer: 
+
+
 
     limit cpu with cpulimit
 
     FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
 
-    comprovar que el codi de mostra funcioni
-
     Add special effects (picking up a powerup, dying, melee...)
 
-    Add a playerKilled event
+    Add a playerKilled event - donar punts, etc
         
     for the bot class, create a variable state, which contains wether it has been hit recently
-    has used a super melee, etc
+    has used a super melee, etc -     implementar que l'escut es regeneri
 
-    funció per a obtenir un vector per anar a un punt del mapa, posició/id enemic més pròxim, posició/id del drop més proxim
-    bales en un rang, 
+
   
