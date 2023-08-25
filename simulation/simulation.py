@@ -131,7 +131,7 @@ class Simulation:
          #   self.__entities["bots"][bot_id].set_last_position(len(self.__entities["bots"]) + 1)
           # Pablo check, però la posició es determina en funció dels punts un cop acabada la partida no?
         # Give points to the killer
-        points_to_give = self.__entities["bots"][bot_id].get_points() * POINTS_ON_DEATH
+        points_to_give = math.ceil(self.__entities["bots"][bot_id].get_points() * POINTS_ON_DEATH)
         self.__entities["bots"][killer_bot_id].add_points(points_to_give)
         bots_to_remove.append(bot_id)
 
@@ -172,7 +172,7 @@ class Simulation:
                     if other_bot_id == bot.id():
                         continue
                     if self.__entities["bots"][other_bot_id].receive_life_damage(MELEE_DAMAGE): # True if dead
-                        self.__logger.debug("Bot {} was killed by melee from player {}".format(self.__entities["bots"][bot_id].get_name(), bot.get_name()))
+                        self.__logger.debug("Bot {} was killed by melee from player {}".format(self.__entities["bots"][other_bot_id].get_name(), bot.get_name()))
                         self.kill_bot(other_bot_id, bots_to_remove, bot.id())
 
         def super_melee():
@@ -181,7 +181,7 @@ class Simulation:
                     if other_bot_id == bot.id():
                         continue
                     if self.__entities["bots"][other_bot_id].recieve_shield_damage_extra(MELEE_DAMAGE): # True if dead
-                        self.__logger.debug("Bot {} was killed by a super melee from player {}".format(self.__entities["bots"][bot_id].get_name(), bot.get_name()))
+                        self.__logger.debug("Bot {} was killed by a super melee from player {}".format(self.__entities["bots"][other_bot_id].get_name(), bot.get_name()))
                         self.kill_bot(other_bot_id, bots_to_remove, bot.id())
         
         return move, shoot, melee, dash, super_shot, super_melee

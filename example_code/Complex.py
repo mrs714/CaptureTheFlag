@@ -24,9 +24,9 @@ def search_drop(type):
 
 # If the bot has low health
 low_health = False
+game.functions.print("Health: " + str(game.functions.get_attribute(0, "me", "health")))
 if game.functions.get_attribute(0, "me", "health") < LOW_HEALTH:
   low_health = True
-  game.functions.print("Health :" + str(game.functions.get_attribute(0, "me", "health")))
   # Search for the nearest health drop:
   vector = search_drop("drops_health")
   
@@ -52,12 +52,17 @@ if close_enemies != []:
   vector = game.functions.vector_to(x, y)   
   game.functions.print("Direction vector: " + str(vector))
 
-  # Move and shoot
-  game.actions.move(vector[0], vector[1])
+  # Shoot
   game.actions.shoot(vector[0], vector[1])
   game.actions.super_shot(vector[0], vector[1])
-
-
+  
+  # If the enemy is too far.. 
+  if game.functions.vector_length(vector) > 50:
+    game.actions.move(vector[0], vector[1])
+  # But if it's too close....
+  else:
+    game.actions.move(-vector[0], -vector[1])
+  
 else: 
   # Get vector to nearest drop of points 
   vector = search_drop("drops_points")

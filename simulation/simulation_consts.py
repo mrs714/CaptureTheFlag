@@ -50,7 +50,7 @@ TIME_BETWEEN_DROPS = 20 # ticks
 NUMBER_OF_HEALTH_DROPS = 2
 NUMBER_OF_SHIELD_DROPS = 2
 POINTS_PER_DROP = 10
-POINTS_ON_DEATH = int(50 / 100) # % of points given to the killer player
+POINTS_ON_DEATH = 50 / 100 # % of points given to the killer player
 
 # Collisions grid
 COLLISIONS_CELL_NUMBER = 10 # >= 3, cells per row/column
