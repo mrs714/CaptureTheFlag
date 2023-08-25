@@ -25,6 +25,10 @@ class Renderer:
     def __random_color(self):
         return (randint(0, 255), randint(0, 255), randint(0, 255))
     
+    def __map_range(self, value, input_min, input_max, output_min, output_max): # Maps a value from one range to another
+        return output_min + (value - input_min) * (output_max - output_min) / (input_max - input_min)
+
+    
     def __draw_map(self):
         self.__screen.fill(BACKGROUND_COLOR)
         pygame.draw.rect(self.__screen, DARK_GRAY, pygame.Rect(MAP_PADDING, MAP_PADDING, MAP_WIDTH, MAP_HEIGHT)) 
@@ -95,9 +99,6 @@ class Renderer:
 
         def drop_color(drop, min_color, max_color): 
 
-            def map_range(value, input_min, input_max, output_min, output_max):
-                return output_min + (value - input_min) * (output_max - output_min) / (input_max - input_min)
-
             blinking = drop.get_state()["blinking"]
             drop_color = drop.get_state()["color"]
             min_difference = min(255 - min_color[0], 255 - min_color[1], 255 - min_color[2])    
@@ -106,7 +107,7 @@ class Renderer:
                 drop.set_state({"blinking": blinking, "color": min_color})
                 return min_color
             if blinking:
-                multiplier = map_range(min_difference, 0, 255, 1.01, 1.1)
+                multiplier = self.__map_range(min_difference, 0, 255, 1.01, 1.1)
                 new_color = (drop_color[0] * multiplier, drop_color[1] * multiplier, drop_color[2] * multiplier)
                 if new_color[0] > max_color[0] or new_color[1] > max_color[1] or new_color[2] > max_color[2]:
                     new_color = max_color
@@ -114,7 +115,7 @@ class Renderer:
                 drop.set_state({"blinking": blinking, "color": new_color})
                 return new_color
             else:
-                multiplier = map_range(min_difference, 0, 255, 0.99, 0.9)
+                multiplier = self.__map_range(min_difference, 0, 255, 0.99, 0.9)
                 new_color = (drop_color[0] * multiplier, drop_color[1] * multiplier, drop_color[2] * multiplier)
                 if new_color[0] < min_color[0] or new_color[1] < min_color[1] or new_color[2] < min_color[2]:
                     new_color = min_color
@@ -130,9 +131,24 @@ class Renderer:
             pygame.draw.circle(self.__screen, drop_color(drop, DROP_COLOR_SHIELD_MIN, DROP_COLOR_SHIELD_MAX), drop.pos(), DROP_RADIUS)
 
     def __draw_effects(self):
+
+        def draw_player_death_effect(effect):
+            # Draw a white circle that travels outwards and one that travels inwards from the center of the bot
+            step = effect.get_step()
+            max_step = BOT_RADIUS * 3
+
+            if step > max_step:
+                effect.remove()
+
+            if step < BOT_RADIUS: # Inward circle
+                pygame.draw.circle(self.__screen, WHITE, effect.pos(), BOT_RADIUS - step)
+
+            pygame.draw.circle(self.__screen, WHITE, effect.pos(), step, int(self.__map_range(step, 0, max_step, 5, 1)))
+
         for effect in self.__entities["effects"].values():
             if effect.type() == "player_death":
-                self.__draw_player_death_effect(effect)
+                step = effect.get_step()
+                draw_player_death_effect(effect)
             elif effect.type() == "drop_picked":
                 self.__draw_drop_picked_effect(effect)
 

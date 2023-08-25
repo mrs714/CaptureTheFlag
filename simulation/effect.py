@@ -7,13 +7,18 @@ class Effect(Entity):
     def __init__(self, sim_id, x, y, type): # Type: "player_death", "drop_picked"
         super().__init__(sim_id, x, y)
         self.__type = type # points, health, shield
-        self.__state = {"effect_step": 0}
+        self.__step = 0
+        self.__to_remove = False
 
     def type(self):
         return self.__type
 
-    def get_state(self):
-        return self.__state
+    def get_step(self):
+        self.__step += 1
+        return self.__step
     
-    def set_state(self, state):
-        self.__state = state
+    def to_remove(self):
+        return self.__to_remove
+    
+    def remove(self):
+        self.__to_remove = True

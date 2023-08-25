@@ -315,11 +315,10 @@ class Simulation:
         bots_to_remove = []
         bullets_to_remove = []
         drops_to_remove = []
+        effects_to_remove = []
 
         # Move and spawn all entities
         for bot in self.__entities["bots"].values():
-            sim_id = self.get_id()
-            self.__entities["effects"][sim_id] = bot.death_effect(sim_id)
             self.__execute_bot_code(bot, bots_to_remove)
 
         for bullet in self.__entities["bullets"].values():
@@ -337,6 +336,8 @@ class Simulation:
         # Remove the bots, bullets and drops that have to be removed
         bots_to_remove = list(set(bots_to_remove))
         for bot_id in bots_to_remove:
+            sim_id = self.get_id()
+            self.__entities["effects"][sim_id] = self.__entities["bots"][bot_id].death_effect(sim_id)
             db_bot = self.__entities["bots"][bot_id].get_db_id()
             self.__entities["dead_bots"][bot_id] = self.__entities["bots"].pop(bot_id)
             self.__logger.debug(f"Bot with db_id = {db_bot} removed")
@@ -350,6 +351,14 @@ class Simulation:
         drops_to_remove = list(set(drops_to_remove))
         for drop_id, drop_type in drops_to_remove:
             self.__entities[str("drops_" + drop_type)].pop(drop_id, None)
+
+        for effect in self.__entities["effects"].values():
+            if effect.to_remove() == True:
+                effects_to_remove.append(effect.id())
+        for id in effects_to_remove:
+            self.__entities["effects"].pop(id, None)
+
+        
 
     def __spawn_drops(self):
         def spawn(drop):
