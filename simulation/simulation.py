@@ -126,10 +126,13 @@ class Simulation:
     def get_bots_in_range(self, x, y, radius):
         return [bot.id() for bot in self.__entities["bots"].values() if (bot.x() - x)**2 + (bot.y() - y)**2 <= radius**2]
     
-    def kill_bot(self, bot_id, bots_to_remove):
+    def kill_bot(self, bot_id, bots_to_remove, killer_bot_id):
         #if bot_id in self.__entities["bots"]:
          #   self.__entities["bots"][bot_id].set_last_position(len(self.__entities["bots"]) + 1)
           # Pablo check, però la posició es determina en funció dels punts un cop acabada la partida no?
+        # Give points to the killer
+        points_to_give = self.__entities["bots"][bot_id].get_points() * POINTS_ON_DEATH
+        self.__entities["bots"][killer_bot_id].add_points(points_to_give)
         bots_to_remove.append(bot_id)
 
     def __generate_actions(self, bot, bots_to_remove):
@@ -165,21 +168,21 @@ class Simulation:
 
         def melee():
             if bot.melee(self.__current_tick):
-                for bot_id in self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS):
-                    if bot_id == bot.id():
+                for other_bot_id in self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS):
+                    if other_bot_id == bot.id():
                         continue
-                    if self.__entities["bots"][bot_id].receive_life_damage(MELEE_DAMAGE): # True if dead
+                    if self.__entities["bots"][other_bot_id].receive_life_damage(MELEE_DAMAGE): # True if dead
                         self.__logger.debug("Bot {} was killed by melee from player {}".format(self.__entities["bots"][bot_id].get_name(), bot.get_name()))
-                        self.kill_bot(bot_id, bots_to_remove)
+                        self.kill_bot(other_bot_id, bots_to_remove, bot.id())
 
         def super_melee():
             if bot.super_melee(self.__current_tick):
-                for bot_id in self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS):
-                    if bot_id == bot.id():
+                for other_bot_id in self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS):
+                    if other_bot_id == bot.id():
                         continue
-                    if self.__entities["bots"][bot_id].recieve_shield_damage_extra(MELEE_DAMAGE): # True if dead
+                    if self.__entities["bots"][other_bot_id].recieve_shield_damage_extra(MELEE_DAMAGE): # True if dead
                         self.__logger.debug("Bot {} was killed by a super melee from player {}".format(self.__entities["bots"][bot_id].get_name(), bot.get_name()))
-                        self.kill_bot(bot_id, bots_to_remove)
+                        self.kill_bot(other_bot_id, bots_to_remove, bot.id())
         
         return move, shoot, melee, dash, super_shot, super_melee
     
@@ -194,7 +197,7 @@ class Simulation:
             return self.__storage.get(bot_id, {}).get(name, "Nothing stored here...")
         
         def print(string):
-            bot.add_event("\nPrint: " + str(string) + "\n")
+            bot.add_event("<br><h5>Print:</h5> " + str(string) + "<br>")
 
         def vector_to(x, y): # Returns vector to go to map coordinates
             return (x - bot.x(), y - bot.y())
@@ -215,12 +218,17 @@ class Simulation:
             return self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS) != [], self.get_bots_in_range(bot.x(), bot.y(), BOT_MELEE_RADIUS)
         
         def nearest_object(type = "bots"): # Returns the id of the nearest enemy
-            return min([element.id() for element in self.__entities[type].values() if element.id != bot_id], key = lambda element_id: (self.__entities["type"][element_id].x() - bot.x())**2 + (self.__entities[type][element_id].y() - bot.y())**2)
-           
+            entities = [element.id() for element in self.__entities[type].values() if element.id() != bot_id]
+            if entities == []:
+                return None
+            return min(entities, key = lambda element_id: (self.__entities[type][element_id].x() - bot.x())**2 + (self.__entities[type][element_id].y() - bot.y())**2)
+        
         def get_objects_in_range(type = "bots", radius = MAP_HEIGHT / 10):
             return [element.id() for element in self.__entities[type].values() if element.id() != bot_id and (element.x() - bot.x())**2 + (element.y() - bot.y())**2 <= radius**2]
              
         def get_attribute(entity_id, type, attribute):
+            if type == "me":
+                return getattr(self.__entities["bots"][bot_id].get_info(), attribute)
             return getattr(self.__entities[type][entity_id].get_info(), attribute)
         
         return save_data, get_data, print, vector_to, vector_from_to, unit_vector, vector_length, get_bots_in_range_melee, nearest_object, get_objects_in_range, get_attribute
@@ -365,14 +373,15 @@ class Simulation:
             for bot, entity in collisions:
                 if type(entity) == Bullet:
                     bullets_to_remove.append(entity.id())
+                    bullet_owner_id = entity.get_owner_id()
                     if entity.get_type() == "normal":
                         if (bot.receive_shield_damage(BULLET_DAMAGE)):
                             self.__logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
-                            self.kill_bot(bot.id(), bots_to_remove)
+                            self.kill_bot(bot.id(), bots_to_remove, bullet_owner_id)
                     else: 
                         if (bot.receive_life_damage(MELEE_DAMAGE)):
                             self.__logger.debug("Bot {} was killed by a super bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
-                            self.kill_bot(bot.id(), bots_to_remove)
+                            self.kill_bot(bot.id(), bots_to_remove, bullet_owner_id)
                    
                 if type(entity) == Drop:
                     drops_to_remove.append((entity.id(), entity.type()))
