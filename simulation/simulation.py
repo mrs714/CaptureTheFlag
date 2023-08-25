@@ -60,7 +60,8 @@ class Simulation:
             "bullets": {},
             "drops_points": {},
             "drops_health": {},
-            "drops_shield": {}
+            "drops_shield": {},
+            "effects": {}
         }
         self.__storage = {} # Storage for the players, associated to the db id
         self.__collision_detector = CollisionAlgorithm()
@@ -317,6 +318,8 @@ class Simulation:
 
         # Move and spawn all entities
         for bot in self.__entities["bots"].values():
+            sim_id = self.get_id()
+            self.__entities["effects"][sim_id] = bot.death_effect(sim_id)
             self.__execute_bot_code(bot, bots_to_remove)
 
         for bullet in self.__entities["bullets"].values():

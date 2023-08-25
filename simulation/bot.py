@@ -1,5 +1,5 @@
 from simulation.entity import Entity
-from simulation.bullet import Bullet
+from simulation.effect import Effect
 from math import sqrt
 from simulation.simulation_consts import *
 from simulation.player_context.bot_info import BotInfo
@@ -174,6 +174,9 @@ class Bot(Entity):
             self.__y__ = MAP_PADDING + BOT_RADIUS
         elif self.__y__ > MAP_HEIGHT + MAP_PADDING - BOT_RADIUS:
             self.__y__ = MAP_HEIGHT + MAP_PADDING - BOT_RADIUS
+    
+    def death_effect(self, id):
+        return Effect(id, self.__x__, self.__y__, "player_death")
          
     def code(self):
         return self.__code

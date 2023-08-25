@@ -20,6 +20,8 @@ class Bullet(Entity):
         self.__dy = dy
 
         self.__type = type
+
+        self.__state = {"life_ticks": 0}
     
     def get_owner_id(self):
         return self.__owner_id
@@ -36,6 +38,8 @@ class Bullet(Entity):
         #If outside the map, mark it for removal
         if self.__keep_bullet_within_map():
             self.__to_remove = True
+        
+        self.__state["life_ticks"] += 1
 
 
     def __keep_bullet_within_map(self):
@@ -65,3 +69,6 @@ class Bullet(Entity):
     
     def get_vector_direction(self):
         return self.__dx, self.__dy
+    
+    def get_state(self):
+        return self.__state
