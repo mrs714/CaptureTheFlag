@@ -1,4 +1,4 @@
-import math, random
+import math
 
 MAP_WIDTH, MAP_HEIGHT = 600, 600 # pixels, actual playing zone
 MAP_PADDING = 50 # padding at each side of the map
@@ -33,8 +33,6 @@ BULLET_COLOR = RED
 DROP_COLOR_POINTS = GREEN
 DROP_COLOR_HEALTH = ORANGE
 DROP_COLOR_SHIELD = CYAN
-def random_color():
-    return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
 BULLET_DAMAGE = 10 # change this in the future
 MELEE_DAMAGE = 30

@@ -4,6 +4,7 @@ from simulation.bullet import Bullet
 from simulation.drop import Drop
 from simulation.collision_algorithm import CollisionAlgorithm
 from simulation.player_context.game import Game #import Game (for giving information to the bot code)
+from simulation.drawing import Renderer
 
 # Give the classes to the users
 from simulation.player_context.bot_info import BotInfo
@@ -63,7 +64,7 @@ class Simulation:
         }
         self.__storage = {} # Storage for the players, associated to the db id
         self.__collision_detector = CollisionAlgorithm()
-        self.__text_font = pygame.font.SysFont(None, 24)
+        self.__renderer = Renderer(self.__screen, 1) # 2: print all, 1: points and name, 0: only name
         self.__logger.debug("Simulation object variables initialized")
         self.__bot_scores = [] # List of tuples (bot_name, score)
     
@@ -388,29 +389,7 @@ class Simulation:
                     bot.get_drop(entity.type())
 
     def __update_frame(self):
-        self.__screen.fill(BACKGROUND_COLOR)
-        pygame.draw.rect(self.__screen, DARK_GRAY, pygame.Rect(MAP_PADDING, MAP_PADDING, MAP_WIDTH, MAP_HEIGHT)) 
-        for bot in self.__entities["bots"].values():
-            pygame.draw.circle(self.__screen, BOT_COLOR, bot.pos(), BOT_RADIUS)
-            name = self.__text_font.render(str(bot.get_name()), True, WHITE)
-            life = self.__text_font.render(str(bot.get_life()), True, ORANGE)
-            shield = self.__text_font.render(str(bot.get_defense()), True, CYAN)
-            points = self.__text_font.render(str(bot.get_points()), True, GREEN)
-            self.__screen.blit(name, (bot.x() - BOT_RADIUS, bot.y() + 2 * BOT_RADIUS))
-            self.__screen.blit(life, (bot.x() - BOT_RADIUS, bot.y() + 3 * BOT_RADIUS))
-            self.__screen.blit(shield, (bot.x() - BOT_RADIUS, bot.y() + 4 * BOT_RADIUS))
-            self.__screen.blit(points, (bot.x() - BOT_RADIUS, bot.y() + 5 * BOT_RADIUS))
-        for bullet in self.__entities["bullets"].values():
-            if bullet.get_type() == "normal":
-                pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
-            else:
-                pygame.draw.circle(self.__screen, random_color(), bullet.pos(), BULLET_RADIUS * 1.5)
-        for drop in self.__entities["drops_points"].values():
-            pygame.draw.circle(self.__screen, DROP_COLOR_POINTS, drop.pos(), DROP_RADIUS)
-        for drop in self.__entities["drops_health"].values():
-            pygame.draw.circle(self.__screen, DROP_COLOR_HEALTH, drop.pos(), DROP_RADIUS)
-        for drop in self.__entities["drops_shield"].values():
-            pygame.draw.circle(self.__screen, DROP_COLOR_SHIELD, drop.pos(), DROP_RADIUS)
+        self.__renderer.draw_frame(self.__screen, self.__entities)
         
     
     def __save_frame(self):

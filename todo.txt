@@ -48,6 +48,10 @@ MIQUEL:
 
     codi de prova escrit, va perfecte
 
+    Codi d'exemple per a diferents tipus de bots
+
+    Els bots guanyen punts quan maten altres
+
 
 
     A fer: 
@@ -59,8 +63,6 @@ MIQUEL:
     FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
 
     Add special effects (picking up a powerup, dying, melee...)
-
-    Add a playerKilled event - donar punts, etc
         
     for the bot class, create a variable state, which contains wether it has been hit recently
     has used a super melee, etc -     implementar que l'escut es regeneri
