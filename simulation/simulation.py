@@ -320,6 +320,7 @@ class Simulation:
         # Move and spawn all entities
         for bot in self.__entities["bots"].values():
             self.__execute_bot_code(bot, bots_to_remove)
+            bot.update_bot(self.__current_tick)
 
         for bullet in self.__entities["bullets"].values():
             if bullet.to_remove():
@@ -388,6 +389,7 @@ class Simulation:
         if collisions:
             for bot, entity in collisions:
                 if type(entity) == Bullet:
+                    bot.hit(self.__current_tick)
                     bullets_to_remove.append(entity.id())
                     bullet_owner_id = entity.get_owner_id()
                     if entity.get_type() == "normal":

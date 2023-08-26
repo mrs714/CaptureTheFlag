@@ -25,7 +25,7 @@ class Bot(Entity):
         self.__exec_events = [] #List of strings captured from stdout and stderr
         self.__last_position = None #Last position of the bot (-1 if the bot code raised an exception)
         self.__last_actions = {"shoot": 0, "move": 0, "melee": 0, "dash": 0, "super_shot": 0, "super_melee": 0} #Last time the bot took an action
-        self.__state = {} # Dictionary with the state of the bot, shooting, being shot, etc
+        self.__state = {"last_hit": 0} # Dictionary with the state of the bot, shooting, being shot, etc
         self.__points = 0 # Points earned by the bot
 
     def shoot(self, actual_tick):
@@ -56,6 +56,9 @@ class Bot(Entity):
         self.__life = clamp(self.__life - damage, 0, self.__health)
         return self.__life == 0
     
+    def recieve_life(self, life_points):
+        self.__life = clamp(self.__life + life_points, 0, self.__health)
+    
     # To use on all attacks that might deal damage to shield, no matter if the shield is up or not
     # Returns wether the player is dead
     def receive_shield_damage(self, damage): 
@@ -74,16 +77,18 @@ class Bot(Entity):
             return self.receive_life_damage(damage)
         return False
     
+    def recieve_shield(self, shield_points):
+        if self.__defense == 0:
+            self.__defense == 1
+        else:
+            self.__defense = clamp(self.__defense + shield_points, 0, self.__shield)
+    
     def get_drop(self, type):
         if type == "health":
-            self.__life = clamp(self.__life + 50, 0, self.__health)
+            self.recieve_life(HEALTH_PER_DROP)
         
         elif type == "shield":
-            if self.__defense == 0:
-                self.__defense = 1
-            else: 
-                self.__defense = clamp(self.__defense + 50, 0, self.__shield)
-            
+            self.recieve_shield(SHIELD_PER_DROP)
         elif type == "points":
             self.__points += POINTS_PER_DROP
     
@@ -180,6 +185,19 @@ class Bot(Entity):
          
     def code(self):
         return self.__code
+    
+    def get_state(self):
+        return self.__state
+    
+    def update_state(self, state):
+        self.__state = state
+
+    def update_bot(self, ticks):
+        if self.__defense > 0 and ticks % (FPS // 5) and (ticks - self.__state["last_hit"]) > FPS * SECONDS_TO_REGAIN_SHIELD  == 0: # If bot has shield, regain 5 shield points per second, but only if it hasn't been hit in the last 2 seconds
+            self.recieve_shield(1)
+
+    def hit(self, ticks):
+        self.__state["last_hit"] = ticks
 
     def get_info(self):
         return BotInfo(self.id(), self.__x__, self.__y__, self.__health, self.__shield, self.__attack)
