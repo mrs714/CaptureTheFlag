@@ -41,7 +41,7 @@ if __name__ == '__main__':
         Map size: {MAP_WIDTH}x{MAP_HEIGHT}
         Duration: {DURATION/FPS} seconds
         FPS: {FPS}
-        Expected time for the simulation: {expected_time}\n\n""")
+        Expected time for the simulation: {expected_time}\n\n""")33
 
         logger.info(f"Creating the simulation {number_of_simulations} object...")
         # Create an empty simulation

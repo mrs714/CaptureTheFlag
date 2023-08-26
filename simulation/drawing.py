@@ -64,22 +64,24 @@ class Renderer:
 
     def __draw_bullets(self):
 
-        def draw_speed_lines(bullet):
+        def draw_speed_lines(bullet, type):
             # Draws ten random black lines from the back of the bullet in the -direction of travel
 
             # Get the center of the bullet and the -direction vector
             start_point = (bullet.x(), bullet.y())
             direction_unit_vector = (-bullet.get_vector_direction()[0], -bullet.get_vector_direction()[1])
 
-            for i in range(5):
+            for i in range(5 if type == "normal" else 10):
+
                 # First, randomize the direction of the vector +- 90º:
-                degrees = randint(-70, 70)
+                degrees = randint(-70, 70) if type == "normal" else randint(-90, 90)
 
                 # Rotate the vector direction x degrees:
                 angle_radians = math.radians(degrees)
                 x, y = direction_unit_vector
-                start_x = start_point[0] + (x * math.cos(angle_radians) - y * math.sin(angle_radians)) * BULLET_RADIUS
-                start_y = start_point[1] + (x * math.sin(angle_radians) + y * math.cos(angle_radians)) * BULLET_RADIUS
+                length = BULLET_RADIUS if type == "normal" else SUPER_BULLET_RADIUS
+                start_x = start_point[0] + (x * math.cos(angle_radians) - y * math.sin(angle_radians)) * length
+                start_y = start_point[1] + (x * math.sin(angle_radians) + y * math.cos(angle_radians)) * length
                 
                 length = randint(5, min((5 + 2 * bullet.get_state()["life_ticks"]), 50))
 
@@ -89,12 +91,13 @@ class Renderer:
                 pygame.draw.line(self.__screen, BLACK, (start_x, start_y), (end_x, end_y))
 
         for bullet in self.__entities["bullets"].values():
-            if bullet.get_type() == "normal":
+            type = bullet.get_type()
+            if type == "normal":
                 pygame.draw.circle(self.__screen, BULLET_COLOR, bullet.pos(), BULLET_RADIUS)
-                draw_speed_lines(bullet)
             else:
-                pygame.draw.circle(self.__screen, self.__random_color(), bullet.pos(), BULLET_RADIUS * 1.5)
-    
+                pygame.draw.circle(self.__screen, self.__random_color(), bullet.pos(), SUPER_BULLET_RADIUS)
+            draw_speed_lines(bullet, type)
+
     def __draw_drops(self):
 
         def drop_color(drop, min_color, max_color): 
@@ -145,10 +148,41 @@ class Renderer:
 
             pygame.draw.circle(self.__screen, WHITE, effect.pos(), step, int(self.__map_range(step, 0, max_step, 5, 1)))
 
+        def draw_pick_drop_effect(effect):
+            # Draw x concentrical lines that start at the center and move outwards
+            number_of_lines = 8
+            line_length = 5
+
+            step = 2 * effect.get_step()
+            max_step = BOT_RADIUS * 3
+
+            if step > max_step:
+                effect.remove()
+
+            center_x = effect.x()
+            center_y = effect.y()
+
+            # Calculate direction vector of the line
+            for line in range(number_of_lines):
+                degrees = line * (360 // number_of_lines)
+                angle_radians = math.radians(degrees)
+
+                # Rotate the vertical, unit vector x º
+                x, y = 0, 1
+                vector_x = (x * math.cos(angle_radians) - y * math.sin(angle_radians))
+                vector_y = (x * math.sin(angle_radians) + y * math.cos(angle_radians))
+
+                start_x = center_x + vector_x * step
+                start_y = center_y + vector_y * step
+
+                end_x = start_x + vector_x * (line_length + step)
+                end_y = start_y + vector_y * (line_length + step)
+
+                pygame.draw.line(self.__screen, WHITE, (start_x, start_y), (end_x, end_y), int(self.__map_range(step, 0, max_step, 5, 1)))
+
         for effect in self.__entities["effects"].values():
             if effect.type() == "player_death":
-                step = effect.get_step()
                 draw_player_death_effect(effect)
-            elif effect.type() == "drop_picked":
-                self.__draw_drop_picked_effect(effect)
+            elif effect.type() == "pick_drop":
+                draw_pick_drop_effect(effect)
 

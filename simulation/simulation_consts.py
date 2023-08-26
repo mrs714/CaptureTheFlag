@@ -3,6 +3,7 @@ import math
 MAP_WIDTH, MAP_HEIGHT = 600, 600 # pixels, actual playing zone
 MAP_PADDING = 50 # padding at each side of the map
 BULLET_RADIUS = 4 # pixels
+SUPER_BULLET_RADIUS = int(BULLET_RADIUS * 1.5)
 BOT_RADIUS = 4 * BULLET_RADIUS # pixels
 DROP_RADIUS = 2 * BULLET_RADIUS # pixels
 BOT_SPEED = 3 # pixels per frame

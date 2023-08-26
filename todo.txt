@@ -54,17 +54,19 @@ MIQUEL:
 
     les bales tenen traça
 
+    classe effect implementada
+
+    efectes per als jugadors quan moren, i quan s'agafen drops
+
 
 
     A fer: 
 
-    fer una classe effect
+    fer que el robot o l'escut faci un blink blanc quan una bala hi impacta
 
     limit cpu with cpulimit
 
     FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
-
-    Add special effects (picking up a powerup, dying, melee...)
         
     for the bot class, create a variable state, which contains wether it has been hit recently
     has used a super melee, etc -     implementar que l'escut es regeneri

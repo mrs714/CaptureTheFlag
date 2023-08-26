@@ -65,7 +65,7 @@ class Simulation:
         }
         self.__storage = {} # Storage for the players, associated to the db id
         self.__collision_detector = CollisionAlgorithm()
-        self.__renderer = Renderer(self.__screen, 1) # 2: print all, 1: points and name, 0: only name
+        self.__renderer = Renderer(self.__screen, 2) # 2: print all, 1: points and name, 0: only name
         self.__logger.debug("Simulation object variables initialized")
         self.__bot_scores = [] # List of tuples (bot_name, score)
     
@@ -350,8 +350,11 @@ class Simulation:
         # Check drops aren't repeated
         drops_to_remove = list(set(drops_to_remove))
         for drop_id, drop_type in drops_to_remove:
+            sim_id = self.get_id()
+            self.__entities["effects"][sim_id] = self.__entities[str("drops_" + drop_type)][drop_id].drop_effect(sim_id)
             self.__entities[str("drops_" + drop_type)].pop(drop_id, None)
 
+        # Remove effects
         for effect in self.__entities["effects"].values():
             if effect.to_remove() == True:
                 effects_to_remove.append(effect.id())

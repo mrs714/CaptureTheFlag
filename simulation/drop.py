@@ -1,4 +1,5 @@
 from simulation.entity import Entity
+from simulation.effect import Effect
 from simulation.simulation_consts import *
 from simulation.player_context.drop_info import DropInfo
 
@@ -20,3 +21,6 @@ class Drop(Entity):
     
     def set_state(self, state):
         self.__state = state
+
+    def drop_effect(self, id):
+        return Effect(id, self.__x__, self.__y__, "pick_drop")
