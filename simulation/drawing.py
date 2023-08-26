@@ -10,9 +10,11 @@ class Renderer:
         self.__text_font = pygame.font.SysFont(None, 24)
         self.__level = level
         self.__entities = {}
+        self.__tick = 0
 
-    def draw_frame(self, screen, entities):
+    def draw_frame(self, screen, entities, tick):
         self.__entities = entities
+        self.__tick = tick
 
         self.__draw_map()
 
@@ -43,7 +45,7 @@ class Renderer:
 
             normalized_color = bot.get_life() / bot.get_health() # 0 to 1
             blue = math.ceil(255 * normalized_color)
-            bot_color = (BOT_COLOR[0], BOT_COLOR[1], blue)
+            bot_color = (BOT_COLOR[0], BOT_COLOR[1], blue) if bot.get_state()["last_hit"] != self.__tick else WHITE
             pygame.draw.circle(self.__screen, bot_color, bot.pos(), BOT_RADIUS)
 
             draw_bot_shield(bot)

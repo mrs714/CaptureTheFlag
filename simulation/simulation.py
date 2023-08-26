@@ -406,7 +406,7 @@ class Simulation:
                     bot.get_drop(entity.type())
 
     def __update_frame(self):
-        self.__renderer.draw_frame(self.__screen, self.__entities)
+        self.__renderer.draw_frame(self.__screen, self.__entities, self.__current_tick)
         
     
     def __save_frame(self):

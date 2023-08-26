@@ -193,7 +193,8 @@ class Bot(Entity):
         self.__state = state
 
     def update_bot(self, ticks):
-        if self.__defense > 0 and ticks % (FPS // 5) and (ticks - self.__state["last_hit"]) > FPS * SECONDS_TO_REGAIN_SHIELD  == 0: # If bot has shield, regain 5 shield points per second, but only if it hasn't been hit in the last 2 seconds
+        if self.__name == "mrs714":
+        if self.__defense > 0 and ticks % (FPS // 5) == 0 and (ticks - self.__state["last_hit"]) > (FPS * SECONDS_TO_REGAIN_SHIELD): # If bot has shield, regain 5 shield points per second, but only if it hasn't been hit in the last 2 seconds
             self.recieve_shield(1)
 
     def hit(self, ticks):
