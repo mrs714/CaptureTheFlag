@@ -148,7 +148,7 @@ class Renderer:
             if step < BOT_RADIUS: # Inward circle
                 pygame.draw.circle(self.__screen, WHITE, effect.pos(), BOT_RADIUS - step)
 
-            pygame.draw.circle(self.__screen, WHITE, effect.pos(), step, int(self.__map_range(step, 0, max_step, 5, 1)))
+            pygame.draw.circle(self.__screen, RED, effect.pos(), step, int(self.__map_range(step, 0, max_step, 5, 1)))
 
         def draw_pick_drop_effect(effect):
             # Draw x concentrical lines that start at the center and move outwards
