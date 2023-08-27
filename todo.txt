@@ -58,18 +58,22 @@ MIQUEL:
 
     efectes per als jugadors quan moren, i quan s'agafen drops
 
+    variable estat a bot, que gaurda coses com l'últim cop que l'han disparat
+
+    els bots es tornen blancs el frame que els impacta una bala
+
 
 
     A fer: 
 
-    fer que el robot o l'escut faci un blink blanc quan una bala hi impacta
-
     limit cpu with cpulimit
 
     FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
+
+    solucionar lo de la classe info
+
+    passar la part de guardar frames i fer el video a una classe nova
         
-    for the bot class, create a variable state, which contains wether it has been hit recently
-    has used a super melee, etc -     implementar que l'escut es regeneri
 
 
   
