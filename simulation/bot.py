@@ -25,7 +25,7 @@ class Bot(Entity):
         self.__exec_events = [] #List of strings captured from stdout and stderr
         self.__last_position = None #Last position of the bot (-1 if the bot code raised an exception)
         self.__last_actions = {"shoot": 0, "move": 0, "melee": 0, "dash": 0, "super_shot": 0, "super_melee": 0} #Last time the bot took an action
-        self.__state = {"last_hit": 0} # Dictionary with the state of the bot, shooting, being shot, etc
+        self.__state = {"last_hit": -1} # Dictionary with the state of the bot, shooting, being shot, etc
         self.__points = 0 # Points earned by the bot
 
     def shoot(self, actual_tick):
