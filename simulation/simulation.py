@@ -5,12 +5,11 @@ from simulation.drop import Drop
 
 from simulation.collision_algorithm import CollisionAlgorithm
 from simulation.player_context.game import Game #import Game (for giving information to the bot code)
-from simulation.drawing import Renderer
+from simulation.drawing import Renderer, Clip
 from simulation.spawn import Spawner
 
 import pygame
 from datetime import datetime #import datetime (to get the current date and time)
-from moviepy.editor import ImageSequenceClip #import ImageSequenceClip (for saving the mp4 file)
 
 # User code has access to the following modules:
 import random as rnd
@@ -27,8 +26,6 @@ from RestrictedPython.Guards import guarded_iter_unpack_sequence, full_write_gua
 
 from io import StringIO #import StringIO (for capturing the bot output)
 import sys
-import os # Create folders if needed
-import shutil # Remove full directories
 import traceback
 
 class Simulation:
@@ -48,8 +45,7 @@ class Simulation:
         self.__logger.debug("Initializing simulation object variables...")
         self.__clock = pygame.time.Clock()
         self.__current_tick = 0
-        self.__frames = []
-        self.__frames_number = 10000 # Used to give name to the frames, it has to start high enough to avoid sorting errors (1, 10, 2, 3...)
+        
         self.__entities = {
             "bots": {},
             "dead_bots": {},
@@ -62,7 +58,8 @@ class Simulation:
 
         self.__storage = {} # Storage for the players, associated to the db id
         self.__collision_handler = CollisionAlgorithm()
-        self.__renderer = Renderer(self.__screen, 2) # 2: print all, 1: points and name, 0: only name
+        self.__renderer = Renderer(self.__screen, 2, self.__current_tick) # 2: print all, 1: points and name, 0: only name
+        self.__clip_maker = Clip(self.__screen, self.__logger, self.__current_tick)
         self.__spawner = Spawner()
         self.__logger.debug("Simulation object variables initialized")
         self.__bot_scores = [] # List of tuples (bot_name, score)
@@ -89,10 +86,10 @@ class Simulation:
                     running = False
             
             self.__perform_actions()
-            self.__update_frame()
+            self.__renderer.draw_frame(self.__screen, self.__entities)
             pygame.display.flip()
 
-            self.__save_frame()
+            self.__clip_maker.save_frame()
 
             self.__current_tick += 1
             self.__clock.tick(FPS)
@@ -341,65 +338,6 @@ class Simulation:
         for id in effects_to_remove:
             self.__entities["effects"].pop(id, None)
 
-    def __update_frame(self):
-        self.__renderer.draw_frame(self.__screen, self.__entities, self.__current_tick)
-        
-    
-    def __save_frame(self):
-        # Take a frame, rotate it and flip it, and append it to the list of frames
-        frame = pygame.surfarray.array3d(self.__screen)
-        
-        #frame = np.rot90(frame, k=-1)
-        #frame = np.fliplr(frame)
-        frame = pygame.surfarray.make_surface(frame)
-
-        self.__frames.append(frame)
-
-        # This eats memory, as *every* frame is stored at once on RAM. To solve this:
-        if len(self.__frames) > math.ceil(MAX_FRAMES_ON_RAM) or self.__current_tick == DURATION - 1:
-            
-            # Create the folders if they don't exist
-            if not os.path.exists(SIM_FRAMES_PATH):
-                if not os.path.exists(SIM_FOLDER):
-                    os.makedirs(SIM_FOLDER, exist_ok=True)
-                os.makedirs(SIM_FRAMES_PATH, exist_ok=True)
-            
-            for frame in self.__frames:
-                pygame.image.save(frame, os.path.join(SIM_FRAMES_PATH, str(self.__frames_number) + ".png"))
-                self.__frames_number += 1
-            self.__frames = []
-    
     def save_replay(self, start_time, number_of_simulations):
-        # We want to save the files apart so that they are available for download while they are being generated
-        
-        # Create video
-        self.__logger.debug("Saving the mp4 file...")
-        video_clip = ImageSequenceClip(SIM_FRAMES_PATH, fps=FPS)
+       self.__clip_maker.save_replay(start_time, number_of_simulations)
 
-        # Prepare directories
-        if not os.path.exists(SIM_PLACEHOLDER_FOLDER):
-            os.makedirs(SIM_PLACEHOLDER_FOLDER, exist_ok=True)
-
-        # Save the video to the placeholder folder
-        video_clip.write_videofile(SIM_VIDEO_PLACEHOLDER_PATH, fps=FPS)
-        self.__logger.debug("Mp4 file saved")
-        
-        # Save the simulation info file
-        self.__logger.debug("Saving the simulation info file...")
-        
-        # Prepare directory
-
-        # Save the file to the placeholder folder
-        with open(SIM_INFO_PLACEHOLDER_PATH, "w") as f:
-            time_elapsed = datetime.now() - start_time
-            # IF THE FORMAT IS CHANGED, REPLAYS() IN APP.PY MUST BE CHANGED TOO
-            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {self.__bot_scores[0][0] if self.__bot_scores != [] else 'None'} Score: {self.__bot_scores[0][1] if self.__bot_scores != [] else 0} Number of simulations: {number_of_simulations}") 
-        self.__logger.debug("Simulation info file saved")
-
-        # Move everything to the correct folder (overwrite if needed)
-        shutil.move(SIM_VIDEO_PLACEHOLDER_PATH, SIM_MP4_NAME)
-        shutil.move(SIM_INFO_PLACEHOLDER_PATH, SIM_INFO_NAME)
-
-        # Wrap everything up
-        shutil.rmtree(SIM_FRAMES_PATH)
-        shutil.rmtree(SIM_PLACEHOLDER_FOLDER)
