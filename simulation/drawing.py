@@ -37,18 +37,21 @@ class Renderer:
 
     def __draw_bots(self):
 
-        def draw_bot_shield( bot):
+        def draw_bot_shield(bot, hit):
             normalized_shield = int((bot.get_defense() / bot.get_shield()) * 10) # 1 to 10
-            pygame.draw.circle(self.__screen, CYAN if normalized_shield > 0 else RED, bot.pos(), BOT_RADIUS + normalized_shield, max(normalized_shield, 1))
+            pygame.draw.circle(self.__screen, CYAN if normalized_shield > 0 and not hit else RED, bot.pos(), BOT_RADIUS + normalized_shield, 1) # Thin line
         
         for bot in self.__entities["bots"].values():
 
             normalized_color = bot.get_life() / bot.get_health() # 0 to 1
             blue = math.ceil(255 * normalized_color)
-            bot_color = (BOT_COLOR[0], BOT_COLOR[1], blue) if bot.get_state()["last_hit"] != self.__tick else WHITE
+            bot_hit = bot.get_state()["last_hit"] == self.__tick
+            bot_has_defense = bot.get_defense() != 0
+
+            bot_color = (BOT_COLOR[0], BOT_COLOR[1], blue) if not (bot_hit and not bot_has_defense) else WHITE
             pygame.draw.circle(self.__screen, bot_color, bot.pos(), BOT_RADIUS)
 
-            draw_bot_shield(bot)
+            draw_bot_shield(bot, bot_hit)
 
             # Draw data
             name = self.__text_font.render(str(bot.get_name()), True, WHITE)
