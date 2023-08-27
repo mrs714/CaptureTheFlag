@@ -61,7 +61,7 @@ class Simulation:
         }
 
         self.__storage = {} # Storage for the players, associated to the db id
-        self.__collision_detector = CollisionAlgorithm()
+        self.__collision_handler = CollisionAlgorithm()
         self.__renderer = Renderer(self.__screen, 2) # 2: print all, 1: points and name, 0: only name
         self.__spawner = Spawner()
         self.__logger.debug("Simulation object variables initialized")
@@ -304,8 +304,8 @@ class Simulation:
         self.__spawner.spawn_drops(self.__entities, self.__current_tick)
         
         # Check for collisions
-        collisions = self.__collision_detector.check_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
-        self.__collision_handler(collisions, bots_to_remove, bullets_to_remove, drops_to_remove)
+        collisions = self.__collision_handler.detect_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
+        self.__collision_handler.handle_collisions(collisions, bots_to_remove, bullets_to_remove, drops_to_remove, self.__entities, self.kill_bot, self.__current_tick, self.__logger)
 
         # Remove the bots, bullets and drops that have to be removed
         bots_to_remove = list(set(bots_to_remove))
@@ -340,27 +340,6 @@ class Simulation:
                 effects_to_remove.append(effect.id())
         for id in effects_to_remove:
             self.__entities["effects"].pop(id, None)
-
-    # Gets a list of the bots and the entities they are colliding with
-    def __collision_handler(self, collisions, bots_to_remove, bullets_to_remove, drops_to_remove):
-        if collisions:
-            for bot, entity in collisions:
-                if type(entity) == Bullet:
-                    bot.hit(self.__current_tick)
-                    bullets_to_remove.append(entity.id())
-                    bullet_owner_id = entity.get_owner_id()
-                    if entity.get_type() == "normal":
-                        if (bot.receive_shield_damage(BULLET_DAMAGE)):
-                            self.__logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
-                            self.kill_bot(bot.id(), bots_to_remove, bullet_owner_id)
-                    else: 
-                        if (bot.receive_life_damage(MELEE_DAMAGE)):
-                            self.__logger.debug("Bot {} was killed by a super bullet from player {}".format(bot.get_name(), self.__entities["bots"][entity.get_owner_id()].get_name()))
-                            self.kill_bot(bot.id(), bots_to_remove, bullet_owner_id)
-                   
-                if type(entity) == Drop:
-                    drops_to_remove.append((entity.id(), entity.type()))
-                    bot.get_drop(entity.type())
 
     def __update_frame(self):
         self.__renderer.draw_frame(self.__screen, self.__entities, self.__current_tick)
