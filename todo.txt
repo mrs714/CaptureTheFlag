@@ -73,6 +73,8 @@ MIQUEL:
     solucionar lo de la classe info
 
     passar la part de guardar frames i fer el video a una classe nova
+
+    a spawn effects, mirar com cridar una funció de la classe amb nom variable
         
 
 

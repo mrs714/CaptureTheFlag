@@ -2,14 +2,11 @@ from simulation.simulation_consts import * #import all the constants
 from simulation.bot import Bot
 from simulation.bullet import Bullet
 from simulation.drop import Drop
+
 from simulation.collision_algorithm import CollisionAlgorithm
 from simulation.player_context.game import Game #import Game (for giving information to the bot code)
 from simulation.drawing import Renderer
-
-# Give the classes to the users
-from simulation.player_context.bot_info import BotInfo
-from simulation.player_context.drop_info import DropInfo
-from simulation.player_context.bullet_info import BulletInfo
+from simulation.spawn import Spawner
 
 import pygame
 from datetime import datetime #import datetime (to get the current date and time)
@@ -53,7 +50,6 @@ class Simulation:
         self.__current_tick = 0
         self.__frames = []
         self.__frames_number = 10000 # Used to give name to the frames, it has to start high enough to avoid sorting errors (1, 10, 2, 3...)
-        self.__id_counter = 0
         self.__entities = {
             "bots": {},
             "dead_bots": {},
@@ -63,33 +59,25 @@ class Simulation:
             "drops_shield": {},
             "effects": {}
         }
+
         self.__storage = {} # Storage for the players, associated to the db id
         self.__collision_detector = CollisionAlgorithm()
         self.__renderer = Renderer(self.__screen, 2) # 2: print all, 1: points and name, 0: only name
+        self.__spawner = Spawner()
         self.__logger.debug("Simulation object variables initialized")
         self.__bot_scores = [] # List of tuples (bot_name, score)
-    
-    def get_id(self):
-        self.__id_counter += 1
-        return self.__id_counter
     
     def run(self):
 
         self.__logger.debug("Preparing to run the simulation...")
         list_of_bots = db.get_bots_to_execute()
+
         for bot in list_of_bots:
             config = json.loads(bot["config"])
-            sim_id = self.get_id()
-            self.__entities["bots"][sim_id] = Bot(sim_id, 
-                                                  bot["id"], 
-                                                  bot["username"], 
-                                                  rnd.randint(100, MAP_WIDTH - 100), # At least 50 inside the play-zone
-                                                  rnd.randint(100, MAP_HEIGHT - 100), 
-                                                  bot["code"], 
-                                                  config["health"], 
-                                                  config["shield"], 
-                                                  config["attack"])
+            id, entity = self.__spawner.spawn_bot(bot, config)
+            self.__entities["bots"][id] = entity
             self.__storage[bot["id"]] = {} # A dictionary for each player, to store the information they want
+        
         self.__logger.info("Bots participating: " + str([bot.get_name() for bot in self.__entities["bots"].values()]))
         self.__logger.debug("Simulation prepared")
 
@@ -146,27 +134,13 @@ class Simulation:
         
         def shoot(dx, dy):
             if bot.shoot(self.__current_tick):
-                sim_id = self.get_id()
-                self.__entities["bullets"][sim_id] = Bullet(sim_id, 
-                                                            bot.x(), 
-                                                            bot.y(), 
-                                                            dx, 
-                                                            dy, 
-                                                            BULLET_DAMAGE,
-                                                            "normal",
-                                                            bot.id())
-        
+                id, entity = self.__spawner.spawn_bullet(bot, dx, dy, "normal")
+                self.__entities["bullets"][id] = entity
+                
         def super_shot(dx, dy):
             if bot.super_shot(self.__current_tick):
-                sim_id = self.get_id()
-                self.__entities["bullets"][sim_id] = Bullet(sim_id, 
-                                                            bot.x(), 
-                                                            bot.y(), 
-                                                            dx, 
-                                                            dy, 
-                                                            BULLET_DAMAGE * 2,
-                                                            "super",
-                                                            bot.id())
+                id, entity = self.__spawner.spawn_bullet(bot, dx, dy, "super")
+                self.__entities["bullets"][id] = entity
 
         def melee():
             if bot.melee(self.__current_tick):
@@ -234,7 +208,6 @@ class Simulation:
             return getattr(self.__entities[type][entity_id].get_info(), attribute)
         
         return save_data, get_data, print, vector_to, vector_from_to, unit_vector, vector_length, get_bots_in_range_melee, nearest_object, get_objects_in_range, get_attribute
-
 
     def __execute_bot_code(self, bot, bots_to_remove):
 
@@ -308,7 +281,7 @@ class Simulation:
             # Close the StringIO object
             temp_out.close()
 
-    def get_entities(self): # Can the entities be modified? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    def get_entities(self): 
         return self.__entities
 
     def __perform_actions(self):
@@ -328,7 +301,7 @@ class Simulation:
                 continue
             bullet.move()
 
-        self.__spawn_drops()
+        self.__spawner.spawn_drops(self.__entities, self.__current_tick)
         
         # Check for collisions
         collisions = self.__collision_detector.check_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
@@ -337,8 +310,11 @@ class Simulation:
         # Remove the bots, bullets and drops that have to be removed
         bots_to_remove = list(set(bots_to_remove))
         for bot_id in bots_to_remove:
-            sim_id = self.get_id()
-            self.__entities["effects"][sim_id] = self.__entities["bots"][bot_id].death_effect(sim_id)
+            # Death effect
+            bot = self.__entities["bots"][bot_id]
+            id, entity = self.__spawner.spawn_effects(bot, "death_effect")
+            self.__entities["effects"][id] = entity
+            # Remove bot
             db_bot = self.__entities["bots"][bot_id].get_db_id()
             self.__entities["dead_bots"][bot_id] = self.__entities["bots"].pop(bot_id)
             self.__logger.debug(f"Bot with db_id = {db_bot} removed")
@@ -351,8 +327,11 @@ class Simulation:
         # Check drops aren't repeated
         drops_to_remove = list(set(drops_to_remove))
         for drop_id, drop_type in drops_to_remove:
-            sim_id = self.get_id()
-            self.__entities["effects"][sim_id] = self.__entities[str("drops_" + drop_type)][drop_id].drop_effect(sim_id)
+            # Pickup effect
+            drop = self.__entities[str("drops_" + drop_type)][drop_id]
+            id, entity = self.__spawner.spawn_effects(drop, "drop_effect")
+            self.__entities["effects"][id] = entity
+            # Remove drop
             self.__entities[str("drops_" + drop_type)].pop(drop_id, None)
 
         # Remove effects
@@ -362,28 +341,6 @@ class Simulation:
         for id in effects_to_remove:
             self.__entities["effects"].pop(id, None)
 
-        
-
-    def __spawn_drops(self):
-        def spawn(drop):
-            sim_id = self.get_id()
-            self.__entities["drops_" + drop][sim_id] = Drop(sim_id, 
-                                                            rnd.randint(MAP_PADDING + DROP_RADIUS, MAP_WIDTH + MAP_PADDING - DROP_RADIUS), 
-                                                            rnd.randint(MAP_PADDING + DROP_RADIUS, MAP_HEIGHT + MAP_PADDING - DROP_RADIUS), 
-                                                            drop)
-
-        # If empty, replenish health and shield drops:
-        if len(self.__entities["drops_health"]) < NUMBER_OF_HEALTH_DROPS:
-            spawn("health")
-        
-        if len(self.__entities["drops_shield"]) < NUMBER_OF_SHIELD_DROPS:
-            spawn("shield")
-        
-        # Point drops: Minimum ammount: ceil(players/4); Maximum ammount: max((players-1), 1);
-        if (len(self.__entities["drops_points"]) < math.ceil(len(self.__entities["bots"]))) or (self.__current_tick % TIME_BETWEEN_DROPS == 0):
-            if len(self.__entities["drops_points"]) < max((len(self.__entities["bots"]) - 1), 1):
-                spawn("points")
-    
     # Gets a list of the bots and the entities they are colliding with
     def __collision_handler(self, collisions, bots_to_remove, bullets_to_remove, drops_to_remove):
         if collisions:
