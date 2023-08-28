@@ -1,6 +1,6 @@
 import math
 
-MAP_WIDTH, MAP_HEIGHT = 600, 600 # pixels, actual playing zone
+MAP_WIDTH, MAP_HEIGHT = 1000, 1000 # pixels, actual playing zone
 MAP_PADDING = 50 # padding at each side of the map
 BULLET_RADIUS = 4 # pixels
 SUPER_BULLET_RADIUS = int(BULLET_RADIUS * 1.5)

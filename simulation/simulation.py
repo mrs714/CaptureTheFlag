@@ -58,8 +58,8 @@ class Simulation:
 
         self.__storage = {} # Storage for the players, associated to the db id
         self.__collision_handler = CollisionAlgorithm()
-        self.__renderer = Renderer(self.__screen, 2, self.__current_tick) # 2: print all, 1: points and name, 0: only name
-        self.__clip_maker = Clip(self.__screen, self.__logger, self.__current_tick)
+        self.__renderer = Renderer(self.__screen, 2) # 2: print all, 1: points and name, 0: only name
+        self.__clip_maker = Clip(self.__screen, self.__logger)
         self.__spawner = Spawner()
         self.__logger.debug("Simulation object variables initialized")
         self.__bot_scores = [] # List of tuples (bot_name, score)
@@ -86,10 +86,10 @@ class Simulation:
                     running = False
             
             self.__perform_actions()
-            self.__renderer.draw_frame(self.__screen, self.__entities)
+            self.__renderer.draw_frame(self.__entities, self.__current_tick)
             pygame.display.flip()
 
-            self.__clip_maker.save_frame()
+            self.__clip_maker.save_frame(self.__current_tick)
 
             self.__current_tick += 1
             self.__clock.tick(FPS)

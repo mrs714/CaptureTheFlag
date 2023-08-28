@@ -9,14 +9,15 @@ from datetime import datetime
 
 class Renderer:
     
-    def __init__(self, screen, level, tick): # "2": print all tags, "1": print only points, "0": print nothing
+    def __init__(self, screen, level): # "2": print all tags, "1": print only points, "0": print nothing
         self.__screen = screen
         self.__text_font = pygame.font.SysFont(None, 24)
         self.__level = level
         self.__entities = {}
-        self.__tick = tick
+        self.__tick = 0
 
-    def draw_frame(self, screen, entities):
+    def draw_frame(self, entities, current_tick):
+        self.__tick = current_tick
         self.__entities = entities
 
         self.__draw_map()
@@ -196,14 +197,16 @@ class Renderer:
 
 class Clip():
 
-    def __init__(self, screen, logger, tick):
+    def __init__(self, screen, logger):
         self.__screen = screen
         self.__frames_number = 100000 # Needed for frame's names to be ordered correctly
         self.__frames = []
         self.__logger = logger
-        self.__current_tick = tick
+        self.__current_tick = 0
 
-    def save_frame(self):
+    def save_frame(self, current_tick):
+        self.__current_tick = current_tick
+
         # Take a frame, rotate it and flip it, and append it to the list of frames
         frame = pygame.surfarray.array3d(self.__screen)
         
