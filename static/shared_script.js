@@ -49,7 +49,7 @@ function add_event_listener(element, funct){
 
 function expand_form(width) {
   const container = document.getElementById("container");
-  if (container.style.maxWidth != "100%") { // Don't include phone users
+  if (window.innerWidth > 1000) { // Don't include phone users
     container.style.maxWidth != width ? container.style.maxWidth = width : container.style.maxWidth = '35%';
   }
 }
