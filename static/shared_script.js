@@ -49,7 +49,9 @@ function add_event_listener(element, funct){
 
 function expand_form(width) {
   const container = document.getElementById("container");
-  container.style.maxWidth != width ? container.style.maxWidth = width : container.style.maxWidth = '35%';
+  if (container.style.maxWidth != "100%") { // Don't include phone users
+    container.style.maxWidth != width ? container.style.maxWidth = width : container.style.maxWidth = '35%';
+  }
 }
 
 function toggle_fast_transition(boolean) {
