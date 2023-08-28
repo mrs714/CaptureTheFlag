@@ -52,8 +52,8 @@ function update_config(successful_download) {
 
 function update_error_log(successful_download) {
   if (successful_download) {
-    if (error_log == null) {
-      error_log = "No log.";
+    if (error_log == null || error_log.replace(/\s+/g, '') == "") {
+      error_log = "No log to show.";
     }
     else {
       error_label.innerHTML = error_log;
@@ -101,7 +101,6 @@ async function download_config() {
     health = responseData.health;
     shield = responseData.shield;
     attack = responseData.attack;
-    console.log(health, shield, attack);
     
     update_config(true);
   
@@ -126,7 +125,6 @@ async function download_error_log() {
   if (response.ok) {
     // Load data
     error_log = responseData.error_log;
-    console.log(error_log);
 
     update_error_log(true);
 
@@ -147,8 +145,6 @@ async function download_user_info() {
   const responseData = await response.json();
     
   if (response.ok) {
-
-    console.log(responseData);
 
     // Load data
     position = responseData.position;

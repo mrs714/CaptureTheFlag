@@ -14,7 +14,7 @@ const codeTextArea = document.getElementById('code_zone');
 const editor = CodeMirror.fromTextArea(codeTextArea, {
   theme: 'dracula', // Use the 'dracula' theme
   mode: 'python',   // Set the mode to Python
-  lineNumbers: true // Show line numbers
+  lineNumbers: true, // Show line numbers
 });
 
 // Synchronize scrolling between CodeMirror and line numbers

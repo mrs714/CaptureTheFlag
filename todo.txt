@@ -80,3 +80,4 @@ MIQUEL:
         
     fer que el lloc es vegi bé amb telèfon
   
+  fer que el server envii un avis quan no estigui en marxa la simulació

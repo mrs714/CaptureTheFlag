@@ -10,7 +10,7 @@ body {
 
 .container {
   position: relative;
-  max-width: 35%;
+  max-width: 45%;
   margin: 0 auto;
   margin-top: 1%;
   padding: 4%;
@@ -22,12 +22,22 @@ body {
   transition: 1.5s ease;
 }
 
+@media (max-width: 1000px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
 .container_fast_transition {
   transition: 0s;
 }
 
 .container_slow_transition {
   transition: 2s ease;
+}
+
+.codeContainer {
+  min-height: 50%;
 }
 
 button {
