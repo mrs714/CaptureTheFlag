@@ -66,6 +66,8 @@ MIQUEL:
 
     nova classe: spawner
 
+    guardar frames i fer el video són ara funcions de la classe recorder o nosequé del fitxer drawing -- s'hauria de canviar el nom
+
 
 
     A fer: 
@@ -74,12 +76,9 @@ MIQUEL:
 
     FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
 
-    solucionar lo de la classe info
-
-    passar la part de guardar frames i fer el video a una classe nova de drawing
+    solucionar lo de la classe info -- solucionat? parlar amb pablo
 
     a spawn effects, mirar com cridar una funció de la classe amb nom variable
         
-
-
+    fer que el lloc es vegi bé amb telèfon
   
