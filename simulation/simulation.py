@@ -339,5 +339,5 @@ class Simulation:
             self.__entities["effects"].pop(id, None)
 
     def save_replay(self, start_time, number_of_simulations):
-       self.__clip_maker.save_replay(start_time, number_of_simulations)
+       self.__clip_maker.save_replay(start_time, number_of_simulations, self.__bot_scores)
 

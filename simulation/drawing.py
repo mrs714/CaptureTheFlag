@@ -230,7 +230,7 @@ class Clip():
                 self.__frames_number += 1
             self.__frames = []
 
-    def save_replay(self, start_time, number_of_simulations):
+    def save_replay(self, start_time, number_of_simulations, bot_scores):
         # We want to save the files apart so that they are available for download while they are being generated
         
         # Create video
@@ -254,7 +254,7 @@ class Clip():
         with open(SIM_INFO_PLACEHOLDER_PATH, "w") as f:
             time_elapsed = datetime.now() - start_time
             # IF THE FORMAT IS CHANGED, REPLAYS() IN APP.PY MUST BE CHANGED TOO
-            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {self.__bot_scores[0][0] if self.__bot_scores != [] else 'None'} Score: {self.__bot_scores[0][1] if self.__bot_scores != [] else 0} Number of simulations: {number_of_simulations}") 
+            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {bot_scores[0][0] if bot_scores != [] else 'None'} Score: {bot_scores[0][1] if bot_scores != [] else 0} Number of simulations: {number_of_simulations}") 
         self.__logger.debug("Simulation info file saved")
 
         # Move everything to the correct folder (overwrite if needed)
