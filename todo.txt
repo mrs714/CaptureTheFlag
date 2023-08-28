@@ -68,6 +68,7 @@ MIQUEL:
 
     guardar frames i fer el video són ara funcions de la classe recorder o nosequé del fitxer drawing -- s'hauria de canviar el nom
 
+    Quan entres amb un telèfon, la pantalla està sempre al 100%
 
 
     A fer: 
@@ -78,6 +79,5 @@ MIQUEL:
 
     solucionar lo de la classe info -- solucionat? parlar amb pablo
         
-    fer que el lloc es vegi bé amb telèfon
   
   fer que el server envii un avis quan no estigui en marxa la simulació
