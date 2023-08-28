@@ -63,10 +63,5 @@ class Spawner():
 
     def spawn_effects(self, origin_entity, type):
         sim_id = self.__get_id()
-        if type == "death_effect":
-            entity = origin_entity.death_effect(sim_id)
-            return sim_id, entity
-        if type == "drop_effect":
-            entity = origin_entity.drop_effect(sim_id)
-            return sim_id, entity
+        return sim_id, getattr(origin_entity, type)(sim_id)
         
