@@ -5,7 +5,7 @@ apt install pip
 apt install git
 apt install sqlite3
 apt install screen 
-apt install cpulimit (optional)
+apt install cpulimit (optional, if you don't want the server to use all the CPU on the simulation)
 
 # Clone the repo
 git clone "https://github.com/HalcoDraco/CompetitionBotUploader.git"
@@ -16,6 +16,7 @@ pip install pygame
 pip install moviepy
 pip install pysqlite
 pip install restrictedpython
+pip install pushbullet.py (optional, if you want to use the check_server.py file to get notifications on your phone when the server is down, you'll have to modify the file to add your API key)
 
 # Power up
 There are two files that need to be run. The first one is the app itself, with flask for the moment.
