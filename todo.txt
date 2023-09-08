@@ -70,6 +70,8 @@ MIQUEL:
 
     Quan entres amb un telèfon, la pantalla està sempre al 100%
 
+    El server envia un avís quan la simulació no està en marxa
+
 
     A fer: 
 
@@ -79,5 +81,4 @@ MIQUEL:
 
     solucionar lo de la classe info -- solucionat? parlar amb pablo
         
-  
-  fer que el server envii un avis quan no estigui en marxa la simulació
+    hauriem de donar CONSTS als usuaris
