@@ -84,6 +84,7 @@ else:
     game.actions.move(vector[0], vector[1])
   
 # Shoot to the closest enemy:
+vector = get_vector_to_closest_enemy()
 if vector is not None:
   # Shoot in the given direction
   game.actions.shoot(vector[0], vector[1])
