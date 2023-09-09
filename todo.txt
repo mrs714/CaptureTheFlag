@@ -72,6 +72,8 @@ MIQUEL:
 
     El server envia un avís quan la simulació no està en marxa
 
+    La simulació fa output a un log, del qual s'envien les últimes 50 línies quan deixa de funcionar, el checker s'engega i es tanca automàticament amb start/stop server
+
 
     A fer: 
 
