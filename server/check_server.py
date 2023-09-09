@@ -23,7 +23,7 @@ def send_pushbullet_notification(api_key, title, message):
     push = pb.push_note(title, message)
     print("Pushbullet notification sent successfully.")
 
-# Replace with your Pushbullet API key - this file won't be updated further
+# Replace with your Pushbullet API key
 pushbullet_api_key = "your_pushbullet_api_key"
 
 # Interval in seconds to check if the session is running
