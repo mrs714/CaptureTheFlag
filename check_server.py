@@ -29,12 +29,20 @@ pushbullet_api_key = "your_pushbullet_api_key"
 # Interval in seconds to check if the session is running
 check_interval = 60  # Change this to your desired interval
 
+log_path = "simulation.log"
 while True:
     if is_screen_session_running("simulation_screen"):
         print("The 'simulation_screen' session is running.")
+        # Delete the log file
+        open(log_path, 'w').close()
+
     else:
         print("The 'simulation_screen' session is not running. Sending Pushbullet notification...")
-        send_pushbullet_notification(pushbullet_api_key, "Session Not Running", "The 'simulation_screen' session is not running.")
+        # Get the log file contents
+        with open(log_path, "r") as f:
+            log_contents = f.read()
+        # Send a Pushbullet notification with the log file contents
+        send_pushbullet_notification(pushbullet_api_key, "Session Not Running", "The 'simulation_screen' session is not running." + "\n\n" + log_contents)
     
     # Wait for the specified interval before checking again
     time.sleep(check_interval)
