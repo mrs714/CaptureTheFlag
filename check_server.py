@@ -30,6 +30,8 @@ pushbullet_api_key = "your_pushbullet_api_key"
 check_interval = 60  # Change this to your desired interval
 
 log_path = "simulation.log"
+lines_to_read = 50
+
 while True:
     if is_screen_session_running("simulation_screen"):
         print("The 'simulation_screen' session is running.")
@@ -40,7 +42,7 @@ while True:
         print("The 'simulation_screen' session is not running. Sending Pushbullet notification...")
         # Get the log file contents
         with open(log_path, "r") as f:
-            log_contents = f.read()
+            log_contents = f.readlines()[-lines_to_read:] # Get the last 50 lines of the log file
         # Send a Pushbullet notification with the log file contents
         send_pushbullet_notification(pushbullet_api_key, "Session Not Running", "The 'simulation_screen' session is not running." + "\n\n" + log_contents)
     
