@@ -43,5 +43,5 @@ fi
 echo ""
 echo "Launching simulation."
 # Run the simulation_launch.py script
-screen -dmS simulation_screen bash -c 'python3 simulation_launch.py'
+screen -dmS simulation_screen bash -c 'python3 simulation_launch.py > simulation.log 2>&1'
 echo ""
