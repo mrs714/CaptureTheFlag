@@ -47,6 +47,6 @@ screen -dmS simulation_screen bash -c 'python3 simulation_launch.py > server/sim
 echo ""
 echo "Launching simulation checker."
 # Run the check_server.py script
-screen -dmS check_screen bash -c 'python3 check_server.py'
+screen -dmS check_screen bash -c 'python3 server/check_server.py'
 echo ""
 
