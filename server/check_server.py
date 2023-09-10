@@ -46,7 +46,7 @@ while True:
         with open(log_path, "r") as f:
             log_contents = f.readlines()[-lines_to_read:] # Get the last 50 lines of the log file
         # Send a Pushbullet notification with the log file contents
-        send_pushbullet_notification(pushbullet_api_key, "Session Not Running", "The 'simulation_screen' session is not running." + "\n\n" + log_contents)
+        send_pushbullet_notification(pushbullet_api_key, "Session Not Running", "The 'simulation_screen' session is not running." + "\n\nLog:\n\n" + str(log_contents))
 
         if restart_server_on_crash:
             try:
