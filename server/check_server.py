@@ -26,7 +26,7 @@ def is_screen_session_running(session_name):
         return False
 
 # Check if the "simulation_screen" session is running every x seconds
-check_interval = 2
+check_interval = 60
 
 # Function to send a Pushbullet notification
 def send_pushbullet_notification(api_key, title, message):
@@ -54,6 +54,8 @@ while True:
                 print(f"{restart_script_path} executed successfully.")
             except subprocess.CalledProcessError as e:
                 print(f"Error executing {restart_script_path}: {e}")
+
+        break
     
     # Wait for the specified interval before checking again
     time.sleep(check_interval)
