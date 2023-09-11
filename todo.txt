@@ -75,6 +75,8 @@ MIQUEL:
 
     A fer: 
 
+    make an effect for dash, melee, and supermelee
+
     restart_server llença el script, i fa els echo però no el bash
 
     limit cpu with cpulimit
