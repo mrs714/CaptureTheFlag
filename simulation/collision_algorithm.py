@@ -114,13 +114,14 @@ class CollisionAlgorithm():
                     bot.hit(tick)
                     bullets_to_remove.append(entity.id())
                     bullet_owner_id = entity.get_owner_id()
+                    bullet_owner_name = entities["bots"][bullet_owner_id].get_name() if bullet_owner_id in entities["bots"] else "unknown"
                     if entity.get_type() == "normal":
                         if (bot.receive_shield_damage(BULLET_DAMAGE)):
-                            logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), entities["bots"][entity.get_owner_id()].get_name()))
+                            logger.debug("Bot {} was killed by bullet from player {}".format(bot.get_name(), bullet_owner_name))
                             kill_bot(bot.id(), bots_to_remove, bullet_owner_id)
                     else: 
                         if (bot.receive_life_damage(MELEE_DAMAGE)):
-                            logger.debug("Bot {} was killed by a super bullet from player {}".format(bot.get_name(), entities["bots"][entity.get_owner_id()].get_name()))
+                            logger.debug("Bot {} was killed by a super bullet from player {}".format(bot.get_name(), bullet_owner_name))
                             kill_bot(bot.id(), bots_to_remove, bullet_owner_id)
                    
                 if type(entity) == Drop:
