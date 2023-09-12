@@ -76,7 +76,7 @@ class Simulation:
             self.__storage[bot["id"]] = {} # A dictionary for each player, to store the information they want
         
         self.__logger.info("Bots participating: " + str([bot.get_name() for bot in self.__entities["bots"].values()]))
-        self.__logger.info("Bots id's: " + str([bot.get_db_id() for bot in self.__entities["bots"].values()]))
+        self.__logger.info("Bots id's: " + str([bot.id() for bot in self.__entities["bots"].values()]))
         self.__logger.debug("Simulation prepared")
 
         self.__logger.debug("Running the simulation loop...")
@@ -121,8 +121,11 @@ class Simulation:
         # Give points to the killer
         points_to_give = math.ceil(self.__entities["bots"][bot_id].get_points() * POINTS_ON_DEATH)
         killer_bot = self.__entities["bots"].get(killer_bot_id, None)
+        killer_bot_name = killer_bot.get_name() if killer_bot else "Unkwnown"
+        killed_bot_name = self.__entities["bots"][bot_id].get_name()
         if killer_bot:
             self.__entities["bots"][killer_bot_id].add_points(points_to_give)
+        self.__logger.debug("Bot {} was killed by bullet from player {}".format(killed_bot_name, killer_bot_name))    
         bots_to_remove.append(bot_id)
 
     def __generate_actions(self, bot, bots_to_remove):
