@@ -8,7 +8,7 @@ apt install screen
 apt install cpulimit (optional, if you don't want the server to use all the CPU on the simulation)
 
 # Clone the repo
-git clone "https://github.com/HalcoDraco/CompetitionBotUploader.git"
+git clone "https://github.com/mrs714/CaptureTheFlag"
 
 # Python dependencies (all at once with: pip install --upgrade -r requirements.txt)
 pip install flask
