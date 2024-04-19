@@ -26,6 +26,9 @@ class Renderer:
         self.__draw_bullets()
         self.__draw_drops()
 
+        if CAPTURE_THE_FLAG:
+            self.__draw_flags()
+
         self.__draw_effects()
 
     def __random_color(self):
@@ -106,6 +109,12 @@ class Renderer:
             else:
                 pygame.draw.circle(self.__screen, self.__random_color(), bullet.pos(), SUPER_BULLET_RADIUS)
             draw_speed_lines(bullet, type)
+
+    def __draw_flags(self):
+        for flag in self.__entities["flags"].values():
+            # Drag first a pole and then a flag
+            pygame.draw.line(self.__screen, WHITE, (flag.x(), flag.y() + 40), (flag.x(), flag.y() + 2 * BOT_RADIUS), 2)
+            pygame.draw.polygon(self.__screen, (255,0,0), [(flag.x(), flag.y()), (flag.x() + 2 * BOT_RADIUS, flag.y() + BOT_RADIUS), (flag.x(), flag.y() + 2 * BOT_RADIUS)])
 
     def __draw_drops(self):
 

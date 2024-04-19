@@ -1,8 +1,9 @@
 from simulation.simulation_consts import *
 # Entities to spawn
-from simulation.bot import Bot
-from simulation.bullet import Bullet
-from simulation.drop import Drop
+from simulation.objects.bot import Bot
+from simulation.objects.bullet import Bullet
+from simulation.objects.drop import Drop
+from simulation.objects.flag import Flag
 
 import random as rnd
 
@@ -16,13 +17,13 @@ class Spawner():
         self.__id_counter += 1
         return self.__id_counter
     
-    def spawn_bot(self, bot, config):
+    def spawn_bot(self, bot, config, x, y):
         sim_id = self.__get_id()
         entity = Bot(sim_id, 
                 bot["id"], 
                 bot["username"], 
-                rnd.randint(100, MAP_WIDTH - 100), # At least 50 inside the play-zone
-                rnd.randint(100, MAP_HEIGHT - 100), 
+                x, # At least 50 inside the play-zone
+                y, 
                 bot["code"], 
                 config["health"], 
                 config["shield"], 
@@ -61,6 +62,10 @@ class Spawner():
             if len(entities["drops_points"]) < max((len(entities["bots"]) - 1), 1):
                 spawn("points")
 
+    def spawn_flag(self, x, y):
+        sim_id = self.__get_id()
+        return sim_id, Flag(sim_id, x, y)
+    
     def spawn_effects(self, origin_entity, type):
         sim_id = self.__get_id()
         return sim_id, getattr(origin_entity, type)(sim_id)

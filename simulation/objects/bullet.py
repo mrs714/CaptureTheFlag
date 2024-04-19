@@ -1,4 +1,4 @@
-from simulation.entity import Entity
+from simulation.main_class.entity import Entity
 from math import sqrt
 from simulation.simulation_consts import *
 from simulation.player_context.bullet_info import BulletInfo

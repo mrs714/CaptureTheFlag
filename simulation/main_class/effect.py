@@ -1,4 +1,4 @@
-from simulation.entity import Entity
+from simulation.main_class.entity import Entity
 from simulation.simulation_consts import *
 
 class Effect(Entity):
@@ -6,7 +6,7 @@ class Effect(Entity):
 
     def __init__(self, sim_id, x, y, type): # Type: "player_death", "drop_picked"
         super().__init__(sim_id, x, y)
-        self.__type = type # points, health, shield
+        self.__type = type
         self.__step = 0
         self.__to_remove = False
 

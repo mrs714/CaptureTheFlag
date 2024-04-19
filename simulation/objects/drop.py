@@ -1,5 +1,5 @@
-from simulation.entity import Entity
-from simulation.effect import Effect
+from simulation.main_class.entity import Entity
+from simulation.main_class.effect import Effect
 from simulation.simulation_consts import *
 from simulation.player_context.drop_info import DropInfo
 

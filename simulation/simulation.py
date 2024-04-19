@@ -1,12 +1,12 @@
 from simulation.simulation_consts import * #import all the constants
-from simulation.bot import Bot
-from simulation.bullet import Bullet
-from simulation.drop import Drop
+from simulation.objects.bot import Bot
+from simulation.objects.bullet import Bullet
+from simulation.objects.drop import Drop
 
-from simulation.collision_algorithm import CollisionAlgorithm
+from simulation.algorithms.collision_algorithm import CollisionAlgorithm
 from simulation.player_context.game import Game #import Game (for giving information to the bot code)
-from simulation.drawing import Renderer, Clip
-from simulation.spawn import Spawner
+from simulation.algorithms.drawing import Renderer, Clip
+from simulation.algorithms.spawn import Spawner
 
 import pygame
 from datetime import datetime #import datetime (to get the current date and time)
@@ -53,7 +53,8 @@ class Simulation:
             "drops_points": {},
             "drops_health": {},
             "drops_shield": {},
-            "effects": {}
+            "effects": {},
+            "flags": {}
         }
 
         self.__storage = {} # Storage for the players, associated to the db id
@@ -69,11 +70,21 @@ class Simulation:
         self.__logger.debug("Preparing to run the simulation...")
         list_of_bots = db.get_bots_to_execute()
 
+        num_bots = len(list_of_bots)
+        bot_angles = [2 * math.pi * i / num_bots for i in range(num_bots)]
+        polar_radius = min(MAP_WIDTH, MAP_HEIGHT) / 3
+        bot_coords = [(MAP_WIDTH / 2 + polar_radius * math.cos(angle), MAP_HEIGHT / 2 + polar_radius * math.sin(angle)) for angle in bot_angles]
+
         for bot in list_of_bots:
             config = json.loads(bot["config"])
-            id, entity = self.__spawner.spawn_bot(bot, config)
+            x, y = bot_coords.pop(0)
+            id, entity = self.__spawner.spawn_bot(bot, config, x, y)
             self.__entities["bots"][id] = entity
             self.__storage[bot["id"]] = {} # A dictionary for each player, to store the information they want
+
+        if CAPTURE_THE_FLAG:
+            id, entity = self.__spawner.spawn_flag(MAP_WIDTH / 2, MAP_HEIGHT / 2)
+            self.__entities["flags"][id] = entity
         
         self.__logger.info("Bots participating: " + str([bot.get_name() for bot in self.__entities["bots"].values()]))
         self.__logger.info("Bots id's: " + str([bot.id() for bot in self.__entities["bots"].values()]))

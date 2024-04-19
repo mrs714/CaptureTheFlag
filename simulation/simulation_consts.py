@@ -65,4 +65,7 @@ POINTS_ON_DEATH = 50 / 100 # % of points given to the killer player
 COLLISIONS_CELL_NUMBER = 10 # >= 3, cells per row/column
 # Ceil is used to make sure that the grid is big enough to contain the whole map/overlaps rather than being too small.
 # It doesn't have much importance, but the best results will be obtained using a grid with a number of cells that is a multiple of the map size.
-COLLISION_SQUARE_SIZE = (math.ceil(MAP_WIDTH/COLLISIONS_CELL_NUMBER), math.ceil(MAP_HEIGHT/COLLISIONS_CELL_NUMBER))       
+COLLISION_SQUARE_SIZE = (math.ceil(MAP_WIDTH/COLLISIONS_CELL_NUMBER), math.ceil(MAP_HEIGHT/COLLISIONS_CELL_NUMBER))     
+
+# Type of game:
+CAPTURE_THE_FLAG = True

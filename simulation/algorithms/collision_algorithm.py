@@ -1,8 +1,8 @@
 from simulation.simulation_consts import *
 # Entities to spawn
-from simulation.bot import Bot
-from simulation.bullet import Bullet
-from simulation.drop import Drop
+from simulation.objects.bot import Bot
+from simulation.objects.bullet import Bullet
+from simulation.objects.drop import Drop
 
 class CollisionAlgorithm():
     

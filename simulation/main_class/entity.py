@@ -1,10 +1,11 @@
 from simulation.simulation_consts import MAP_PADDING
 
 class Entity:
-    def __init__(self, sim_id, x, y):
+    def __init__(self, sim_id, x, y, layer=0):
         self.__sim_id = sim_id
         self.__x__ = x
         self.__y__ = y
+        self.__layer__ = layer
     
     def id(self):
         return self.__sim_id
