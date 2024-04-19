@@ -3,13 +3,7 @@ from simulation.effect import Effect
 from math import sqrt
 from simulation.simulation_consts import *
 from simulation.player_context.bot_info import BotInfo
-
-def clamp(value, min, max): # Used throughout the code
-    if value < min:
-        return min
-    elif value > max:
-        return max
-    return value
+from numpy import clip
 
 class Bot(Entity):
     def __init__(self, sim_id, db_id, name, x, y, code, health, shield, attack):
@@ -53,11 +47,11 @@ class Bot(Entity):
         return False
     
     def receive_life_damage(self, damage): # Returns wether the player is dead
-        self.__life = clamp(self.__life - damage, 0, self.__health)
+        self.__life = clip(self.__life - damage, 0, self.__health)
         return self.__life == 0
     
     def recieve_life(self, life_points):
-        self.__life = clamp(self.__life + life_points, 0, self.__health)
+        self.__life = clip(self.__life + life_points, 0, self.__health)
     
     # To use on all attacks that might deal damage to shield, no matter if the shield is up or not
     # Returns wether the player is dead
@@ -81,7 +75,7 @@ class Bot(Entity):
         if self.__defense == 0:
             self.__defense == 1
         else:
-            self.__defense = clamp(self.__defense + shield_points, 0, self.__shield)
+            self.__defense = clip(self.__defense + shield_points, 0, self.__shield)
     
     def get_drop(self, type):
         if type == "health":
