@@ -26,6 +26,9 @@ class Bot(Entity):
     def carry_flag(self, flag):
         self.__carrying_flag = flag
 
+    def carrying_flag(self):
+        return self.__carrying_flag
+
     def drop_flag(self):
         flag = self.__carrying_flag
         self.__carrying_flag = None
@@ -203,4 +206,4 @@ class Bot(Entity):
         self.__state["last_hit"] = ticks
 
     def get_info(self):
-        return BotInfo(self.id(), self.__x__, self.__y__, self.__health, self.__shield, self.__attack)
+        return BotInfo(self.id(), self.__x__, self.__y__, self.__health, self.__shield, self.__attack, self.__carrying_flag.id() if self.__carrying_flag != None else None)
