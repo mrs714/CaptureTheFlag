@@ -21,6 +21,15 @@ class Bot(Entity):
         self.__last_actions = {"shoot": 0, "move": 0, "melee": 0, "dash": 0, "super_shot": 0, "super_melee": 0} #Last time the bot took an action
         self.__state = {"last_hit": -1} # Dictionary with the state of the bot, shooting, being shot, etc
         self.__points = 0 # Points earned by the bot
+        self.__carrying_flag = None # Flag entity that the bot is carrying, if any
+
+    def carry_flag(self, flag):
+        self.__carrying_flag = flag
+
+    def drop_flag(self):
+        flag = self.__carrying_flag
+        self.__carrying_flag = None
+        return flag
 
     def shoot(self, actual_tick):
         if actual_tick - self.__last_actions["shoot"] >= BOT_SHOOT_COOLDOWN:
