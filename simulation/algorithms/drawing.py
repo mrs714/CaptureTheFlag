@@ -22,6 +22,9 @@ class Renderer:
 
         self.__draw_map()
 
+        if CAPTURE_THE_FLAG:
+            self.__draw_zones()
+
         self.__draw_bots()
         self.__draw_bullets()
         self.__draw_drops()
@@ -74,6 +77,13 @@ class Renderer:
                 self.__screen.blit(life, (bot.x() - BOT_RADIUS, bot.y() + 4 * BOT_RADIUS))
                 self.__screen.blit(shield, (bot.x() - BOT_RADIUS, bot.y() + 5 * BOT_RADIUS))
 
+    def __draw_zones(self):
+        for zone in self.__entities["zones"].values():
+            pygame.draw.circle(self.__screen, LIGHT_CYAN, zone.pos(), ZONE_RADIUS)
+            # Draw name of the zone's owner
+            owner = self.__text_font.render(str(zone.get_owner().get_name()), True, BLACK)
+            self.__screen.blit(owner, (zone.x() - ZONE_RADIUS, zone.y()))
+
     def __draw_bullets(self):
 
         def draw_speed_lines(bullet, type):
@@ -114,7 +124,7 @@ class Renderer:
         for flag in self.__entities["flags"].values():
             # Drag first a pole and then a flag
             pygame.draw.line(self.__screen, WHITE, (flag.x(), flag.y() + 40), (flag.x(), flag.y() + 2 * BOT_RADIUS), 2)
-            pygame.draw.polygon(self.__screen, (255,0,0), [(flag.x(), flag.y()), (flag.x() + 2 * BOT_RADIUS, flag.y() + BOT_RADIUS), (flag.x(), flag.y() + 2 * BOT_RADIUS)])
+            pygame.draw.polygon(self.__screen, RED, [(flag.x(), flag.y()), (flag.x() + 2 * BOT_RADIUS, flag.y() + BOT_RADIUS), (flag.x(), flag.y() + 2 * BOT_RADIUS)])
 
     def __draw_drops(self):
 

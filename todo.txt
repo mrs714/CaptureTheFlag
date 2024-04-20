@@ -86,3 +86,5 @@ MIQUEL:
     solucionar lo de la classe info -- solucionat? parlar amb pablo
         
     hauriem de donar CONSTS als usuaris
+
+    ara els bots tenen una flag de si estan portant la bandera, i la zona de cada jugador de si conté la bandera, posar això a la web

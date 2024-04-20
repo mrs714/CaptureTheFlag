@@ -4,6 +4,7 @@ from simulation.objects.bot import Bot
 from simulation.objects.bullet import Bullet
 from simulation.objects.drop import Drop
 from simulation.objects.flag import Flag
+from simulation.objects.zone import Zone
 
 import random as rnd
 
@@ -29,6 +30,10 @@ class Spawner():
                 config["shield"], 
                 config["attack"])
         return sim_id, entity
+    
+    def spawn_zone(self, x, y, bot):
+        sim_id = self.__get_id()
+        return sim_id, Zone(sim_id, x, y, bot)
     
     def spawn_bullet(self, bot, dx, dy, type):
         sim_id = self.__get_id()

@@ -54,7 +54,8 @@ class Simulation:
             "drops_health": {},
             "drops_shield": {},
             "effects": {},
-            "flags": {}
+            "flags": {},
+            "zones": {}
         }
 
         self.__storage = {} # Storage for the players, associated to the db id
@@ -81,6 +82,10 @@ class Simulation:
             id, entity = self.__spawner.spawn_bot(bot, config, x, y)
             self.__entities["bots"][id] = entity
             self.__storage[bot["id"]] = {} # A dictionary for each player, to store the information they want
+
+            if CAPTURE_THE_FLAG:
+                id, entity = self.__spawner.spawn_zone(x, y, self.__entities["bots"][id])
+                self.__entities["zones"][id] = entity
 
         if CAPTURE_THE_FLAG:
             id, entity = self.__spawner.spawn_flag(MAP_WIDTH / 2, MAP_HEIGHT / 2)
