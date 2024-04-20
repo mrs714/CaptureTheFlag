@@ -326,7 +326,8 @@ class Simulation:
         self.__spawner.spawn_drops(self.__entities, self.__current_tick)
         
         # Check for collisions
-        collisions = self.__collision_handler.detect_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["flags"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"])
+        collisions = self.__collision_handler.detect_collisions(self.__entities["bots"], self.__entities["bullets"], self.__entities["flags"], self.__entities["drops_points"] | self.__entities["drops_health"] | self.__entities["drops_shield"], self.__entities["zones"])
+
         self.__collision_handler.handle_collisions(collisions, bots_to_remove, bullets_to_remove, drops_to_remove, self.__entities, self.kill_bot, self.__current_tick, self.__logger)
 
         # Remove the bots, bullets and drops that have to be removed

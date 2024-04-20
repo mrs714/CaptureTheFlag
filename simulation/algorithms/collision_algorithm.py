@@ -4,6 +4,7 @@ from simulation.objects.bot import Bot
 from simulation.objects.bullet import Bullet
 from simulation.objects.flag import Flag
 from simulation.objects.drop import Drop
+from simulation.objects.zone import Zone
 
 class CollisionAlgorithm():
     
@@ -20,13 +21,14 @@ class CollisionAlgorithm():
             self.bullets = {}
             self.flags = {}
             self.drops = {}
+            self.zones = {}
 
     def __init__(self):
         self.__cells = [[self.__Cell(i, j) for j in range(COLLISIONS_CELL_NUMBER)] for i in range(COLLISIONS_CELL_NUMBER)] # n*n cells, n = COLLISIONS_CELL_NUMBER
         # self.__cells[2][1] would be cell at the third row, second column
 
     # Function used to populate the cells dictionaries
-    def __populate_cells(self, bots, bullets, flags, drops):
+    def __populate_cells(self, bots, bullets, flags, drops, zones):
         self.__clear_cells()
         for bot in bots.values():
             self.__get_cell(bot.relative_x(), bot.relative_y()).bots[bot.id()] = bot
@@ -36,6 +38,8 @@ class CollisionAlgorithm():
             self.__get_cell(flag.relative_x(), flag.relative_y()).flags[flag.id()] = flag
         for drop in drops.values():
             self.__get_cell(drop.relative_x(), drop.relative_y()).drops[drop.id()] = drop
+        for zone in zones.values():
+            self.__get_cell(zone.relative_x(), zone.relative_y()).zones[zone.id()] = zone
 
     # Function used to clear cells
     def __clear_cells(self):
@@ -45,6 +49,7 @@ class CollisionAlgorithm():
                 cell.bullets.clear()
                 cell.flags.clear()
                 cell.drops.clear()
+                cell.zones.clear()
 
     # Translates coordinates to a cell position, returns the cell
     def __get_cell(self, x, y):
@@ -53,7 +58,7 @@ class CollisionAlgorithm():
         return self.__cells[math.ceil(y/height)-1][math.ceil(x/width)-1]
 
     # Checks for collisions between bots and other entities, saves them in a list of tuples (bot, entity)
-    def __detect_collisions(self, bots, bullets, flags, drops):
+    def __detect_collisions(self, bots, bullets, flags, drops, zones):
 
         collisions = []
         
@@ -65,6 +70,9 @@ class CollisionAlgorithm():
         
         def __bot_is_colliding_drop(bot, drop):
             return (bot.x() - drop.x()) ** 2 + (bot.y() - drop.y()) ** 2 <= (BOT_RADIUS + DROP_RADIUS) ** 2
+        
+        def __bot_is_colliding_zone(bot, zone):
+            return (bot.x() - zone.x()) ** 2 + (bot.y() - zone.y()) ** 2 <= (BOT_RADIUS + ZONE_RADIUS) ** 2
 
         for bot in bots.values():
             for bullet in bullets.values():
@@ -79,13 +87,17 @@ class CollisionAlgorithm():
                 if __bot_is_colliding_drop(bot, drop):
                     collisions.append((bot, drop))
 
+            for zone in zones.values():
+                if __bot_is_colliding_zone(bot, zone):
+                    collisions.append((bot, zone))
+
         return collisions
 
     # Function called from the main simulation loop.
     # It updates the cells and checks for collisions.
-    def detect_collisions(self, bots, bullets, flags, drops):
+    def detect_collisions(self, bots, bullets, flags, drops, zones):
         # First of all, we check the cell of each entity and update the cells dictionaries
-        self.__populate_cells(bots, bullets, flags, drops)
+        self.__populate_cells(bots, bullets, flags, drops, zones)
 
         # Store the collisions detected in each cell:
         collisions = []
@@ -97,6 +109,7 @@ class CollisionAlgorithm():
                 bullets = cell.bullets
                 flags = cell.flags
                 drops = cell.drops
+                zones = cell.zones
 
                 # Get the neighbouring cells if the neighbour cell exists
                 neighbouring_cells = []
@@ -112,9 +125,10 @@ class CollisionAlgorithm():
                     bullets = bullets | neighbouring_cell.bullets
                     flags = flags | neighbouring_cell.flags
                     drops = drops | neighbouring_cell.drops 
+                    zones = zones | neighbouring_cell.zones
 
                 # Finally we check for collisions between the bot and the other entities, and save them
-                collisions += self.__detect_collisions(bots, bullets, flags, drops)
+                collisions += self.__detect_collisions(bots, bullets, flags, drops, zones)
 
         # Merge all collisions that are the same
         collisions = list(set(collisions))
@@ -141,6 +155,17 @@ class CollisionAlgorithm():
                         entity.set_holder(bot)
                     else:
                         logger.error("Bot " + str(bot.id()) + " tried to pick up a flag while carrying one")
+
+                if type(entity) == Zone:
+                    if entity.get_owner() != bot and entity.get_contains_flag() is not None:
+                        entity.set_contains_flag(None)
+                        bot.carry_flag(entity.get_contains_flag())
+                        entity.get_contains_flag().set_holder(bot)
+                        logger.info("Bot " + str(bot.id()) + " picked up a flag from zone " + str(entity.id()))
+                    elif entity.get_owner() == bot and bot.carrying_flag() is not None:
+                        entity.set_contains_flag(bot.drop_flag())
+                        entity.get_contains_flag().set_holder(None)
+                        logger.info("Bot " + str(bot.id()) + " dropped a flag on zone " + str(entity.id()))
                    
                 if type(entity) == Drop:
                     drops_to_remove.append((entity.id(), entity.type()))
