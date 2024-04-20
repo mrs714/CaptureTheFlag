@@ -168,6 +168,7 @@ class Simulation:
                         continue
                     if self.__entities["bots"][other_bot_id].receive_life_damage(MELEE_DAMAGE): # True if dead
                         self.__logger.debug("Bot {} was killed by melee from player {}".format(self.__entities["bots"][other_bot_id].get_name(), bot.get_name()))
+                        bot.drop_flag()
                         self.kill_bot(other_bot_id, bots_to_remove, bot.id())
 
         def super_melee():

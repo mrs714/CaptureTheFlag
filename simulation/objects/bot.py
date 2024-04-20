@@ -25,12 +25,14 @@ class Bot(Entity):
 
     def carry_flag(self, flag):
         self.__carrying_flag = flag
+        flag.set_holder(self)
 
     def carrying_flag(self):
         return self.__carrying_flag
 
     def drop_flag(self):
         flag = self.__carrying_flag
+        flag.set_holder(None)
         self.__carrying_flag = None
         return flag
 

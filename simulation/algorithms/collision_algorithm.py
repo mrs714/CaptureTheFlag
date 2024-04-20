@@ -152,7 +152,6 @@ class CollisionAlgorithm():
                 if type(entity) == Flag:
                     if bot.carrying_flag() == None:
                         bot.carry_flag(entity)
-                        entity.set_holder(bot)
                     else:
                         logger.error("Bot " + str(bot.id()) + " tried to pick up a flag while carrying one")
 
@@ -160,11 +159,9 @@ class CollisionAlgorithm():
                     if entity.get_owner() != bot and entity.get_contains_flag() is not None:
                         entity.set_contains_flag(None)
                         bot.carry_flag(entity.get_contains_flag())
-                        entity.get_contains_flag().set_holder(bot)
                         logger.info("Bot " + str(bot.id()) + " picked up a flag from zone " + str(entity.id()))
                     elif entity.get_owner() == bot and bot.carrying_flag() is not None:
                         entity.set_contains_flag(bot.drop_flag())
-                        entity.get_contains_flag().set_holder(None)
                         logger.info("Bot " + str(bot.id()) + " dropped a flag on zone " + str(entity.id()))
                    
                 if type(entity) == Drop:
