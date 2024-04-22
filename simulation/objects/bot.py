@@ -32,8 +32,9 @@ class Bot(Entity):
 
     def drop_flag(self):
         flag = self.__carrying_flag
-        flag.set_holder(None)
-        self.__carrying_flag = None
+        if flag is not None:
+            flag.set_holder(None)
+            self.__carrying_flag = None
         return flag
 
     def shoot(self, actual_tick):

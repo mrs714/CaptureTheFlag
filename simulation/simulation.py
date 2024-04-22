@@ -144,7 +144,7 @@ class Simulation:
         self.__logger.debug("Bot {} was killed by bullet from player {}".format(killed_bot_name, killer_bot_name))    
         bots_to_remove.append(bot_id)
 
-    def __generate_actions(self, bot, bots_to_remove):
+    def __generate_actions(self, bot: Bot, bots_to_remove):
         def move(dx, dy):
             bot.move(dx, dy, self.__current_tick)
 
