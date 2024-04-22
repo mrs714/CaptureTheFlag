@@ -3,10 +3,12 @@ MAP_SIZE = 500 # Check the files, we'll give CONSTS in the future
 ENEMY_CLOSE_RANGE = 100
 LOW_HEALTH = 75
 
+nearest_object = game.functions.nearest_object
+
 # Functions
 def search_drop(type):
   # Get the closest drop id of type "type"
-  closest_drop_id = game.functions.nearest_object(type)
+  closest_drop_id = nearest_object(type)
   #game.functions.print("Closest drop id: " + str(closest_drop_id))
 
   if closest_drop_id != None:
