@@ -6,6 +6,8 @@ from simulation.objects.flag import Flag
 from simulation.objects.drop import Drop
 from simulation.objects.zone import Zone
 
+import numpy as np
+
 class CollisionAlgorithm():
     
     # The map is divided in a grid of cells.
@@ -24,38 +26,41 @@ class CollisionAlgorithm():
             self.zones = {}
 
     def __init__(self):
-        self.__cells = [[self.__Cell(i, j) for j in range(COLLISIONS_CELL_NUMBER)] for i in range(COLLISIONS_CELL_NUMBER)] # n*n cells, n = COLLISIONS_CELL_NUMBER
-        # self.__cells[2][1] would be cell at the third row, second column
+        self.__cells = np.empty((COLLISIONS_CELL_NUMBER, COLLISIONS_CELL_NUMBER), dtype=object)
+
+        for i in range(COLLISIONS_CELL_NUMBER):
+            for j in range(COLLISIONS_CELL_NUMBER):
+                self.__cells[i, j] = self.__Cell(i, j)
+
+        self.collision_size_bullet = BOT_RADIUS + BULLET_RADIUS
+        self.collision_size_flag = BOT_RADIUS + FLAG_RADIUS
+        self.collision_size_drop = BOT_RADIUS + DROP_RADIUS
+        self.collision_size_zone = BOT_RADIUS + ZONE_RADIUS
 
     # Function used to populate the cells dictionaries
     def __populate_cells(self, bots, bullets, flags, drops, zones):
         self.__clear_cells()
-        for bot in bots.values():
-            self.__get_cell(bot.relative_x(), bot.relative_y()).bots[bot.id()] = bot
-        for bullet in bullets.values():
-            self.__get_cell(bullet.relative_x(), bullet.relative_y()).bullets[bullet.id()] = bullet
-        for flag in flags.values():
-            self.__get_cell(flag.relative_x(), flag.relative_y()).flags[flag.id()] = flag
-        for drop in drops.values():
-            self.__get_cell(drop.relative_x(), drop.relative_y()).drops[drop.id()] = drop
-        for zone in zones.values():
-            self.__get_cell(zone.relative_x(), zone.relative_y()).zones[zone.id()] = zone
+        for entity_type, entities in zip(['bots', 'bullets', 'flags', 'drops', 'zones'], [bots, bullets, flags, drops, zones]):
+            for entity in entities.values():
+                cell = self.__get_cell(entity.relative_x(), entity.relative_y())
+                getattr(cell, entity_type)[entity.id()] = entity
 
     # Function used to clear cells
     def __clear_cells(self):
-        for row in self.__cells:
-            for cell in row:
-                cell.bots.clear()
-                cell.bullets.clear()
-                cell.flags.clear()
-                cell.drops.clear()
-                cell.zones.clear()
+        for cell in np.ravel(self.__cells):
+            cell.bots.clear()
+            cell.bullets.clear()
+            cell.flags.clear()
+            cell.drops.clear()
+            cell.zones.clear()
 
     # Translates coordinates to a cell position, returns the cell
     def __get_cell(self, x, y):
         width = COLLISION_SQUARE_SIZE[0]
         height = COLLISION_SQUARE_SIZE[1]
-        return self.__cells[math.ceil(y/height)-1][math.ceil(x/width)-1]
+        row = np.clip(np.ceil(y / height) - 1, 0, COLLISIONS_CELL_NUMBER - 1).astype(int)
+        col = np.clip(np.ceil(x / width) - 1, 0, COLLISIONS_CELL_NUMBER - 1).astype(int)
+        return self.__cells[row, col]
 
     # Checks for collisions between bots and other entities, saves them in a list of tuples (bot, entity)
     def __detect_collisions(self, bots, bullets, flags, drops, zones):
@@ -63,16 +68,16 @@ class CollisionAlgorithm():
         collisions = []
         
         def __bot_is_colliding_bullet(bot, bullet):
-           return (bot.x() - bullet.x()) ** 2 + (bot.y() - bullet.y()) ** 2 <= (BOT_RADIUS + BULLET_RADIUS) ** 2 if bot.id() != bullet.get_owner_id() else False
+           return (bot.x() - bullet.x()) ** 2 + (bot.y() - bullet.y()) ** 2 <= self.collision_size_bullet ** 2 if bot.id() != bullet.get_owner_id() else False
         
         def __bot_is_colliding_flag(bot, flag):
-            return (bot.x() - flag.x()) ** 2 + (bot.y() - flag.y()) ** 2 <= (BOT_RADIUS + FLAG_RADIUS) ** 2 if flag.get_holder() == None else False
+            return (bot.x() - flag.x()) ** 2 + (bot.y() - flag.y()) ** 2 <= self.collision_size_flag ** 2 if flag.get_holder() == None else False
         
         def __bot_is_colliding_drop(bot, drop):
-            return (bot.x() - drop.x()) ** 2 + (bot.y() - drop.y()) ** 2 <= (BOT_RADIUS + DROP_RADIUS) ** 2
+            return (bot.x() - drop.x()) ** 2 + (bot.y() - drop.y()) ** 2 <= self.collision_size_drop ** 2
         
         def __bot_is_colliding_zone(bot, zone):
-            return (bot.x() - zone.x()) ** 2 + (bot.y() - zone.y()) ** 2 <= (BOT_RADIUS + ZONE_RADIUS) ** 2
+            return (bot.x() - zone.x()) ** 2 + (bot.y() - zone.y()) ** 2 <= self.collision_size_zone ** 2
 
         for bot in bots.values():
             for bullet in bullets.values():

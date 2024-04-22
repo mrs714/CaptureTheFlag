@@ -3,7 +3,6 @@ MAP_SIZE = 500 # Check the files, we'll give CONSTS in the future
 ENEMY_CLOSE_RANGE = 100
 LOW_HEALTH = 75
 
-
 # Setup game access
 nearest_object = game.functions.nearest_object
 get_attribute = game.functions.get_attribute
@@ -11,13 +10,12 @@ vector_to = game.functions.vector_to
 vector_length = game.functions.vector_length
 get_objects_in_range = game.functions.get_objects_in_range
 get_bots_in_range_melee = game.functions.get_bots_in_range_melee
-print = game.functions.print
+print_info = game.functions.print
 move = game.actions.move
 shoot = game.actions.shoot
 super_shot = game.actions.super_shot
 melee = game.actions.melee
 super_melee = game.actions.super_melee
-
 
 # Functions
 def search_drop(type): # Get vector to closest drop of type "type"
@@ -104,12 +102,12 @@ if not flag_in_my_zone():
         if vector is not None:
             move(vector[0], vector[1])
     else:
-        print("Carrying flag")
+        print_info("Carrying flag")
         vector = get_vector_my_zone()
         if vector is not None:
             move(vector[0], vector[1])
         else:
-            print("No vector to my zone")
+            print_info("No vector to my zone")
     
 else: # If the flag is in my zone, go kill the enemies
     # Check for any enemy too close, and shoot at the closest either way
