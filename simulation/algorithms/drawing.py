@@ -218,68 +218,43 @@ class Clip():
 
     def __init__(self, screen, logger):
         self.__screen = screen
-        self.__frames_number = 100000 # Needed for frame's names to be ordered correctly
-        self.__frames = []
         self.__logger = logger
+        self.__frames_number = 0  # Reset frames number
         self.__current_tick = 0
 
     def save_frame(self, current_tick):
         self.__current_tick = current_tick
 
-        # Take a frame, rotate it and flip it, and append it to the list of frames
+        # Take a frame, rotate it and flip it, and save it directly to disk
         frame = pygame.surfarray.array3d(self.__screen)
-        
-        #frame = np.rot90(frame, k=-1)
-        #frame = np.fliplr(frame)
         frame = pygame.surfarray.make_surface(frame)
 
-        self.__frames.append(frame)
+        # Save frame to disk
+        frame_path = os.path.join(SIM_FRAMES_PATH, f"{self.__frames_number}.png")
+        pygame.image.save(frame, frame_path)
+        self.__frames_number += 1
 
-        # This eats memory, as *every* frame is stored at once on RAM. To solve this:
-        if len(self.__frames) > math.ceil(MAX_FRAMES_ON_RAM) or self.__current_tick == DURATION - 1:
-            
-            # Create the folders if they don't exist
-            if not os.path.exists(SIM_FRAMES_PATH):
-                if not os.path.exists(SIM_FOLDER):
-                    os.makedirs(SIM_FOLDER, exist_ok=True)
-                os.makedirs(SIM_FRAMES_PATH, exist_ok=True)
-            
-            for frame in self.__frames:
-                pygame.image.save(frame, os.path.join(SIM_FRAMES_PATH, str(self.__frames_number) + ".png"))
-                self.__frames_number += 1
-            self.__frames = []
+        # Check if we need to save frames to video due to memory constraints
+        if (self.__frames_number % MAX_FRAMES_ON_RAM == 0) or (self.__current_tick == DURATION - 1):
+            self.__save_to_video()
 
-    def save_replay(self, start_time, number_of_simulations, bot_scores):
-        # We want to save the files apart so that they are available for download while they are being generated
-        
-        # Create video
+    def __save_to_video(self):
         self.__logger.debug("Saving the mp4 file...")
         video_clip = ImageSequenceClip(SIM_FRAMES_PATH, fps=FPS)
-
-        # Prepare directories
-        if not os.path.exists(SIM_PLACEHOLDER_FOLDER):
-            os.makedirs(SIM_PLACEHOLDER_FOLDER, exist_ok=True)
-
-        # Save the video to the placeholder folder
         video_clip.write_videofile(SIM_VIDEO_PLACEHOLDER_PATH, fps=FPS)
         self.__logger.debug("Mp4 file saved")
-        
+
+    def save_replay(self, start_time, number_of_simulations, bot_scores):
         # Save the simulation info file
         self.__logger.debug("Saving the simulation info file...")
-        
-        # Prepare directory
-
-        # Save the file to the placeholder folder
+        time_elapsed = datetime.now() - start_time
         with open(SIM_INFO_PLACEHOLDER_PATH, "w") as f:
-            time_elapsed = datetime.now() - start_time
-            # IF THE FORMAT IS CHANGED, REPLAYS() IN APP.PY MUST BE CHANGED TOO
-            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {bot_scores[0][0] if bot_scores != [] else 'None'} Score: {bot_scores[0][1] if bot_scores != [] else 0} Number of simulations: {number_of_simulations}") 
+            f.write(f"Last simulation: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')} Duration: {str(time_elapsed)} Winner: {bot_scores[0][0] if bot_scores else 'None'} Score: {bot_scores[0][1] if bot_scores else 0} Number of simulations: {number_of_simulations}") 
         self.__logger.debug("Simulation info file saved")
 
-        # Move everything to the correct folder (overwrite if needed)
+        # Move files to correct folders
         shutil.move(SIM_VIDEO_PLACEHOLDER_PATH, SIM_MP4_NAME)
         shutil.move(SIM_INFO_PLACEHOLDER_PATH, SIM_INFO_NAME)
 
-        # Wrap everything up
+        # Clean up frames folder
         shutil.rmtree(SIM_FRAMES_PATH)
-        shutil.rmtree(SIM_PLACEHOLDER_FOLDER)
