@@ -48,19 +48,20 @@ def get_vector_my_zone():
     return None
 
 def flag_in_my_zone():
-    # Get all the zones
-    zones_ids = game.functions.get_objects_in_range("zones", 1000) # Default: type = "bot", MAP_SIZE / 10
-    #game.functions.print("Closest zone id: " + str(closest_zone_id))
+    my_id = game.functions.get_attribute(None, "me", "id")
 
-    # Check if zone bot_id is the same as my bot_id
-    if zones_ids is not None:
-        my_id = game.functions.get_attribute(None, "me", "id")
-        for zone_id in zones_ids:
-            if game.functions.get_attribute(zone_id, "zones", "owner_id") == my_id:
+    # Get flag
+    flag_id = game.functions.get_objects_in_range("flags", 1000)
+    
+    # Check if the flag is in a zone
+    if flag_id is not None:
+        flag_zone = game.functions.get_attribute(flag_id, "flags", "in_zone")
+        if flag_zone is not None:
+            zone_owner = game.functions.get_attribute(flag_zone, "zones", "owner_id")
+            if zone_owner == my_id:
+                return True
+    return False
 
-                # Check if there is a flag in the zone
-                if game.functions.get_attribute(zone_id, "zones", "contains_flag") is not None:
-                    return True
            
 # Check the state of the bot - shield and health
 if game.functions.get_attribute(None, "me", "health") < LOW_HEALTH:

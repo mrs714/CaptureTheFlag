@@ -22,9 +22,13 @@ class Flag(Entity):
 
     def move(self):   
         # If the flag is held by a bot, move with it
+        assert not (self.__held_by and self.__in_zone)
         if self.__held_by:
             self.__x__ = self.__held_by.x()
             self.__y__ = self.__held_by.y()
+        if self.__in_zone:
+            self.__x__ = self.__in_zone.x()
+            self.__y__ = self.__in_zone.y()
     
     def get_info(self):
         return FlagInfo(self.id(), self.x(), self.y(), self.__held_by.id() if self.__held_by else None, self.__in_zone.id() if self.__in_zone else None)
