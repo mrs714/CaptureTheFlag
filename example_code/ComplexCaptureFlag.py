@@ -43,7 +43,7 @@ def get_vector_my_zone():
         game.functions.print("My id: " + str(my_id))
         for zone_id in zones_ids:
             zone_owner = game.functions.get_attribute(zone_id, "zones", "owner_id")
-            game.functions.print("Zone owner: " + str(zone_owner))
+            game.functions.print("Zone owner: " + zone_owner)
             if zone_owner == my_id:
                 x = game.functions.get_attribute(zone_id, "zones", "x")
                 y = game.functions.get_attribute(zone_id, "zones", "y")
