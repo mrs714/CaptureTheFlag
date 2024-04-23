@@ -6,12 +6,19 @@ class Flag(Entity):
     def __init__(self, sim_id, x, y):
         super().__init__(sim_id, x, y)
         self.__held_by = None # Bot entity that holds the flag
+        self.__in_zone = None # Zone entity that contains the flag
     
     def get_holder(self):
         return self.__held_by
     
     def set_holder(self, bot):
         self.__held_by = bot
+
+    def get_zone(self):
+        return self.__in_zone
+    
+    def set_zone(self, zone):
+        self.__in_zone = zone
 
     def move(self):   
         # If the flag is held by a bot, move with it
@@ -20,4 +27,4 @@ class Flag(Entity):
             self.__y__ = self.__held_by.y()
     
     def get_info(self):
-        return FlagInfo(self.id(), self.x(), self.y(), self.__held_by.id() if self.__held_by else None)
+        return FlagInfo(self.id(), self.x(), self.y(), self.__held_by.id() if self.__held_by else None, self.__in_zone.id() if self.__in_zone else None)

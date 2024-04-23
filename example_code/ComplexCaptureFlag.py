@@ -34,16 +34,12 @@ def get_vector_flag(): # Get vector to closest flag
 
 def get_vector_my_zone():
     zones_ids = game.functions.get_objects_in_range("zones", 1000)
-
-    game.functions.print("Closest zones ids: " + str(zones_ids))
     
     # Check if zone bot_id is the same as my bot_id
     if zones_ids is not None:
         my_id = game.functions.get_attribute(None, "me", "id")
-        game.functions.print("My id: " + str(my_id))
         for zone_id in zones_ids:
             zone_owner = game.functions.get_attribute(zone_id, "zones", "owner_id")
-            game.functions.print("Zone owner: " + zone_owner)
             if zone_owner == my_id:
                 x = game.functions.get_attribute(zone_id, "zones", "x")
                 y = game.functions.get_attribute(zone_id, "zones", "y")
@@ -60,7 +56,7 @@ def flag_in_my_zone():
     if zones_ids is not None:
         my_id = game.functions.get_attribute(None, "me", "id")
         for zone_id in zones_ids:
-            if game.functions.get_attribute(zone_id, "zones", "owner") == my_id:
+            if game.functions.get_attribute(zone_id, "zones", "owner_id") == my_id:
 
                 # Check if there is a flag in the zone
                 if game.functions.get_attribute(zone_id, "zones", "contains_flag") is not None:
