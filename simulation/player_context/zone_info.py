@@ -4,4 +4,4 @@ class ZoneInfo():
         self.x = x
         self.y = y
         self.contains_flag = contains_flag
-        self.owner_id = int(bot.id) if bot is not None else None
+        self.owner_id = bot.id() if bot is not None else None
