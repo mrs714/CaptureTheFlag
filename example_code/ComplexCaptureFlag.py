@@ -33,13 +33,18 @@ def get_vector_flag(): # Get vector to closest flag
   return None
 
 def get_vector_my_zone():
-    zones_ids = game.functions.get_objects_in_range("zones", MAP_SIZE)
+    zones_ids = game.functions.get_objects_in_range("zones", 1000)
+
+    game.functions.print("Closest zones ids: " + str(zones_ids))
     
     # Check if zone bot_id is the same as my bot_id
     if zones_ids is not None:
         my_id = game.functions.get_attribute(None, "me", "id")
+        game.functions.print("My id: " + str(my_id))
         for zone_id in zones_ids:
-            if game.functions.get_attribute(zone_id, "zones", "owner") == my_id:
+            zone_owner = game.functions.get_attribute(zone_id, "zones", "owner_id")
+            game.functions.print("Zone owner: " + str(zone_owner))
+            if zone_owner == my_id:
                 x = game.functions.get_attribute(zone_id, "zones", "x")
                 y = game.functions.get_attribute(zone_id, "zones", "y")
                 vector = game.functions.vector_to(x, y)
@@ -65,12 +70,12 @@ def flag_in_my_zone():
 if game.functions.get_attribute(None, "me", "health") < LOW_HEALTH:
     vector = search_drop("drops_health")
     if vector is not None:
-        game.functions.move(vector[0], vector[1])
+        game.actions.move(vector[0], vector[1])
 
 elif game.functions.get_attribute(None, "me", "shield") == 0:
     vector = search_drop("drops_shield")
     if vector is not None:
-        game.functions.move(vector[0], vector[1])
+        game.actions.move(vector[0], vector[1])
 
 # Go put the flag in my base
 if not flag_in_my_zone():
@@ -78,14 +83,14 @@ if not flag_in_my_zone():
     if not carrying_flag:
         vector = get_vector_flag()
         if vector is not None:
-            game.functions.move(vector[0], vector[1])
+            game.actions.move(vector[0], vector[1])
     else:
-        game.functions.print_info("Carrying flag")
+        game.functions.print("Carrying flag")
         vector = get_vector_my_zone()
         if vector is not None:
-            game.functions.move(vector[0], vector[1])
+            game.actions.move(vector[0], vector[1])
         else:
-            game.functions.print_info("No vector to my zone")
+            game.functions.print("No vector to my zone")
     
 # If the flag is in my zone, go kill the enemies
 # Check for any enemy too close, and shoot at the closest either way
@@ -95,23 +100,23 @@ vector = get_vector_to_closest_enemy()
 if close_enemies != []:
     # If the enemy is too far, move towards it
     if game.functions.vector_length(vector) > 50:
-        game.functions.move(vector[0], vector[1])
+        game.actions.move(vector[0], vector[1])
     # But don't get too close
     else:
-        game.functions.move(-vector[0], -vector[1])
+        game.actions.move(-vector[0], -vector[1])
 
 else: # If no enemy is too close, move towards the nearest drop
     vector = search_drop("drops_points")
     if vector is not None: # There might not always be a points drop
-        game.functions.move(vector[0], vector[1])
+        game.actions.move(vector[0], vector[1])
 
 # Regardless of the above, shoot at the closest enemy
 vector = get_vector_to_closest_enemy()
 if vector is not None:
-    game.functions.shoot(vector[0], vector[1])
-    game.functions.super_shot(vector[0], vector[1])
+    game.actions.shoot(vector[0], vector[1])
+    game.actions.super_shot(vector[0], vector[1])
     
 # And if the enemy is too close, use melee
 if game.functions.get_bots_in_range_melee()[0]:
-    game.functions.melee()
-    game.functions.super_melee()
+    game.actions.melee()
+    game.actions.super_melee()
