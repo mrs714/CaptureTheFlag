@@ -4,9 +4,14 @@ Server
  - Els logs no paren ni a 10 ni a 100
  - Quan crides ./start_server amb arguments no els passa
  - Restart server executa els echo però no els bash
+
+
+Features:
+
+Server:
  - Mirar si es pot implementar cpulimit (prioritat baixa)
-
-
+ - Actualitzar info de la web
+ 
 Joc
  - Quants punts ha de guanyar un bot per matar un altre?
  - En quina quantitat de quadres s'ha de dividir el espai per l'algorisme de col·lisions?
