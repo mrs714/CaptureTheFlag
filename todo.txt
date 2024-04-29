@@ -1,92 +1,22 @@
-PABLO:
-    fer que si els usuaris fan print es redirigeixi al log de la partida
+Bugs:
 
-    mirar la funció kill_bot en simulation
+Server
+ - Els logs no paren ni a 10 ni a 100
+ - Quan crides ./start_server amb arguments no els passa
+ - Restart server executa els echo però no els bash
+ - Mirar si es pot implementar cpulimit (prioritat baixa)
 
-    els logs no paren ni a 10 ni a 100
 
+Joc
+ - Quants punts ha de guanyar un bot per matar un altre?
+ - En quina quantitat de quadres s'ha de dividir el espai per l'algorisme de col·lisions?
+ - Afegir un efecte per al dash, melee i supermelee
+ - Acabar d'implementar supermelee (ara mateix és una copia de melee)
+    
 
-MIQUEL:
-    fet: 
-    afegir habilitats a la llista d'accions
-    Posar padding al mapa
-    - Fer que els jugadors no puguin sortir del mapa
-        - Fer que les bales que surten del mapa es destrueixin
-    - Arreglar totes les coses que implica el padding
-    - Els jugadors i les bales es contenen dins del mapa
-    Arreglar el collision handler
-        Pensar que fer amb les colleccions, si fer que els bots per treure es guardin en un diccionari com la resta, o fer que les bales i coses per treure es guardin en una llista i passar la llista de robots morts com a argument per al __collision_handler
-        al final tot està fet com a llistes
-    Afegits super melee, super shot
-    la info de la simulació inclou quantes se n'han fet
-    replays dona tota la info necessària per la web, amb el format correcte
-    replays.html mostra correctament la info
-    codi d'exemple afegit
-    fix start server script to pass along correct values - ara es pot cridar el launcher amb arguments des de start server
-
-        moviepy ram eater, cpu hoarder, memory leaker, disk space devourer, network bandwidth sucker, battery drainer, screen burner, and framerate killer.
-    See that it doesn't.
-    Els frames es guarden a disc cada x frames, i després s'esborra tot
-    el nom dels frames començen per 10000 perquè no hi hagi errors d'ordre
-    el video i la info es guarden en una altre carpeta fins que estan completament escrits
-    creada la funció generate_functions
-
-    Creada classe functions, que dona funcions al jugador com per exemple guardar dades, bots pròxims, print...
-
-    millorat el format a les ajudes de upload code i configuration, per que no quedi un bloc de text infumable
-
-     tremenda liada més gran, els objectes informació no apareixen en el diccionari d'entitats, és com si no existisin, sospito que perquè
     el codi no hi té accés a les classes
     dins de la classe game si que hi apareixen un cop generat el diccionari, just abans de fer el exec
     la resta de funcions es duen a terme fora del codi, en canvi, si un vol treballar amb les entitats, ho ha de fer des del codi restringit, cosa impossible perquè no té accés a les classes.
     S'ha de donar funcions que treballin amb el que l'usuari pugui voler fer amb les entitats
     Ara mateix, enganxat amb celo està una funció que es diu get_attr(id, type, attribute), la obté l'atribut que vols de la cosa amb id i del tipus indicat
     lo més fàcil seria eliminar per complet tota la branca game.entities
-
-    implementades un munt de funcions útils per a l'usuari - funció per a obtenir un vector per anar a un punt del mapa, posició/id enemic més pròxim, posició/id del drop més proxim
-    bales en un rang, ...
-
-    codi de prova escrit, va perfecte
-
-    Codi d'exemple per a diferents tipus de bots
-
-    Els bots guanyen punts quan maten altres
-
-    les bales tenen traça
-
-    classe effect implementada
-
-    efectes per als jugadors quan moren, i quan s'agafen drops
-
-    variable estat a bot, que gaurda coses com l'últim cop que l'han disparat
-
-    els bots es tornen blancs el frame que els impacta una bala
-
-    collision algorithm més ben integrat
-
-    nova classe: spawner
-
-    guardar frames i fer el video són ara funcions de la classe recorder o nosequé del fitxer drawing -- s'hauria de canviar el nom
-
-    Quan entres amb un telèfon, la pantalla està sempre al 100%
-
-    El server envia un avís quan la simulació no està en marxa
-
-
-    A fer: 
-
-    make an effect for dash, melee, and supermelee
-
-    restart_server llença el script, i fa els echo però no el bash
-
-    limit cpu with cpulimit
-
-    FER QUE ELS ARGUMENTS DEL LAUNCHER FUNCIONIN???
-
-    solucionar lo de la classe info -- solucionat? parlar amb pablo
-        
-    hauriem de donar CONSTS als usuaris
-
-    ara els bots tenen una flag de si estan portant la bandera, i la zona de cada jugador de si conté la bandera, posar això a la web
-
-    supermelee està implementat però és igual que melee
