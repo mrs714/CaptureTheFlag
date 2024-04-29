@@ -232,7 +232,7 @@ class Simulation:
     def __execute_bot_code(self, bot, bots_to_remove):
 
         # Create an object to give information about the state of the game to the bot code
-        game = Game(bot, self.__entities, self.__generate_actions(bot, bots_to_remove), self.__current_tick, self.__generate_functions(bot))
+        game = Game(bot, self.__entities, self.__generate_actions(bot, bots_to_remove), self.__current_tick, self.__generate_functions(bot))    
 
         # Create a dictionary with the names that the user code has access to
         player_globals = safe_globals.copy()
