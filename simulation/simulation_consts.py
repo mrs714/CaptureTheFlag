@@ -13,7 +13,7 @@ BULLET_SPEED = BOT_SPEED * 4 # pixels per frame
 FPS = 20 # frames per second
 DURATION = 20 * FPS # In seconds (x FPS = 1 second)
 INTER_SIMULATION_TIME = 60 # seconds
-MAX_FRAMES_ON_RAM = 100000000 / (MAP_HEIGHT * MAP_WIDTH) # Maximum ammount of frames on RAM. e.g.: 350x350pixels = 81 frames stored, 1000*1000pixels = 10 frames stored
+MAX_FRAMES_ON_RAM = 500 * 250000 / (MAP_HEIGHT * MAP_WIDTH) # Maximum ammount of frames on RAM. e.g.: 350x350pixels = 81 frames stored, 1000*1000pixels = 10 frames stored; take the first number as a very rough estimate of the MB of RAM used 
 SIM_FOLDER = "replays/"
 SIM_MP4_NAME = "replays/simulation.mp4"
 SIM_INFO_NAME = "replays/simulation_info.txt"

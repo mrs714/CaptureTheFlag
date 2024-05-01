@@ -1,5 +1,5 @@
 # Constants
-MAP_SIZE = 500 # Check the files, we'll give CONSTS in the future
+MAP_SIZE = game.constants.MAP_SIZE
 ENEMY_CLOSE_RANGE = 100
 LOW_HEALTH = 75
 
