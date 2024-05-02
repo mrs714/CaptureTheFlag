@@ -2,7 +2,7 @@ from flask import Flask, render_template, session, jsonify, request, send_file
 import database.db_access as db
 import json
 import os
-from global_consts import *
+from server.global_consts import *
 import atexit
 from log import setup_logger
 

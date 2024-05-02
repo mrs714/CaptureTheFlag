@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../CaptureTheFlag/') # Add the parent directory to the path
+
 from simulation.simulation import Simulation
 from time import sleep
 from simulation.simulation_consts import *

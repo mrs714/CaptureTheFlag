@@ -1,4 +1,4 @@
-from global_consts import *
+from server.global_consts import *
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import os

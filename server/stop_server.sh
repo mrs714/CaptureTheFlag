@@ -14,4 +14,3 @@ echo ""
 echo "Stoping simulation."
 screen -S simulation_screen -X quit
 echo ""
-

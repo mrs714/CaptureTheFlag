@@ -1,8 +1,8 @@
 import subprocess
 
 # Define the paths to the start and stop scripts
-start_script_path = "../start_server.sh"  # Adjust the path as needed
-stop_script_path = "../stop_server.sh"    # Adjust the path as needed
+start_script_path = "./start_server.sh"  # Adjust the path as needed
+stop_script_path = "./stop_server.sh"    # Adjust the path as needed
 
 def execute_script(script_path, script_name):
     try:
